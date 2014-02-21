@@ -1,0 +1,64 @@
+
+<form class="form-horizontal" id=post_form method="post" action="" style="margin: 20px;">
+	{% csrf_token %}
+	<div class="form-group">
+	 	{{ form.Title.errors }}
+        <label for="title" class="control-label col-sm-2">Title: </label>
+        <div>
+        {{ form.Title }}
+        </div>
+	</div>
+	<div class="form-group">
+	 	{{ form.Fname.errors }}
+        <label class="control-label col-sm-2" for="fname">First Name: </label>
+        {{ form.Fname }}
+	</div>
+	<div class="form-group">
+	 	{{ form.Lname.errors }}
+        <label for="lname"class="control-label col-sm-2">Last Name: </label>
+        {{ form.Lname }}
+	</div>
+	<div class="form-group">
+	 	{{ form.Email.errors }}
+        <label for="email" class="control-label col-sm-2">Email: </label>
+        {{ form.Email }}
+	</div>
+	<div class="form-group">
+	 	{{ form.Course.errors }}
+        <label for="course" class="control-label col-sm-2">Course: </label>
+        {{ form.Course }}
+	</div>
+	<div class="form-group">
+	 	{{ form.Description.errors }}
+        <label for="desc" class="control-label col-sm-2">Description: </label>
+        {{ form.Description }}
+	</div>
+	<div class="form-group">
+	 	{{ form.Compensation.errors }}
+        <label for="compensation" class="control-label col-sm-2">Compensation: </label>
+        {{ form.Compensation }}
+	</div>
+	<div class="form-group">
+	 	{{ form.SeekingorOffering.errors }}
+        <label for="SOO" class="control-label col-sm-2">Seeking or Offering?: </label>
+        {{ form.SeekingorOffering }}
+	</div>
+	<div class="form-group">
+	 	{{ form.Password.errors }}
+        <label for="password" class="control-label col-sm-2">{% if update %}Update {%endif%}Password: </label>
+        {{ form.Password }}
+	</div>
+	{% if update %}
+	<div id="pid" class="hidden">{{ id }}</div>
+	<div style="text-align: center">
+	  <input type="button" onclick="update_post();" class="btn btn-default" value="Update Post" />
+	</div>
+	{% else %}
+	<div style="text-align: center">
+	  <input type="button" onclick="new_post();" name="submit" class="btn btn-default" value="Create Post" />
+	</div>
+	{% endif %}
+	{% for hidden in form.hidden_fields %}
+    {{ hidden }}
+    {% endfor %}
+</form>
