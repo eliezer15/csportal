@@ -1,7 +1,7 @@
 {% for post in post %}
 <div class="container">
 <div class="col-md-8">
-<h3 id="title">{{post.Title}}<input type="button" onclick="call_passView();" name="submit" class="btn btn-default pull-right" value="Edit Post" /></h3>
+<h3 id="title">{{post.Title}}<input type="button" onclick="call_passView();" name="submit" class="btn btn-default pull-right btn-info" value="Edit/Delete Post" /></h3>
 <h5>ID: <span id="id">{{post.pk}}</span></h5>
 <ul>
 	<li id="name">{{post.Fname}} {{post.Lname}}</li>

@@ -23,9 +23,16 @@ $(document).ready(function() {
 $(document).keypress(function(e) {
 	if (e.which == 13) {
 		e.preventDefault();
+		if($('body').hasClass('modal-open')){
+			var click = $('div.modal-footer button.btn-danger').attr("onclick");
+			var fn = window[click.replace("();", "")];
+			fn();
+		}
+		else{
 		var click = $('#contentDiv input.btn').attr("onclick");
 		var fn = window[click.replace("();", "")];
 		fn();
+	}
 	}
 });
 
@@ -142,7 +149,6 @@ function update_post(){
  */
 
 function update_post_callback(data){
-	console.log(data);
 	if (data['form']) {
 		$('#contentDiv').empty();
 		$('#contentDiv').append(data['form']);
@@ -152,6 +158,44 @@ function update_post_callback(data){
 		$('#contentDiv').empty();
 		$('#contentDiv').append("<h1>Form has been updated.</h1>");
 		location.reload(); 
+	}
+}
+
+/* This function is called when the delete button is pressed in the delete modal window
+ * It grabs the given password and id of the post being requested to be deleted and sends it
+ * to the delete_post ajax function in the ajax.py file, the call bakc is handled by delete_post_callback
+ */
+
+function delete_post(){
+	var pid = $('#dpid').html();
+	var value = $('#id_DelPassword').val();
+	Dajaxice.delete_post.post(delete_post_callback, {
+		'p_id': pid,
+		'passw': value
+		}
+	);
+}
+
+/* This function handles the callback from the delete post function/ajax call from django and above
+ * This will check whether the password was verified, if it was then the json object send from
+ * the server will contain a 'deleted' fielded, we check for it hide the modal and empty the div and
+ * reload the page for the user. Else the 'deleted' field will not exist in the json and we will have
+ * a 'error' message meaning the password was not correct, so we attach the appropriate error message to
+ * the modal window.
+ */
+
+function delete_post_callback(data){
+	if (data['deleted']) {
+		$('#myModal').modal('hide')
+		$('#contentDiv').empty();
+		$('#contentDiv').append("<h1>Post has been deleted.</h1>");
+		location.reload(); 
+	}
+	if (data['error']) {
+		$('div.modal-body div.errors').remove();
+		$('div.modal-body')
+				.append(
+						"<div class='errors' style='color: red;'>You have entered an incorrect password.</div>");
 	}
 }
 

@@ -51,7 +51,11 @@
 	{% if update %}
 	<div id="pid" class="hidden">{{ id }}</div>
 	<div style="text-align: center">
-	  <input type="button" onclick="update_post();" class="btn btn-default" value="Update Post" />
+	  <input type="button" onclick="update_post();" class="btn btn-default btn-info" value="Update Post" />
+	</div>
+	<br>
+	<div style="text-align: center">
+	  <input type="button" data-toggle="modal" data-target="#myModal" class="btn btn-default btn-danger" value="Delete Post" />
 	</div>
 	{% else %}
 	<div style="text-align: center">
@@ -62,3 +66,22 @@
     {{ hidden }}
     {% endfor %}
 </form>
+<!-- Modal -->
+<div class="modal fade" id="myModal" tabindex="-1" role="dialog" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div style="text-align: center" class="modal-body">
+      <div id="dpid" class="hidden">{{ id }}</div>
+      <p>Are you sure you want to delete this post? (This action is irreversible)</p>
+     <div style="text-algin: center" class="form-group">
+    	<label class="control-label col-sm-4" for="password">Please Provide Password:</label>
+    	<input id="id_DelPassword" class="form-control" type="password" name="Password" style="width: 50%;"></input>
+	</div>
+      </div>
+      <div style="text-align: center" class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <button type="button" onclick="delete_post();"class="btn btn-danger">Delete</button>
+      </div>
+    </div>
+  </div>
+</div>

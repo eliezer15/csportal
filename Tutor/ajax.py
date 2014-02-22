@@ -106,3 +106,20 @@ def update_post(request, form, p_id):
         else:
             render = render_to_string('tutor/newpost.html', {'form': form, 'update': "True",'id': p_id})
             return simplejson.dumps({'form': render})
+
+#This function handles the delete post request from the delete_post called from the java script file
+#We will pass in the p_id and passw arguments sent over, grab the appropriate post from its id and check
+#the password. If the password is correct, we will delete the field and send over a json object with the
+#delete field. Else if it is incorrect we will send of a json object with the password error.
+
+@dajaxice_register(method='POST', name='delete_post.post')
+def delete_post(request, p_id, passw):
+    if request.method == 'POST':
+        if p_id:
+            posts = Post.objects.filter(id=p_id)
+            for post in posts:
+                if passw == post.Password:
+                    post.delete()
+                    return simplejson.dumps({'deleted': True})
+                else: 
+                    return simplejson.dumps({'error': "Password is incorrect."});
