@@ -1,22 +1,23 @@
-{% load extra_emplates %}
-<html>
-<head><title>Test</title></head>
-<body>
-
-	<ul>
+{% load extra_templates %}
+<!--This tag is like an import to load any user-defined
+templates located on the directory 'GetHired/templatetags/extra_templates.py'-->
+	
 	{% for p in posts %}
-		<li> {{p.job_title}} </li>
-		<li> {{p.company}}   </li>
-		<li> {{p.job_type}}  </li>	
-
-		{% with p|classname as model_class %}
-		{% if classname == "Interview" %}
-		<li> {{p.interview_process}}</li>
-		{% else %}
-		<li> {{p.salary}} </li>
-		{% endif %}
-		{% endwith %}
+		<div>
+		{{p.job_title}}
+		{{p.company}}
+		{{p.location}}
+		{{p.date_posted}}
+		{{p.interview_rating}}
+		{{p.job_type}}	
+		
+        {% with p|class_name as classname %} 
+        {% if classname == "Interview" %}
+		    {{p.interview_process}}
+	    {% else %}
+            {{p.salary}} 
+        {% endif %}
+        {% endwith %}
+        </div>
 	{% endfor %}
-	</ul>
-</body>
-</html>
+

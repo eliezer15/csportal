@@ -7,30 +7,30 @@ class Post(models.Model):
     author = models.ForeignKey(User, related_name="%(app_label)s_%(class)s_user")
     url = models.URLField()
     date_posted = models.DateField(auto_now_add=True) #automatically set upon object creation
-    
+
     def __unicode__(self):
         return self.url
-    
+
     class Meta:
         abstract = True
-    
+
 class Company(models.Model):
     name = models.CharField(max_length=30)
-    
+
     def __unicode__(self):
         return self.name
-    
+
     class Meta:
         verbose_name_plural="companies"
-    
+
 class Location(models.Model):
     city = models.CharField(max_length=30)
     state = models.CharField(max_length=2)
     country = models.CharField(max_length=30, default="United States")
-    
+
     def __unicode__(self):
         return "%s, %s, %s"%(self.city, self.state, self.country)
-            
+
 class GetHiredPost(Post):
     degree_choices = (
             ('BA', 'B.A'),
@@ -48,7 +48,7 @@ class GetHiredPost(Post):
     company = models.ForeignKey(Company, related_name = "%(app_label)s_%(class)s_location")
     location = models.ForeignKey(Location, related_name="%(app_label)s_%(class)s_location")
     job_title = models.CharField(max_length=30)
-    
+
     type_choices = (
             ('FT','Full Time'),
             ('PT','Part Time'),
@@ -63,10 +63,10 @@ class GetHiredPost(Post):
     job_type = models.CharField(max_length=2,
                                 choices=type_choices,
                                 default='FT')
-    
+
     class Meta:
         abstract = True
-        
+
 class Offer(GetHiredPost):
     pay_choices = (
             ('YS','Yearly Salary'),
@@ -82,7 +82,7 @@ class Offer(GetHiredPost):
     salary = models.DecimalField(decimal_places=2, max_digits=8)
     signing_bonus = models.DecimalField(decimal_places=2, max_digits=8, blank=True, null=True)
     relocation_bonus = models.DecimalField(decimal_places=2, max_digits=8, blank=True, null=True)
-    
+
     offer_choices = (
             ('AC','Accepted'),
             ('NA','Not Accepted'),
@@ -94,11 +94,11 @@ class Offer(GetHiredPost):
                                     choices=offer_choices,
                                     default='WA')
     other_details = models.TextField(blank=True, null=True)
-        
+
 class Interview(GetHiredPost):
     interview_process = models.TextField()
     questions_asked = models.TextField()
-    
+
     source_choices = (
             ('CF','Career Fair'),
             ('AO','Applied Online'),
@@ -110,7 +110,7 @@ class Interview(GetHiredPost):
     interview_source = models.CharField(max_length=2,
                                     choices=source_choices,
                                     default='WA')
-    
+
     offer_choices = (
             ('RC','Received'),
             ('NR','Not Received'),
@@ -121,13 +121,13 @@ class Interview(GetHiredPost):
                                     default='WA')
     offer_details = models.OneToOneField(Offer, null=True, blank=True)
     interview_rating = models.IntegerField()
-    
 
-    
 
-    
-    
-    
-    
-    
-    
+
+
+
+
+
+
+
+
