@@ -1,0 +1,30 @@
+{% for post in post %}
+<div class="postView col-md-12">
+<div class="row">
+<span style="font-size: 25px;color: #F0AD4E;" class="glyphicon glyphicon-arrow-left pull-left"></span><input type="button" onclick="window.location.href ='/tutor/';" name="submit" class="btn btn-warning pull-left btn-info" value="Go Back" />
+<input type="button" onclick="call_passView();" name="submit" class="btn btn-default pull-right btn-info" value="Edit/Delete Post" />
+</div><!-- Button Row -->
+<div class="row">
+<div class="title col-md-12">
+<div class="col-sm-7">
+<h3 class="title">{{post.Title}}
+{% if post.SOOTag == "Seeking" %}
+<span class="label label-success">{{post.SeekingorOffering}}</span>
+{% else %}
+<span class="label label-warning">{{post.SeekingorOffering}}</span>
+{% endif %}
+</h3>
+</div>
+<p class="identifier">ID: <span id="id">{{post.pk}}</span></p>
+<p class="date">Posted: {{post.Added}}</p>
+</div>
+</div><!-- Title Row -->
+<div class="postBody col-md-12">
+	<p class="name"><em> By: {{post.Fname}} {{post.Lname}}</em><p>
+	<p class="email">Email: {{post.Email}}</p>
+	<p class="course">Course: {{post.Course}}</p>
+	<p class="compensation">Compensation: {{post.Compensation}}</p>
+	<p class="description">{{post.Description}}</p>
+</div><!-- PostBody Div end -->
+</div>
+{% endfor %}
