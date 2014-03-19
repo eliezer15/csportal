@@ -1,23 +1,39 @@
+{% load static %}
 {% load extra_templates %}
-<!--This tag is like an import to load any user-defined
-templates located on the directory 'GetHired/templatetags/extra_templates.py'-->
-	
-	{% for p in posts %}
-		<div>
-		{{p.job_title}}
-		{{p.company}}
-		{{p.location}}
-		{{p.date_posted}}
-		{{p.interview_rating}}
-		{{p.job_type}}	
-		
-        {% with p|class_name as classname %} 
-        {% if classname == "Interview" %}
-		    {{p.interview_process}}
-	    {% else %}
-            {{p.salary}} 
-        {% endif %}
-        {% endwith %}
-        </div>
-	{% endfor %}
+{% load dajaxice_templatetags %}
+<!doctype html>
+<html>
+<head>
 
+{% dajaxice_js_import %}
+<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+<script src="{% static "/static/js/main-ajax.js" %}"></script>
+<script src="{% static "/static/js/dajax.js" %}"></script>
+
+<title>Get Hired</title>
+</head>
+
+<body>
+	<div id ="content">
+	{% for p in posts %}	
+		<a class = 'postLink' href='{{p.id}}' style="text-decoration: none;">
+		<div class='post_list_div'>
+			{% with p|classname as model_class %}
+			{% if classname == "Interview" %}
+			<h3> Interview </h3>
+			
+			{% else %}
+			<h3> Offer </h3>
+			
+			{% endif %}
+			{% endwith %}
+			
+			<span>{{p.job_title}}</span><br>
+			<span>{{p.company}}</span><br>
+			<span>{{p.job_type}}</span><br>	
+		</div>
+		</a>
+	{% endfor %}
+	</div>
+</body>
+</html>

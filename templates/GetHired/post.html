@@ -1,0 +1,32 @@
+{% load extra_templates %}
+<div>
+    {{post.get_applicant_degree_display}}<br>
+    {{post.company}}<br>
+    {{post.location}}<br>
+    {{post.job_title}}<br>
+    {{post.get_job_type_display}}<br>
+    
+    {% with post|classname as classname %}
+    {% if classname == "Interview" %}
+
+    {{post.interview_process}}<br>
+    {{post.questions_asked}}<br>
+    {{post.get_interview_source_display}}<br>
+    {{post.get_offer_status_display}}<br>
+    <!--{{post.offer_details}}-->
+    {{post.interview_rating}}<br>
+    
+    {% else %}
+
+    {{post.get_pay_type_display}}<br>
+    {{post.salary}}<br>
+    {{post.signing_bonus}}<br>
+    {{post.relocation_bonus}}<br>
+    {{post.get_offer_status_display}}<br>
+    {{post.other_details}}<br>
+
+    {% endif %}
+    {% endwith %}
+</div>
+
+
