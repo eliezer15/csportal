@@ -1,3 +1,8 @@
+'''
+Created on Mar 18, 2014
+
+@author: encarnae
+'''
 from django.db import models
 from django.contrib.auth.models import User
 
@@ -33,6 +38,7 @@ class Location(models.Model):
 
 class GetHiredPost(Post):
     degree_choices = (
+            ('MI','Minor'),
             ('BA', 'B.A'),
             ('BS', 'B.S'),
             ('MA', 'M.A'),
@@ -122,7 +128,8 @@ class Interview(GetHiredPost):
     offer_details = models.OneToOneField(Offer, null=True, blank=True)
     interview_rating = models.IntegerField()
 
-
+    def __unicode__(self):
+        return "%s, %s, %s"%(self.author, self.company, self.location)
 
 
 

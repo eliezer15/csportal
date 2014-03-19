@@ -8,21 +8,21 @@ def main(request):
     context_dict = {}
     interview_posts = []
     offer_posts = []
-
+    
     try:
         interview_posts = Interview.objects.all()
-    except Interview.DoesNotExist:
+    except Interview.DoesNotExist: 
         pass
-
+    
     try:
         offer_posts = Offer.objects.all()
     except Offer.DoesNotExist:
         pass
-
+    
     all_posts = sorted(
                        chain(interview_posts,offer_posts),
                        key=lambda post: post.date_posted
-                       )
+                      )
     context_dict['posts'] = all_posts
-
+        
     return render_to_response('portal/index.html', context_dict, context)
