@@ -16,8 +16,8 @@ def view_post(request, post_id, post_type):
     context_dict = {}
     if (request.method == 'GET'):
         if post_id:
-            Model = model_dict[post_type]
-            post = Interview.objects.get(pk=post_id)
+            model = model_dict[post_type]
+            post = model.objects.get(pk=post_id)
             context_dict['post'] = post
             render = render_to_string('GetHired/post.html', context_dict)
             return simplejson.dumps({'post': render})

@@ -1,4 +1,6 @@
+{% extends "portal/base.html" %}
 {% load extra_templates %}
+{% block content %}
 <div>
     {{post.get_applicant_degree_display}}<br>
     {{post.company}}<br>
@@ -13,7 +15,7 @@
     {{post.questions_asked}}<br>
     {{post.get_interview_source_display}}<br>
     {{post.get_offer_status_display}}<br>
-    <!--{{post.offer_details}}-->
+    <a href="http://127.0.0.1:8000/GetHired/{{post.offer_details.url_slug}}">Offer</a><br>
     {{post.interview_rating}}<br>
     
     {% else %}
@@ -28,5 +30,6 @@
     {% endif %}
     {% endwith %}
 </div>
+{% endblock %}
 
 

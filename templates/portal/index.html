@@ -1,24 +1,12 @@
-{% load static %}
+{% extends "portal/base.html" %}
 {% load extra_templates %}
-{% load dajaxice_templatetags %}
-<!doctype html>
-<html>
-<head>
+{% block title %} Get Hired {% endblock %}
 
-{% dajaxice_js_import %}
-<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
-<script src="{% static "/static/js/main-ajax.js" %}"></script>
-<script src="{% static "/static/js/dajax.js" %}"></script>
-
-<title>Get Hired</title>
-</head>
-
-<body>
-	<div id ="content">
+{% block content %}
 	{% for p in posts %}	
-		<a class = 'postLink' href='{{p.id}}' style="text-decoration: none;">
+		<a class = 'postLink' href='{{p.url_slug}}' style="text-decoration: none;">
 		<div class='post_list_div'>
-			{% with p|classname as model_class %}
+			{% with p|classname as classname %}
 			{% if classname == "Interview" %}
 			<h3> Interview </h3>
 			
@@ -34,6 +22,5 @@
 		</div>
 		</a>
 	{% endfor %}
-	</div>
-</body>
-</html>
+{% endblock %}
+

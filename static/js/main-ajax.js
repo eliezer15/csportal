@@ -4,7 +4,7 @@ $(document).ready(function() {
 	 * if clicked, we prevent the default action, and call the post.get ajax function through the
 	 * Dajaxice library, and with it we pass the id of the post being requested to be displayed
 	 */
-	
+/*	
 	$('body').on('click', 'a.postLink', function(event) {
 		event.preventDefault();
 		console.log(Dajaxice);
@@ -18,5 +18,5 @@ $(document).ready(function() {
 		$('#content').empty();
 		$('#content').append(data['post']);
 	}
-
+*/
 });
