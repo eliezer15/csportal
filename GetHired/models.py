@@ -60,7 +60,24 @@ class GetHiredPost(Post):
                                         default='BS')
     company = models.ForeignKey(Company, related_name = "%(app_label)s_%(class)s_location")
     location = models.ForeignKey(Location, related_name="%(app_label)s_%(class)s_location")
-    job_title = models.CharField(max_length=30)
+    
+    title_choices = (
+        ('SE', 'Software Engineer/Developer/Programmer'),
+        ('WD', 'Web Developer'),
+        ('ST', 'Software Engineer in Test'),
+        ('DE', 'DevOps Engineer'),
+        ('BA', 'Business Analyst/Programmer Analyst'),
+        ('CO', 'Consultant'),
+        ('DB', 'Database Administrator'),
+        ('HD', 'Help Desk Technician'),
+        ('NT', 'Network Architect/Engineer'),
+        ('NA', 'Network Administrator'),
+        ('PM', 'Product Manager')
+    )
+
+    job_title = models.CharField(max_length=2,
+                                 choices=title_choices,
+                                 default='SE')
 
     type_choices = (
             ('FT','Full Time'),
