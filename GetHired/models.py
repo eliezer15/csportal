@@ -158,7 +158,7 @@ class Interview(GetHiredPost):
     interview_rating = models.IntegerField()
     
     def save(self, **kwargs):
-        self.preview = self.interview_process[:50] + '...' #sliced to 50 chars        
+        self.preview = self.interview_process[:100] + '...' #sliced to 50 chars        
         super(Interview, self).save()
 
 

@@ -118,7 +118,7 @@ div.posts {
 	margin: 10px;
 	font-size: 15px;
 	color: black;
-	height: 250px;
+	height: 200px;
 	width: 99%;
 	display: block;
 }
@@ -136,6 +136,10 @@ div.posts span.Date {
 	float: right;
 	color: black;
 	font-size: 12px;
+}
+
+div.posts span.preview {
+    color: #B2B2B2;
 }
 
 span.lab {
