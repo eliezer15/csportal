@@ -76,7 +76,7 @@ ul.navlist li a {
 	color: #8C8C8C;
 	display: block;
 	font-family: 'Anton', 'Arial', 'Helvetica', sans-serif;
-	font-size: 24px;
+	font-size: 18px;
 	line-height: 20px;
 	padding: 10px 15px 40px;
 	text-decoration: none;
@@ -100,8 +100,12 @@ div.moreinfo {
 
 div.buttondiv {
 	border-bottom: thin solid #dbdbdb;
-	padding-bottom: 20px;
-	margin-bottom: 10px;
+	padding-bottom: 10px
+	margin-bottom: 15px;
+}
+
+.filterdiv {
+    margin-top:9px;
 }
 
 a.postLinks {
@@ -109,6 +113,7 @@ a.postLinks {
 }
 
 div.posts {
+    padding: 10px 30px 30px 30px;
 	border: thin solid #dbdbdb;
 	margin: 10px;
 	font-size: 15px;

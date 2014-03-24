@@ -13,11 +13,11 @@ class Post(models.Model):
     url_slug = models.CharField(max_length=200, editable=False)
     post_type = models.CharField(max_length=20,editable=False)
     date_posted = models.DateField(auto_now_add=True) #automatically set upon object creation
-
+    preview = models.CharField(max_length=100, null=True, blank= True,editable=False)
     def __unicode__(self):
         return self.url
 
-    def save(self):
+    def save(self, **kwargs):
         super(Post, self).save()
         self.post_type = self.__class__.__name__
         self.url_slug = 'post/%s/%i/' % (self.post_type, self.id)
@@ -127,7 +127,9 @@ class Offer(GetHiredPost):
                                     choices=offer_choices,
                                     default='WA')
     other_details = models.TextField(blank=True, null=True)
-
+    def save(self):
+        self.preview = self.interview_process[:50] + '...' #sliced to 50 chars        
+        super(Offer, self).save()
 class Interview(GetHiredPost):
     interview_process = models.TextField()
     questions_asked = models.TextField()
@@ -154,3 +156,9 @@ class Interview(GetHiredPost):
                                     default='WA')
     offer_details = models.OneToOneField(Offer, null=True, blank=True)
     interview_rating = models.IntegerField()
+    
+    def save(self, **kwargs):
+        self.preview = self.interview_process[:50] + '...' #sliced to 50 chars        
+        super(Interview, self).save()
+
+

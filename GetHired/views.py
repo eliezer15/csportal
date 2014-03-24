@@ -29,7 +29,7 @@ def main(request):
                       )
     context_dict['posts'] = all_posts
         
-    return render_to_response('portal/index.html', context_dict, context)
+    return render_to_response('GetHired/index.html', context_dict, context)
 
 def get_post(request, post_type, post_id):
     if request.method == 'GET':

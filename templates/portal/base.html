@@ -1,99 +1,96 @@
 {% load static %}
 {% load extra_templates %}
-<!doctype html>
+<!DOCTYPE html>
 <html>
 <head>
-<title>{% block title %}{% endblock %}</title>
-<style type="text/css">
-body{
-margin:0;
-padding:0;
-line-height: 1.5em;
-}
-
-b{font-size: 110%;}
-em{color: red;}
-
-#maincontainer{
-width: 840px; /*Width of main container*/
-margin: 0 auto; /*Center container on page*/
-}
-
-#topsection{
-background: #EAEAEA;
-height: 90px; /*Height of top section*/
-}
-
-#topsection h1{
-margin: 0;
-padding-top: 15px;
-}
-
-#contentwrapper{
-float: left;
-width: 100%;
-}
-
-#contentcolumn{
-margin-left: 200px; /*Set left margin to LeftColumnWidth*/
-}
-
-#leftcolumn{
-float: left;
-width: 200px; /*Width of left column*/
-margin-left: -840px; /*Set left margin to -(MainContainerWidth)*/
-background: #C8FC98;
-}
-
-#footer{
-clear: left;
-width: 100%;
-background: black;
-color: #FFF;
-text-align: center;
-padding: 4px 0;
-}
-
-#footer a{
-color: #FFFF80;
-}
-
-.innertube{
-margin: 10px; /*Margins for inner DIV inside each column (to provide padding)*/
-margin-top: 0;
-}
-
-</style>
-
+<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+<script src ="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.0/jquery.cookie.min.js"></script>
+<script
+	src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+<link rel="stylesheet"
+	href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+<link rel="stylesheet" href="{% static "/static/css/style.css" %}">
+<link href='http://fonts.googleapis.com/css?family=Anton'
+	rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Droid+Serif:700'
+	rel='stylesheet' type='text/css'>
+<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed'
+	rel='stylesheet' type='text/css'>
+<meta charset="ISO-8859-1">
+<title>{% block title %}Tutor Page{% endblock %}</title>
 </head>
 <body>
-<div id="maincontainer">
-
-{% block header %}
-<div id="topsection"><div class="innertube"><h1>Get Hired</h1></div></div>
-{% endblock %}
-
-<div id="contentwrapper">
-<div id="contentcolumn">
-<div class="innertube">{% block content %}{% endblock %}</div>
-</div>
-</div>
-
-<div id="leftcolumn">
-<div class="innertube">
-{% block column %}
-	<ul>
-		<li> Option 1 </li>
-		<li> Option 2</li>
-		<li> Option 3</li>
-		<li> Option 4</li>
-	</ul>
-{% endblock %}
-</div>
-</div>
-
-<div id="footer"><a href="http://www.dynamicdrive.com/style/">Dynamic Drive CSS Library</a></div>
-
-</div>
+	<div class="row">
+		<div class="main col-md-9">
+			<div class="row logorow">
+				<div class="logo col-md-5">
+					<span class="logo"><span class="unc logo">UNC</span> CHAPEL
+						HILL</span> <br> <span class="logotag">Computer Science
+						Student Portal</span>
+				</div>
+				<!-- Logo div End -->
+				<div class="navbar 7">
+					<ul class="navlist">
+						<li><a href="#">HOME<span
+								class="glyphicon glyphicon-home"></span></a></li>
+						<li><a href="#">PROJECT MARKETPLACE <span
+								class="glyphicon glyphicon-folder-open"></span></a></li>
+						<li><a href="#">GET HIRED<span
+								class="glyphicon glyphicon-briefcase"></span></a></li>
+						<li><a href="/tutor/">STUDY AID<span
+								class="glyphicon glyphicon-user"></span></a></li>
+					</ul>
+				</div>
+				<!-- Nav Div -->
+			</div>
+			<!-- Nav Row End -->
+			<div class="row">
+				<div class="info col-md-12">
+					<h1>{% block header %}BROWSE PROJECTS{% endblock %}</h1>
+				</div>
+				<!-- Info Div -->
+			</div>
+			<!-- Info Div Row End -->
+			<div class="row">
+				<div class="buttondiv col-md-12" style="text-align: center;">
+					<form class="navbar-form" role="search">
+       					<div class="form-group">
+          					<input type="text" class="form-control" placeholder="Search">
+       					</div>
+        				<button type="submit" class="btn btn-default">Submit</button>
+      				</form>
+				</div>
+			</div>
+			<div class="row">
+				<div class="filteroptions col-md-2">
+					<div class="filterdiv panel panel-default">
+					<div class="contain">
+						<h5><span class='labs'>Filters:</span></h5>
+						<span class='labs'>Type: </span><select class="form-control"><option
+								value="offering">Offering</option>
+							<option value="seeking">Seeking</option></select> <span class='labs'>Course:
+						</span> <select class="form-control"><option value="comp401">Comp401</option>
+							<option value="Comp510">Comp510</option></select>
+						<div style="text-align: center;">
+							<input type="button" onclick="call_newpost();" name="submit"
+								class="btn btn-default" value="Update List" />
+								</div>
+						</div> <!-- Button Div -->
+					</div> <!-- Filter Div -->
+				</div> <!-- Filter Options div -->
+				<div class="post_bar col-md-10">
+					<div id="container">
+						{% block content %}
+						{% endblock %}
+					</div>
+					<!-- Post Bar Container Div End -->
+				</div>
+				<!-- Post Bar End -->
+			</div>
+			<!-- Post Bar Row End -->
+		</div>
+		<!-- Main Div End -->
+	</div>
+	<!-- Main Row End -->
 </body>
 </html>
