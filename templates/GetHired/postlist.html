@@ -1,0 +1,35 @@
+{% extends "portal/base.html" %}
+{% load extra_templates %}
+{% block title %} Get Hired {% endblock %}
+{% block header %} Get Hired {% endblock %}
+{% block content %}
+{% for post in posts %}
+    <div class="posts panel">
+        <a class="postLinks" href='{{post.url_slug}}'>
+            <div class="row">
+                <p>
+                    <span class="label label-success">{{post.post_type}}</span>
+                </p>
+            </div>
+            <div class="row">
+                <span class="Title">{{post.company}}</span> 
+                <span class="Date"> {{post.date_posted}}</span>
+            </div>
+            <div class="row">
+                <p>
+                    <span class="job_title">{{post.get_job_title_display}}</span>
+                </p>
+            </div>
+            <div class="row">
+                <p>
+                    <span class="location">{{post.location}}</span>
+                </p>
+
+                <p>
+                    <span class="preview">{{post.preview}}</span>
+                </p>
+            </div>
+        </a>
+    </div>
+{% endfor %}
+{% endblock %}

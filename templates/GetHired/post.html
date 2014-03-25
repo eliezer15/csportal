@@ -1,0 +1,47 @@
+{% extends "portal/base.html" %}
+{% load extra_templates %}
+{% block title %} Get Hired {% endblock %}
+{% block header %} Get Hired {% endblock %}
+{% block content %}
+<div>
+<div class="postView col-md-12">
+<div class="row">
+<span style="font-size: 25px;color: #F0AD4E;" class="glyphicon glyphicon-arrow-left pull-left"></span><input type="button" onclick="history.back();" name="submit" class="btn btn-warning pull-left btn-info" value="Go Back" />
+<input type="button" onclick="call_passView();" name="submit" class="btn btn-default pull-right btn-info" value="Edit/Delete Post" />
+</div>
+<!-- Button Row -->
+<div class="row">
+    <div class="title col-md-12">
+    <div class="col-sm-7">
+    <h3 class="title">{{post.company}} </h3>
+</div>
+<p class="date">Posted: {{post.date_posted}}</p>
+</div>
+</div><!-- Title Row -->
+<div class="postBody col-md-12">
+    <p class="location"><em> Location: {{post.location}}</em><p>
+    <p class="job_title">Job Title: {{post.get_job_title_display}}</p>
+    <p class="job_type">Job Type: {{post.get_job_type_display}}</p>
+    <p class="compensation">Compensation: {{post.Compensation}}</p>
+    <p class="process">{{post.interview_process}}</p>
+    <p class="questions">{{post.questions_asked}}</p>
+    <p class="rating">{{post.interview_rating}}</p>
+</div><!-- PostBody Div end -->
+</div>
+    {% with post|classname as classname %}
+    {% if classname == "Interview" %}    
+    {% else %}
+
+    {{post.get_pay_type_display}}<br>
+    {{post.salary}}<br>
+    {{post.signing_bonus}}<br>
+    {{post.relocation_bonus}}<br>
+    {{post.get_offer_status_display}}<br>
+    {{post.other_details}}<br>
+
+    {% endif %}
+    {% endwith %}
+</div>
+{% endblock %}
+
+
