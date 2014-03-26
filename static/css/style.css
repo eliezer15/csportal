@@ -1,8 +1,8 @@
 @CHARSET "ISO-8859-1";
 
 body {
-	background-color: #929292;
 	overflow-x: hidden;
+	background: url(../images/background.jpg) no-repeat center center fixed; 
 }
 
 div.main {
@@ -13,12 +13,14 @@ div.main {
 	margin-left:auto;
 	margin-right: auto;
 	-webkit-box-shadow: 0px 0px 39px 9px rgba(112,111,112,1);
--moz-box-shadow: 0px 0px 39px 9px rgba(112,111,112,1);
-box-shadow: 0px 0px 39px 9px rgba(112,111,112,1);
+	-moz-box-shadow: 0px 0px 39px 9px rgba(112,111,112,1);
+	box-shadow: 0px 0px 39px 9px rgba(112,111,112,1);
 }
 
 div.logorow {
 	padding-top: 30px;
+    padding-bottom: 30px;
+    text-align: center;
 }
 
 div.post_bar {
@@ -47,38 +49,35 @@ span.logotag {
 	color: #56a0d3;
 	font-family: 'Roboto Condensed';
 	font-size: 15px;
-	padding-left: 40px;
 	font-style: italic;
 }
-
+div.navbar{
+    text-align: center;
+}
 ul.navlist {
-	display: inline;
 	list-style: none;
 }
 
 ul.navlist li {
-	position: relative;
-	float: left;
+    display: inline;
 	list-style: none outside none;
 	filter: inherit;
-	display: block;
 	width: auto;
-	height: 60px;
+	height: 10px;
 	text-align: left;
 }
 
 span.glyphicon {
-	font-size: 20px;
+	font-size: 23px;
 	padding-left: 4px;
 }
 
 ul.navlist li a {
 	color: #8C8C8C;
-	display: block;
 	font-family: 'Anton', 'Arial', 'Helvetica', sans-serif;
-	font-size: 18px;
+	font-size: 24px;
 	line-height: 20px;
-	padding: 10px 15px 40px;
+	padding: 0px 15px 0px;
 	text-decoration: none;
 	text-transform: uppercase;
 }
