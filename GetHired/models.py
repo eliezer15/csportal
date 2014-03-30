@@ -9,11 +9,10 @@ from localflavor.us.models import USStateField
 #Post is an abstract class that serves as a superclass
 class Post(models.Model):
     #related_name is required for all abstract classes with ForeignKey fields. See Django docs for more info
-    author = models.ForeignKey(User, related_name="%(app_label)s_%(class)s_user")
+    author = models.ForeignKey(User, editable=False, blank=True, null= True, related_name="%(app_label)s_%(class)s_user")
     url_slug = models.CharField(max_length=200, editable=False)
     post_type = models.CharField(max_length=20,editable=False)
     date_posted = models.DateField(auto_now_add=True) #automatically set upon object creation
-    preview = models.CharField(max_length=100, null=True, blank= True,editable=False)
     def __unicode__(self):
         return self.url
 
@@ -60,7 +59,7 @@ class GetHiredPost(Post):
                                         default='BS')
     company = models.ForeignKey(Company, related_name = "%(app_label)s_%(class)s_location")
     location = models.ForeignKey(Location, related_name="%(app_label)s_%(class)s_location")
-    
+
     title_choices = (
         ('SE', 'Software Engineer/Developer/Programmer'),
         ('WD', 'Web Developer'),
@@ -93,10 +92,10 @@ class GetHiredPost(Post):
     job_type = models.CharField(max_length=2,
                                 choices=type_choices,
                                 default='FT')
-    
+
     def __unicode__(self):
         return "%s, %s, %s"%(self.author, self.company, self.location)
-    
+
     class Meta:
         abstract = True
 
@@ -127,9 +126,7 @@ class Offer(GetHiredPost):
                                     choices=offer_choices,
                                     default='WA')
     other_details = models.TextField(blank=True, null=True)
-    def save(self):
-        self.preview = self.interview_process[:50] + '...' #sliced to 50 chars        
-        super(Offer, self).save()
+
 class Interview(GetHiredPost):
     interview_process = models.TextField()
     questions_asked = models.TextField()
@@ -156,9 +153,9 @@ class Interview(GetHiredPost):
                                     default='WA')
     offer_details = models.OneToOneField(Offer, null=True, blank=True)
     interview_rating = models.IntegerField()
-    
+
     def save(self, **kwargs):
-        self.preview = self.interview_process[:100] + '...' #sliced to 50 chars        
+        self.preview = self.interview_process[:100] + '...' #sliced to 50 chars
         super(Interview, self).save()
 
 

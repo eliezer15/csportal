@@ -12,8 +12,9 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
     url(r'^GetHired/$', views.main),
     url(r'^GetHired/post/(?P<post_type>\w+)/(?P<post_id>\d+)/$',views.get_post),
+    url(r'^GetHired/post/new/(?P<post_type>\w+)/$',views.new_post),
+    url(r'^GetHired/post/new/(?P<post_type>\w+)/create/$',views.create_post),
     url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
-
 )
 
 urlpatterns += staticfiles_urlpatterns()

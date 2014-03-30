@@ -1,0 +1,71 @@
+{% extends "portal/base.html" %}
+{% block header %}GetHired{% endblock %}
+{% block content %}
+<div class="newform col-md-12">
+
+<h2>Add a New Interview</h2>
+<form class="form-horizontal" id=post_form method="post" action="/GetHired/post/new/{{post_type}}/create/" style="margin: 20px;">
+	{% csrf_token %}
+	<div class="form-group">
+	 	{{ form.company.errors }}
+        <label for="company" class="control-label col-sm-2">Company: </label>
+        <div>
+        {{form.company}}
+        </div>
+	</div>
+	<div class="form-group">
+	 	{{ form.location.errors }}
+        <label for="location" class="control-label col-sm-2">Location: </label>
+        <div>
+        {{form.location}}
+        </div>
+	</div>
+	<div class="form-group">
+	 	{{ form.job_title.errors }}
+        <label for="job_title" class="control-label col-sm-2">Job title: </label>
+        <div>
+        {{ form.job_title}}
+        </div>
+	</div>
+	<div class="form-group">
+	 	{{ form.applicant_degree.errors}}
+        <label class="control-label col-sm-2" for="applicant_degree">Degree type: </label>
+        {{ form.applicant_degree }}
+	</div>
+	<div class="form-group">
+	 	{{ form.job_type.errors}}
+        <label for="job_type"class="control-label col-sm-2">Job Type: </label>
+        {{ form.job_type }}
+	</div>
+	<div class="form-group">
+	 	{{ form.interview_process.errors }}
+        <label for="interview_process" class="control-label col-sm-2">Interview Process: </label>
+        {{ form.interview_process }}
+	</div>
+	<div class="form-group">
+	 	{{ form.questions_asked.errors }}
+        <label for="questions_asked" class="control-label col-sm-2">Questions asked: </label>
+        {{ form.questions_asked }}
+	</div>
+	<div class="form-group">
+	 	{{ form.offer_status.errors }}
+        <label for="offer_status" class="control-label col-sm-2">Offer status: </label>
+        {{ form.offer_status }}
+	</div>
+	<div class="form-group">
+	 	{{ form.interview_source.errors }}
+        <label for="SOO" class="control-label col-sm-2">Interview source: </label>
+        {{ form.interview_source}}
+    </div>
+	<div class="form-group">
+	 	{{ form.interview_rating.errors }}
+        <label for="SOO" class="control-label col-sm-2">Interview rating: </label>
+        {{ form.interview_rating}}
+    </div>
+    <div class="form-group">
+        <button type="submit" class="btn btn-default">Submit</button>
+    </div>
+</form>
+</div>
+{% endblock %}
+<!-- Modal -->

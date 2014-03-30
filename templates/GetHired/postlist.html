@@ -7,9 +7,15 @@
     <div class="posts panel">
         <a class="postLinks" href='{{post.url_slug}}'>
             <div class="row">
+                {% if post.post_type == "Interview" %}
                 <p>
                     <span class="label label-success">{{post.post_type}}</span>
                 </p>
+                {% else %}
+                <p>
+                    <span class="label label-warning">{{post.post_type}}</span>
+                </p>
+                {% endif %}
             </div>
             <div class="row">
                 <span class="Title">{{post.company}}</span> 

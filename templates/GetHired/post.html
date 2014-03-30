@@ -22,25 +22,30 @@
     <p class="location"><em> Location: {{post.location}}</em><p>
     <p class="job_title">Job Title: {{post.get_job_title_display}}</p>
     <p class="job_type">Job Type: {{post.get_job_type_display}}</p>
-    <p class="compensation">Compensation: {{post.Compensation}}</p>
-    <p class="process">{{post.interview_process}}</p>
-    <p class="questions">{{post.questions_asked}}</p>
-    <p class="rating">{{post.interview_rating}}</p>
-</div><!-- PostBody Div end -->
-</div>
-    {% with post|classname as classname %}
-    {% if classname == "Interview" %}    
+    <p class="applicant_degree">Applicant Degree: {{post.applicant_degree}}</p>
+    
+    {% if post.post_type == "Interview" %}   
+    <p class="process">Details: {{post.interview_process}}</p>
+    <p class="questions">Questions Asked: {{post.questions_asked}}</p>
+    <p class="rating">Interview Rating:{{post.interview_rating}}</p>
+    <p class="offer_status">Offer Status:{{post.get_offer_status_display}}</p>
+    {% if post.offer_details %} <!--if offer received-->
+    <p class="offer_details"><a href={{post.offer_details.url_slug}}>Offer</a></p>
+    {% endif %}
+    
     {% else %}
 
-    {{post.get_pay_type_display}}<br>
-    {{post.salary}}<br>
-    {{post.signing_bonus}}<br>
-    {{post.relocation_bonus}}<br>
-    {{post.get_offer_status_display}}<br>
-    {{post.other_details}}<br>
+    <p class="pay_type">Pay Type: {{post.get_pay_type_display}}</p>
+    <p class="salary"> Salary: {{post.salary}}</p>
+    <p class="bonus"> Signing Bonus: {{post.signing_bonus}}</p>
+    <p class="relocation">Relocation: {{post.relocation_bonus}}</p>
+    <p class="status">Status: {{post.get_offer_status_display}}</p>
+    {% if post.other_details %}
+    <p class="details">{{post.other_details}}</p>
+    {% endif %}
 
     {% endif %}
-    {% endwith %}
+</div><!-- PostBody Div end -->
 </div>
 {% endblock %}
 
