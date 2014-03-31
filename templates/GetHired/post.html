@@ -3,6 +3,11 @@
 {% block title %} Get Hired {% endblock %}
 {% block header %} Get Hired {% endblock %}
 {% block content %}
+<script>
+$(document).ready(function(){
+	$(document).scrollTop( $("div.postView").offset().top );   
+});
+</script>
 <div>
 <div class="postView col-md-12">
 <div class="row">

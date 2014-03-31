@@ -3,6 +3,17 @@
 {% block title %} Get Hired {% endblock %}
 {% block header %} Get Hired {% endblock %}
 {% block content %}
+<div class="btn-group" style="margin: 10px;">
+	<button type="button" class="btn btn-default dropdown-toggle"
+		data-toggle="dropdown">
+		New Post <span class="caret"></span>
+	</button>
+	<ul class="dropdown-menu" role="menu">
+		<li><a href="/GetHired/post/new/Interview/">Interview</a></li>
+		<li class="divider"></li>
+		<li><a href="/GetHired/post/new/Offer/">Offer</a></li>
+	</ul>
+</div>
 {% for post in posts %}
     <div class="posts panel">
         <a class="postLinks" href='{{post.url_slug}}'>
