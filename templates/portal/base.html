@@ -21,7 +21,7 @@
 <title>{% block title %}Tutor Page{% endblock %}</title>
 </head>
 <body>
-<a href="#" class="back-to-top">Back to Top</a>
+<a href="#" class="back-to-top"><img class="back-to-top" src="{% static "/static/images/backtotop.png"%}"></img>Back to Top</a>
 	<div class="row">
 		<div class="main col-md-9">
 		<div class="row">
@@ -100,6 +100,14 @@
 			<!-- Post Bar Row End -->
 		</div>
 		<!-- Main Div End -->
+		<div class="footer col-md-12">
+			<ul class="footernav">
+				<li><a href="#">HOME</a></li>
+				<li><a href="#">PROJECT MARKETPLACE</a></li>
+				<li><a class="hired" href="/GetHired/">GET HIRED</a></li>
+				<li><a href="/tutor/">STUDY BUDDY</a></li>
+			</ul>
+		</div><!-- Footer Div End -->
 	</div>
 	<!-- Main Row End -->
 </body>

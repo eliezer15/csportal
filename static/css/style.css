@@ -6,31 +6,28 @@ body {
 }
 
 .back-to-top {
-    position: fixed;
-    bottom: 5em;
-    right: 2em;
-    text-decoration: none;
-    color: #000000;
-    background-color: rgba(235, 235, 235, 0.80);
-    font-size: 12px;
-    padding: 1em;
-    display: none;
-}
-
-.back-to-top:hover {    
-    background-color: rgba(135, 135, 135, 0.50);
+	position: fixed;
+	top: 2em;
+	right: 1em;
+	display: none;
+	height: 100px;
+	width: 100px;
+	z-index: 3;
+	text-decoration: none;
+	text-align: center;
 }
 
 div.main {
 	background-color: #fbfafa;
 	margin-top: 10px;
-	margin-bottom: 10px;
+	margin-bottom: 0px;
 	float: none;
 	margin-left: auto;
 	margin-right: auto;
 	-webkit-box-shadow: 0px 0px 39px 9px #282828;
 	-moz-box-shadow: 0px 0px 39px 9px #282828;
 	box-shadow: 0px 0px 39px 9px #282828;
+	padding-bottom: 50px;
 }
 
 div.logorow {
@@ -39,15 +36,20 @@ div.logorow {
 	text-align: center;
 	background: url(../images/oldwell.jpg) no-repeat 58% 45%;
 }
-div.logocontainer{
+
+div.logocontainer {
 	width: 100%;
 	height: 100%;
 }
-div.logo{
+
+div.logo {
 	background-color: #8C8C8C;
 	opacity: .90;
-	-webkit-border-radius: 15px;-moz-border-radius: 15px;border-radius: 15px;
+	-webkit-border-radius: 15px;
+	-moz-border-radius: 15px;
+	border-radius: 15px;
 }
+
 div.post_bar {
 	overflow-x: hidden;
 	overflow-y: auto;
@@ -75,22 +77,23 @@ span.logotag {
 	font-family: 'Roboto Condensed';
 	font-size: 30px;
 	font-style: italic;
-    text-shadow: 1px 1px 1px black;
+	text-shadow: 1px 1px 1px black;
 }
 
 div.navbar {
-    margin-top: 10px;
-    min-height: 0px;
+	margin-top: 10px;
+	min-height: 0px;
 	text-align: center;
 	min-hieght: 0px;
 	margin-bottom: 0px;
 }
+
 ul.navlist {
 	list-style: none;
 }
 
 ul.navlist li {
-    display: inline;
+	display: inline;
 	list-style: none outside none;
 	filter: inherit;
 	width: auto;
@@ -117,9 +120,10 @@ ul.navlist li a:hover {
 	color: #56a0d3;
 }
 
-ul.navlist li a.current{
-    color: #6d92ab;
+ul.navlist li a.current {
+	color: #6d92ab;
 }
+
 div.info {
 	background-color: #56a0d3;
 	color: white;
@@ -136,17 +140,22 @@ div.buttondiv {
 	padding-bottom: 10px margin-bottom: 15px;
 }
 
+div.footer {
+	background-color: black;
+	opacity: 0.95;
+}
+
 .filterdiv {
-    margin-top:9px;
+	margin-top: 9px;
 }
 
 a.postLinks {
 	text-decoration: none;
-    outline: none;
+	outline: none;
 }
 
 div.posts {
-    padding: 10px 30px 30px 30px;
+	padding: 10px 30px 30px 30px;
 	border: thin solid #dbdbdb;
 	margin: 10px;
 	font-size: 15px;
@@ -172,7 +181,7 @@ div.posts span.Date {
 }
 
 div.posts span.preview {
-    color: #B2B2B2;
+	color: #B2B2B2;
 }
 
 span.lab {
@@ -228,7 +237,7 @@ div.postView div.row {
 h3.title {
 	color: #56A0D3;
 	float: left;
-    font-family: 'Droid Serif';
+	font-family: 'Droid Serif';
 }
 
 h3.title span.label {
@@ -237,14 +246,13 @@ h3.title span.label {
 }
 
 div.title {
-    
 	-webkit-box-shadow: inset 0px 0px 1px 1px rgba(209, 207, 209, 1);
 	-moz-box-shadow: inset 0px 0px 1px 1px rgba(209, 207, 209, 1);
 	box-shadow: inset 0px 0px 1px 1px rgba(209, 207, 209, 1);
 }
 
-div.postBody{
-    font-family: 'Roboto Condensed';
+div.postBody {
+	font-family: 'Roboto Condensed';
 }
 
 div.title p {
@@ -255,32 +263,32 @@ div.title p {
 }
 
 /*New Post CSS*/
-div.newform h2{
-    font-family: 'Roboto Condensed';
-    color: #56A0D3;
+div.newform h2 {
+	font-family: 'Roboto Condensed';
+	color: #56A0D3;
 }
 
-div.newform{
-    color: #417ba3;
-    font-family: 'Roboto Condensed';
+div.newform {
+	color: #417ba3;
+	font-family: 'Roboto Condensed';
 }
 
-ul.errorlist{
-    color: red;
-    font-weight: bold;
-    list-style: none;
+ul.errorlist {
+	color: red;
+	font-weight: bold;
+	list-style: none;
 }
 
-div.pass{
-    text-align: center;
+div.pass {
+	text-align: center;
 }
 
-div.pass input{
-    margin: auto;
+div.pass input {
+	margin: auto;
 }
 
 div.pass label {
-     color: #417ba3;
-     font-family: 'Roboto Condensed';
-     padding: 10px;
+	color: #417ba3;
+	font-family: 'Roboto Condensed';
+	padding: 10px;
 }
