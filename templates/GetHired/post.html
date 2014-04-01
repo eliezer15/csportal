@@ -11,13 +11,15 @@ $(document).ready(function(){
 <div class="postView col-md-12">
 <div class="row">
 <span style="font-size: 25px;color: #F0AD4E;" class="glyphicon glyphicon-arrow-left pull-left"></span><input type="button" onclick="history.back();" name="submit" class="btn btn-warning pull-left btn-info" value="Go Back" />
-<input type="button" onclick="call_passView();" name="submit" class="btn btn-default pull-right btn-info" value="Edit/Delete Post" />
+<a href="{% url 'render_edit_post' post_type=post.post_type post_id=post.pk %}">
+    <input type="button" class="btn btn-default pull-right btn-info" value="Edit/Delete Post" />
+</a>
 </div>
 <!-- Button Row -->
 <div class="row">
     <div class="title col-md-12">
     <div class="col-sm-7">
-    <h3 class="title">{{post.company}} </h3>
+    <h3 class="title"><a href="/GetHired/company/{{post.company}}">{{post.company}}</a></h3>
 </div>
 <p class="date">Posted: {{post.date_posted}}</p>
 </div>

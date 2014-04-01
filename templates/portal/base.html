@@ -72,23 +72,17 @@
 				</div>
 			</div>
 			<div class="row">
-				<div class="filteroptions col-md-2">
+				<div class="filteroptions col-md-3">
 					<div class="filterdiv panel panel-default">
 					<div class="contain">
-						<h5><span class='labs'>Filters:</span></h5>
-						<span class='labs'>Type: </span><select class="form-control"><option
-								value="offering">Offering</option>
-							<option value="seeking">Seeking</option></select> <span class='labs'>Course:
-						</span> <select class="form-control"><option value="comp401">Comp401</option>
-							<option value="Comp510">Comp510</option></select>
-						<div style="text-align: center;">
-							<input type="button" onclick="call_newpost();" name="submit"
-								class="btn btn-default" value="Update List" />
-								</div>
-						</div> <!-- Button Div -->
+						<h5><span class='labs'>Filter Posts:</span></h5>
+						{% block filter_menu %}
+                        
+                        {% endblock %}
+                    </div>
 					</div> <!-- Filter Div -->
 				</div> <!-- Filter Options div -->
-				<div class="post_bar col-md-10">
+				<div class="post_bar col-md-9">
 					<div id="container">
 						{% block content %}
 						{% endblock %}

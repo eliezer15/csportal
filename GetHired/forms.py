@@ -1,5 +1,5 @@
-from django.forms import ModelForm
-from GetHired.models import Interview, Offer
+from django.forms import ModelForm, Form
+from GetHired.models import Interview, Offer, GetHiredPost
 
 class InterviewForm(ModelForm):
     class Meta:
@@ -8,3 +8,7 @@ class InterviewForm(ModelForm):
 class OfferForm(ModelForm):
     class Meta:
         model = Offer
+
+class FilterGetHiredForm(ModelForm):
+    class Meta:
+        model = GetHiredPost

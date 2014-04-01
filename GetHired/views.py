@@ -1,37 +1,81 @@
-from GetHired.models import Interview, Offer
+from django.core.exceptions import ObjectDoesNotExist
 from django.template import  RequestContext
-from django.shortcuts import render_to_response
+from django.shortcuts import render_to_response,get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
 from CSPortal.PostType import model_dict, form_dict
 from itertools import chain
 from django.core.urlresolvers import reverse
-
+from GetHired import models, forms
+import logging
+import operator
 #main page view
 
 def main(request):
     context = RequestContext(request)
     context_dict = {}
-    interview_posts = []
-    offer_posts = []
-
-    try:
-        interview_posts = Interview.objects.all()
-    except Interview.DoesNotExist:
-        pass
-
-    try:
-        offer_posts = Offer.objects.all()
-    except Offer.DoesNotExist:
-        pass
-
+    interview_posts = models.Interview.objects.all()
+    offer_posts = models.Offer.objects.all()
     all_posts = sorted(
                        chain(interview_posts,offer_posts),
-                       key=lambda post: post.date_posted
+                       key=lambda post: post.date_posted,
+                       reverse = True
                       )
-
-    all_posts.reverse() #sort decreasing date
     context_dict['posts'] = all_posts
+    context_dict['filters'] = get_filters()
+    
+    return render_to_response('GetHired/postlist.html', context_dict, context)
+
+def get_filters():
+
+    interview_posts = models.Interview.objects.all()
+    offer_posts = models.Offer.objects.all()
+    all_posts = sorted(
+                       chain(interview_posts,offer_posts),
+                       key=lambda post: post.date_posted,
+                       reverse = True
+                      )
+    filters = {}
+    top_companies = {}
+    #initialize
+    for post in all_posts:
+        top_companies[post.company.name] = 0
+
+    #count the occurences of each company
+    for post in all_posts:
+        top_companies[post.company.name] += 1
+
+    sorted_list = sorted(top_companies.iteritems(), 
+                         key=operator.itemgetter(1),
+                         reverse=True
+                         )
+    top_companies = []
+    limit = 5
+    for i in range(0,limit):
+        top_companies.append((sorted_list[i])[0])
+   
+    filters['companies']= top_companies
+    return filters
+
+def get_company_posts(request, company_name):
+    if request.method == 'GET':
+        context = RequestContext(request)
+        context_dict = {}
+        #name__iexact is a case-insensitvie match
+        company = get_object_or_404(models.Company,name__iexact=company_name)
+        #implicit, if company found
+        interview_posts = models.Interview.objects.filter(company=company)
+        offer_posts = models.Offer.objects.filter(company=company)
+        
+        all_posts = sorted(
+                       chain(interview_posts,offer_posts),
+                       key=lambda post: post.date_posted,
+                       reverse=True
+                      )
+        
+        context_dict['company'] = company
+        context_dict['posts'] = all_posts
+        context_dict['filters'] = get_filters()
 
     return render_to_response('GetHired/postlist.html', context_dict, context)
 
@@ -40,27 +84,76 @@ def get_post(request, post_type, post_id):
         context = RequestContext(request)
         context_dict = {}
         model = model_dict[post_type]
-        post = model.objects.get(pk=post_id)
+        post = get_object_or_404(model, pk=post_id)
         context_dict['post'] = post
 
         return render_to_response('GetHired/post.html',context_dict, context)
 
-def new_post(request,post_type):
+def render_new_post_form(request,post_type,post_id=None):
     if request.method == 'GET':
         context = RequestContext(request)
         context_dict = {}
         form = form_dict[post_type]
-        context_dict['form'] = form
+        if post_id:
+            Model = model_dict[post_type]
+            post = Model.objects.get(pk=post_id)
+            context_dict['form'] = form(instance=post)
+            context_dict['header'] = 'Edit '
+            context_dict['post_id'] = post_id
+        else:
+            context_dict['form'] = form()
+            context_dict['header'] = 'Add New '
+        
         context_dict['post_type'] = post_type
-
         return render_to_response('portal/newpost.html',context_dict,context)
-def create_post(request, post_type):
+
+def render_edit_post_form(request,post_type,post_id):
+    if request.method == 'GET':
+        context = RequestContext(request)
+        context_dict = {}
+        form = form_dict[post_type]
+        
+        if post_id:
+            Model = model_dict[post_type]
+            post = Model.objects.get(pk=post_id)
+            context_dict['form'] = form(instance=post)
+            context_dict['header'] = 'Edit '
+            context_dict['post_id'] = post_id
+        
+        context_dict['post_type'] = post_type
+        return render_to_response('portal/newpost.html',context_dict,context)
+
+
+def create_post(request, post_type, post_id=None):
     if request.method == 'POST':
         Form = form_dict[post_type]
         context = RequestContext(request)
         context_dict = {}
         user_form = Form(request.POST)
         if user_form.is_valid():
+            if post_id:
+                model = model_dict[post_type]
+                post = model.objects.get(pk=post_id)
+                user_form = Form(request.POST, instance=post) 
+            
+            user_form.save()
+            return HttpResponseRedirect('/GetHired/')
+        
+        else:
+            context_dict['form'] = user_form
+            context_dict['post_type'] = post_type
+            return render_to_response('portal/newpost.html',context_dict, context)
+
+def edit_post(request, post_type, post_id=None):
+    if request.method == 'POST':
+        Form = form_dict[post_type]
+        context = RequestContext(request)
+        context_dict = {}
+        if user_form.is_valid():
+            model = model_dict[post_type]
+            post = model.objects.get(pk=post_id)
+            user_form = Form(request.POST, instance=post)
+
             user_form.save()
             return HttpResponseRedirect('/GetHired/')
         else:
@@ -69,3 +162,40 @@ def create_post(request, post_type):
             return render_to_response('portal/newpost.html',context_dict, context)
 
 
+def filter_posts(request):
+    if request.method == 'GET':
+        context = RequestContext(request)
+        context_dict = {}
+        data = request.GET
+        
+        filters = {}
+        
+        if 'post_type' in data:
+            models_requested = data.getlist('post_type')    
+        else:
+            models_requested = ['Interview','Offer']
+
+        if 'location' in data:
+            filters['location__state'] = data['location']
+        if 'job_type' in data:
+            filters['job_type'] = data['job_type']
+        if 'job_title' in data: 
+            filters['job_title']= data['job_title']
+
+        all_posts = []
+        
+        for m in models_requested:
+            Model = model_dict[m]
+            if 'company' in data:
+                for c in data.getlist('company'):
+                    filters['company__name'] = c
+                    posts = Model.objects.filter(**filters)
+                    all_posts.extend(posts)
+            else:
+                posts = Model.objects.filter(**filters)
+                all_posts.extend(posts)
+
+        all_posts.sort(key=lambda post: post.date_posted,reverse=True)
+        context_dict['posts'] = all_posts
+        return render_to_response('GetHired/postlist.html',context_dict,context)
+     

@@ -19,7 +19,7 @@ class Post(models.Model):
     def save(self, **kwargs):
         super(Post, self).save()
         self.post_type = self.__class__.__name__
-        self.url_slug = 'post/%s/%i/' % (self.post_type, self.id)
+        self.url_slug = '/post/%s/%i/' % (self.post_type, self.id)
         super(Post, self).save()
 
     class Meta:
