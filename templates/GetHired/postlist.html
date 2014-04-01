@@ -128,9 +128,9 @@
 		New Post <span class="caret"></span>
 	</button>
 	<ul class="dropdown-menu" role="menu">
-		<li><a href="/GetHired/post/new/Interview/">Interview</a></li>
+		<li><a href="{% url 'render_new_post' post_type='Interview' %}">Interview</a></li>
 		<li class="divider"></li>
-		<li><a href="/GetHired/post/new/Offer/">Offer</a></li>
+		<li><a href="{% url 'render_new_post' post_type='Offer' %}">Offer</a></li>
 	</ul>
 </div>
 {% for post in posts %}
@@ -147,7 +147,7 @@
                 {% endif %}
             </div>
             <div class="row">
-                <span class="Title"><a href="/GetHired/company/{{post.company}}">{{post.company}}</a></span> 
+                <span class="Title"><a href="/gethired/company/{{post.company.name}}">{{post.company}}</a></span> 
                 <span class="Date"> {{post.date_posted}}</span>
             </div>
         <a class="postLinks" href="{% url 'get_post' post_type=post.post_type post_id=post.pk %}">

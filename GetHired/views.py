@@ -137,7 +137,7 @@ def create_post(request, post_type, post_id=None):
                 user_form = Form(request.POST, instance=post) 
             
             user_form.save()
-            return HttpResponseRedirect('/GetHired/')
+            return HttpResponseRedirect('/gethired/')
         
         else:
             context_dict['form'] = user_form
