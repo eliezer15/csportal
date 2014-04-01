@@ -175,18 +175,20 @@ def filter_posts(request):
         else:
             models_requested = ['Interview','Offer']
 
-        if 'location' in data:
+        if 'location' in data and data['location'] != 'ALL':
             filters['location__state'] = data['location']
-        if 'job_type' in data:
+
+        if 'job_type' in data and data['job_type'] != 'ALL':
             filters['job_type'] = data['job_type']
-        if 'job_title' in data: 
+        
+        if 'job_title' in data and data['job_title'] != 'ALL': 
             filters['job_title']= data['job_title']
 
         all_posts = []
         
         for m in models_requested:
             Model = model_dict[m]
-            if 'company' in data:
+            if 'company' in data and data.getlist('company'): #the list is not empty
                 for c in data.getlist('company'):
                     filters['company__name'] = c
                     posts = Model.objects.filter(**filters)
