@@ -7,8 +7,8 @@ body {
 
 .back-to-top {
 	position: fixed;
-	top: 2em;
-	right: 1em;
+	bottom: 2em;
+	left: 12em;
 	display: none;
 	height: 100px;
 	width: 100px;
