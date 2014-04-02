@@ -44,10 +44,10 @@ $(document).ready(function() {
 	}
 
 	$('div.newform').find('input').addClass('form-control');
-	$('div.newform').find('input').css('width', '50%');
+	$('div.newform').find('input').css('width', '100%');
 	$('div.newform').find('select').addClass('form-control');
-	$('div.newform').find('select').css('width', '50%');
+	$('div.newform').find('select').css('width', '100%');
 	$('div.newform').find('textarea').addClass('form-control');
-	$('div.newform').find('textarea').css('width', '50%');
+	$('div.newform').find('textarea').css('width', '100%');
 
 });
