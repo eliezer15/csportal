@@ -7,19 +7,19 @@
 <span class='labs'> Post Type: </span>
     <div class="checkbox">
         <label>
-            <input type="checkbox" name="post_type" value="Interview"> Interview
+            <input type="checkbox" class="Interview" name="post_type" value="Interview"> Interview
         </label>
     </div>
     <div class="checkbox">
         <label>
-            <input type="checkbox" name="post_type" value="Offer"> Offer
+            <input type="checkbox" class="Offer" name="post_type" value="Offer"> Offer
         </label>
     </div>
     <span class='labs'> Companies:</span>
     {% for c in filters.companies %}
     <div class="checkbox">
         <label>
-            <input type="checkbox" name="company" value="{{c}}"> {{c}}
+            <input type="checkbox" class="{{c}}" name="company" value="{{c}}"> {{c}}
         </label>
     </div>
     {% endfor %}
