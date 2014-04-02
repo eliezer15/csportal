@@ -116,13 +116,17 @@
         <option value="CW">Contract Work</option>
         <option value="OT">Other</option>
     </select>
-    <div style="text-align: center;">
-        <input type="submit" class="btn btn-default" value="Update List" />
+    <div style="padding-top: 5px;text-align: center;">
+        <input type="submit" class="updatebtn btn btn-default" value="Update" />
+        <input type="submit" class="restbtn btn btn-default" value="Reset"/>
     </div> <!-- Button Div -->
 </form>
 {% endblock %}
 {% block content %}
-<div class="btn-group" style="margin: 10px;">
+<div class="container-fluid">
+<div class="row">
+<div class="col-md-12">
+<div class="btn-group" style="padding-top: 5px;">
 	<button type="button" class="btn btn-default dropdown-toggle"
 		data-toggle="dropdown">
 		New Post <span class="caret"></span>
@@ -133,6 +137,30 @@
 		<li><a href="/GetHired/post/new/Offer/">Offer</a></li>
 	</ul>
 </div>
+</div>
+</div>
+{% if company %}
+	<div class="row">
+		<div class="col-md-12 companyinfo panel">
+			<h4>Company Info:</h4>
+			<h1>{{company.name}}</h1>
+			<p>Average Salary: $90,000</p>
+			<p>Number of Interviews: 10</p>
+			<p>Number of Offers: 3</p>
+		</div>
+	</div>
+</div>
+{% else %}
+</div>
+{% endif %} 
+{% if posts %}
+{% else %}
+<div class="container-fluid">
+	<div class="col-md-12 post-404">
+		<p>Your search has returned no results.</p>
+	</div>
+</div>
+{% endif %}
 {% for post in posts %}
     <div class="posts panel">
             <div class="row">

@@ -27,13 +27,13 @@ $(document).ready(function() {
 		return false;
 	})
 	
-	$('div.filteroptions input.btn').click(function(){
+	$('div.filteroptions input.updatebtn').click(function(){
 	$('div.filteroptions input').each(function(){
 	this.checked ? sessionStorage.setItem(this.value, true) : sessionStorage.removeItem(this.value);
 	});
 
-	$('div.filteroptions select').click(function(event) {
-		console.log(event.currentTarget.value);
+	$('div.filteroptions select').each(function(event) {
+		console.log(event.currentTarget.value.substr(0,str.indexOf(' ')));
 	});
 	});
 	

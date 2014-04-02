@@ -290,3 +290,12 @@ ul.errorlist {
 	font-weight: bold;
 	list-style: none;
 }
+
+div.post-404{
+	text-align: center;
+	color: red;
+}
+div.companyinfo{
+	margin: 1em 0.3em;
+	border: thin solid #DBDBDB;
+}
