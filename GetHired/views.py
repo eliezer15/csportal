@@ -152,8 +152,8 @@ def create_post(request, post_type, post_id=None):
             post = user_form.save()
             post.location = l
             post.save()
-            return render_to_response('portal/newpost.html',context_dict, context)
-            #return HttpResponseRedirect('/gethired/')
+            #return render_to_response('portal/newpost.html',context_dict, context)
+            return HttpResponseRedirect('/gethired/')
         else:
             context_dict['form'] = user_form
             logging.debug(user_form)

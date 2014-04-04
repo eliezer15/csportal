@@ -6,8 +6,11 @@
 
 {% if post_type == "Interview" %}
 <h2>{{header}}Interview</h2>
+{% elif post_type == "Offer" %}
+<h2>{{header}}Offer</h2>
 {% endif %}
-<form class="form-horizontal" id="post_form" method="post" action="{% url 'create_post' post_type=post_type post_id=post_id %}" margin: 20px;>
+
+<form class="form-horizontal" id="post_form" method="post" action="/gethired/post/new/{{post_type}}/{{post_id}}/" margin: 20px;>
 	{% csrf_token %}
 	<div class="form-group">
 	 	{{form.company.errors}}
@@ -345,6 +348,8 @@
         <label for="job_type"class="control-label col-sm-2">Job Type: </label>
         {{ form.job_type }}
 	</div>
+
+	{% if post_type == "Interview" %}
 	<div class="form-group">
 	 	{{ form.interview_process.errors }}
         <label for="interview_process" class="control-label col-sm-2">Interview Process: </label>
@@ -373,51 +378,17 @@
     <div class="form-group">
         <button type="submit" class="btn btn-default">Submit</button>
     </div>
-</form>
 
 {% elif post_type == "Offer" %}
-<h2>{{header}}Offer</h2>
-<form class="form-horizontal" id=post_form method="post" action="{% url 'create_post' post_type=post_type post_id=post_id %}" style="margin: 20px;">
-	{% csrf_token %}
-	<div class="form-group">
-	 	{{ form.company.errors }}
-        <label for="company" class="control-label col-sm-2">Company: </label>
-        <div>
-        {{form.company}}
-        </div>
-	</div>
-	<div class="form-group">
-	 	{{ form.location.errors }}
-        <label for="location" class="control-label col-sm-2">Location: </label>
-        <div>
-        {{form.location}}
-        </div>
-	</div>
-	<div class="form-group">
-	 	{{ form.job_title.errors }}
-        <label for="job_title" class="control-label col-sm-2">Job title: </label>
-        <div>
-        {{ form.job_title}}
-        </div>
-	</div>
-	<div class="form-group">
-	 	{{ form.applicant_degree.errors}}
-        <label class="control-label col-sm-2" for="applicant_degree">Degree type: </label>
-        {{ form.applicant_degree }}
-	</div>
-	<div class="form-group">
-	 	{{ form.job_type.errors}}
-        <label for="job_type"class="control-label col-sm-2">Job Type: </label>
-        {{ form.job_type }}
-	</div>
+
 	<div class="form-group">
 	 	{{ form.pay_type.errors }}
-        <label for="interview_process" class="control-label col-sm-2">Pay Type: </label>
+        <label for="pay_type" class="control-label col-sm-2">Pay Type: </label>
         {{ form.pay_type }}
 	</div>
 	<div class="form-group">
 	 	{{ form.salary.errors }}
-        <label for="questions_asked" class="control-label col-sm-2">Salary: </label>
+        <label for="salary" class="control-label col-sm-2">Salary: </label>
         {{ form.salary }}
 	</div>
 	<div class="form-group">
@@ -427,17 +398,17 @@
 	</div>
 	<div class="form-group">
 	 	{{ form.relocation_bonus.errors }}
-        <label for="SOO" class="control-label col-sm-2">Relocation Bonus: </label>
+        <label for="relocation" class="control-label col-sm-2">Relocation Bonus: </label>
         {{ form.relocation_bonus}}
     </div>
 	<div class="form-group">
 	 	{{ form.offer_status.errors }}
-        <label for="SOO" class="control-label col-sm-2">Offer Status: </label>
+        <label for="offer_Status" class="control-label col-sm-2">Offer Status: </label>
         {{ form.offer_status}}
     </div>
 	<div class="form-group">
 	 	{{ form.other_details.errors }}
-        <label for="SOO" class="control-label col-sm-2">Other Details: </label>
+        <label for="other_details" class="control-label col-sm-2">Other Details: </label>
         {{ form.other_details}}
     </div>
     <div class="form-group">

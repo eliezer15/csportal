@@ -46,7 +46,7 @@ class Company(models.Model):
     
     def add_interview(self, interview):
         self.num_interviews+= 1
-        self.avg_interview_rating = (self.avg_interview_rating + interview.rating) / self.num_interviews
+        self.avg_interview_rating = (self.avg_interview_rating + interview.interview_rating) / self.num_interviews
 
 class Location(models.Model):
     city = models.CharField(max_length=30)
@@ -144,6 +144,10 @@ class Offer(GetHiredPost):
                                     default='WA')
     other_details = models.TextField(blank=True, null=True)
 
+    def save(self, **kwargs):
+        super(Offer, self).save()
+        self.company.add_offer(self)
+
 class Interview(GetHiredPost):
     interview_process = models.TextField()
     questions_asked = models.TextField()
@@ -174,7 +178,7 @@ class Interview(GetHiredPost):
 
 
     def save(self, **kwargs):
-        self.preview = self.interview_process[:100] + '...' #sliced to 50 chars
         super(Interview, self).save()
+        self.company.add_interview(self)
 
 
