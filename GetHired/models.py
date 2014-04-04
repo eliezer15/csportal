@@ -6,13 +6,16 @@ Created on Mar 18, 2014
 from django.db import models
 from django.contrib.auth.models import User
 from localflavor.us.models import USStateField
-#Post is an abstract class that serves as a superclass
+from django.core.validators import MinValueValidator
+from django.core.validators import MaxValueValidator
+
 class Post(models.Model):
     #related_name is required for all abstract classes with ForeignKey fields. See Django docs for more info
     author = models.ForeignKey(User, editable=False, blank=True, null= True, related_name="%(app_label)s_%(class)s_user")
     url_slug = models.CharField(max_length=200, editable=False)
     post_type = models.CharField(max_length=20,editable=False)
     date_posted = models.DateField(auto_now_add=True) #automatically set upon object creation
+    times_reported = models.IntegerField(default=0, editable=False)
     def __unicode__(self):
         return self.url
 
@@ -27,20 +30,34 @@ class Post(models.Model):
 
 class Company(models.Model):
     name = models.CharField(max_length=30)
-
+    avg_salary = models.DecimalField(decimal_places=2, max_digits=10, default=0)
+    avg_interview_rating = models.DecimalField(decimal_places=1, max_digits=10, default=0)
+    num_offers = models.IntegerField(default=0, editable=False)
+    num_interviews = models.IntegerField(default=0, editable=False)
     def __unicode__(self):
         return self.name
 
     class Meta:
         verbose_name_plural="companies"
 
+    def add_offer(self,offer):
+        self.num_offers += 1
+        self.avg_salary = (self.avg_salary + offer.salary)/self.num_offers
+    
+    def add_interview(self, interview):
+        self.num_interviews+= 1
+        self.avg_interview_rating = (self.avg_interview_rating + interview.rating) / self.num_interviews
+
 class Location(models.Model):
     city = models.CharField(max_length=30)
-    state = USStateField()
+    state = USStateField(default="NC")
     country = models.CharField(max_length=30, default="United States")
-
+        
     def __unicode__(self):
-        return "%s, %s, %s"%(self.city, self.state, self.country)
+        if self.country != 'United States':
+            return self.country
+        else:
+            return "%s, %s, %s"%(self.city, self.state, self.country)
 
 class GetHiredPost(Post):
     degree_choices = (
@@ -58,7 +75,7 @@ class GetHiredPost(Post):
                                         choices=degree_choices,
                                         default='BS')
     company = models.ForeignKey(Company, related_name = "%(app_label)s_%(class)s_location")
-    location = models.ForeignKey(Location, related_name="%(app_label)s_%(class)s_location")
+    location = models.ForeignKey(Location, related_name="%(app_label)s_%(class)s_location", blank = True, null = True)
 
     title_choices = (
         ('SE', 'Software Engineer/Developer/Programmer'),
@@ -152,7 +169,9 @@ class Interview(GetHiredPost):
                                     choices=offer_choices,
                                     default='WA')
     offer_details = models.OneToOneField(Offer, null=True, blank=True)
-    interview_rating = models.IntegerField()
+    interview_rating = models.IntegerField(validators=[MaxValueValidator(5),
+                                                      MinValueValidator(0)])
+
 
     def save(self, **kwargs):
         self.preview = self.interview_process[:100] + '...' #sliced to 50 chars

@@ -1,7 +1,6 @@
 {% load static %}
 {% load extra_templates %}
 <!DOCTYPE html>
-<html>
 <head>
 <script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
 <script src="{% static "/static/js/mainfunctions.js" %}"></script>
@@ -75,7 +74,6 @@
 				<div class="filteroptions col-md-3">
 					<div class="filterdiv panel panel-default">
 					<div class="contain">
-						<h5><span class='labs'>Filter Posts:</span></h5>
 						{% block filter_menu %}
                         
                         {% endblock %}
