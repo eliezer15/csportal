@@ -31,7 +31,7 @@ def populate():
     title = ['SE','WD','ST','DE','BA','CO']
     job_type = ['FT','PT','PI','CO']
     
-    pay_type = ['YS','MS']
+    pay_type = ['YS']
     salaries = [50000, 60000, 70000, 80000]
     bonus = [3000, 10000, 5000]
     offer_status = ['AC','NA','NE','WA']

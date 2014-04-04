@@ -42,7 +42,11 @@ $(document).ready(function(){
     {% else %}
 
     <p class="pay_type">Pay Type: {{post.get_pay_type_display}}</p>
+    {% if post.display_salary %}
     <p class="salary"> Salary: {{post.salary}}</p>
+    {% else %}
+    <p> Salary not displayed </p>
+    {% endif %}
     <p class="bonus"> Signing Bonus: {{post.signing_bonus}}</p>
     <p class="relocation">Relocation: {{post.relocation_bonus}}</p>
     <p class="status">Status: {{post.get_offer_status_display}}</p>

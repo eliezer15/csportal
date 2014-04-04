@@ -43,7 +43,22 @@ class Company(models.Model):
 
     def add_offer(self,offer):
         self.num_offers += 1
-        self.avg_salary = (self.avg_salary + offer.salary)/self.num_offers
+        #Need to check what type of salary we're dealing with
+        salary = 0
+        if offer.pay_type == "YS":
+            salary = offer.salary
+
+        elif offer.pay_type == "MS":
+            salary = offer.salary * 12
+
+        elif offer.pay_type == "HS":
+            #Assume 40 hr week
+            salary = offer.salary * 40 * 12
+        elif offer.pay_type == "TS":
+            #Do not account salary
+            salary = self.avg_salary
+
+        self.avg_salary = (self.avg_salary + salary)/self.num_offers
     
     def add_interview(self, interview):
         self.num_interviews+= 1
@@ -129,6 +144,8 @@ class Offer(GetHiredPost):
     pay_type = models.CharField(max_length=2,
                                 choices=pay_choices,
                                 default='YS')
+
+    display_salary = models.BooleanField()
     salary = models.DecimalField(decimal_places=2, max_digits=8)
     signing_bonus = models.DecimalField(decimal_places=2, max_digits=8, blank=True, null=True)
     relocation_bonus = models.DecimalField(decimal_places=2, max_digits=8, blank=True, null=True)
