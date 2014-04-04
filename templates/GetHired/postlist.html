@@ -122,6 +122,15 @@
 	</form>
 {% endblock %}
 {% block content %}
+{% if company %}
+<div class="panel panel-default">
+  <div class="panel-body">
+    <h3>{{company.name}}</h3>
+    <h5>Avg Salary: {{company.avg_salary}}</h5>
+    <h5>Avg Interview Rating: {{company.avg_interview_rating}}</h5>
+  </div>
+</div>
+{% endif %}
 <div class="btn-group" style="margin: 10px;">
 	<button type="button" class="btn btn-default dropdown-toggle"
 		data-toggle="dropdown">

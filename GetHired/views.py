@@ -81,6 +81,28 @@ def get_company_posts(request, company_name):
 
     return render_to_response('GetHired/postlist.html', context_dict, context)
 
+def get_location_posts(request, company_name):
+    if request.method == 'GET':
+        context = RequestContext(request)
+        context_dict = {}
+        #name__iexact is a case-insensitvie match
+        company = get_object_or_404(models.Company,name__iexact=company_name)
+        #implicit, if company found
+        interview_posts = models.Interview.objects.filter(company=company)
+        offer_posts = models.Offer.objects.filter(company=company)
+        
+        all_posts = sorted(
+                       chain(interview_posts,offer_posts),
+                       key=lambda post: post.date_posted,
+                       reverse=True
+                      )
+        
+        context_dict['company'] = company
+        context_dict['posts'] = all_posts
+        context_dict['filters'] = get_filters()
+
+    return render_to_response('GetHired/postlist.html', context_dict, context)
+
 def get_post(request, post_type, post_id):
     if request.method == 'GET':
         context = RequestContext(request)

@@ -8,6 +8,7 @@ from django.contrib.auth.models import User
 from localflavor.us.models import USStateField
 from django.core.validators import MinValueValidator
 from django.core.validators import MaxValueValidator
+import logging
 
 class Post(models.Model):
     #related_name is required for all abstract classes with ForeignKey fields. See Django docs for more info
@@ -147,6 +148,7 @@ class Offer(GetHiredPost):
     def save(self, **kwargs):
         super(Offer, self).save()
         self.company.add_offer(self)
+        self.company.save()
 
 class Interview(GetHiredPost):
     interview_process = models.TextField()
@@ -180,5 +182,4 @@ class Interview(GetHiredPost):
     def save(self, **kwargs):
         super(Interview, self).save()
         self.company.add_interview(self)
-
-
+        self.company.save()
