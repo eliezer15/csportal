@@ -175,7 +175,7 @@
                 {% endif %}
             </div>
             <div class="row">
-                <span class="Title"><a href="/GetHired/company/{{post.company}}">{{post.company}}</a></span> 
+                <span class="Title" rel="tooltip" data-placement="right" title="Visit Company Data"><a href="/GetHired/company/{{post.company}}">{{post.company}}</a></span> 
                 <span class="Date"> {{post.date_posted}}</span>
             </div>
         <a class="postLinks" href="{% url 'get_post' post_type=post.post_type post_id=post.pk %}">
@@ -186,7 +186,7 @@
             </div>
             <div class="row">
                 <p>
-                    <span class="location">{{post.location}}</span>
+                    <span class="location" rel="tooltip" data-placement="right" title="Visit Location Data">{{post.location}}</span>
                 </p>
 
                 <p>

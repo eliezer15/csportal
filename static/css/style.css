@@ -13,11 +13,28 @@ body {
 	bottom: 2em;
 	left: 16em;
 	display: none;
-	height: 100px;
-	width: 100px;
+	height: 47px;
+	width: 46px;
 	z-index: 3;
 	text-decoration: none;
 	text-align: center;
+	background: url(../images/backtotoptestinvert.png) no-repeat 0% 105% transparent;
+}
+a.back-to-top:focus{
+	outline:none;
+}
+a.back-to-top:hover {
+	position: fixed;
+	bottom: 2em;
+	left: 16em;
+	display: none;
+	height: 47px;
+	width: 46px;
+	z-index: 3;
+	text-decoration: none;
+	text-align: center;
+	background: url(../images/backtotoptestinvert.png) no-repeat 0% 0% transparent;
+	outline: none;
 }
 
 .back-to-top span {
@@ -44,8 +61,8 @@ div.logorow {
 	padding-top: 30px;
 	padding-bottom: 30px;
 	text-align: center;
-	background: url(../images/graphy.png);
-	border: 6px solid #808080;
+	background: url(../images/braintech.jpg) no-repeat 15% 85% transparent;
+	border: 1px solid #808080;
 	border-radius: 4px;
 }
 
@@ -56,7 +73,7 @@ div.logocontainer {
 
 div.logo {
 	background-color: #8C8C8C;
-	opacity: .60;
+	opacity: .95;
 	-webkit-border-radius: 15px;
 	-moz-border-radius: 15px;
 	border-radius: 15px;
@@ -88,7 +105,6 @@ span.logotag {
 	color: #56a0d3;
 	font-family: 'Roboto Condensed';
 	font-size: 30px;
-	font-style: italic;
 	text-shadow: 1px 1px 1px black;
 }
 
@@ -202,20 +218,6 @@ span.lab {
 	font-weight: bold;
 }
 
-span.Tagline {
-	float: left;
-	color: black;
-	font-size: 12px;
-	padding: 15px 15px;
-}
-
-span.Course,span.Compensation {
-	float: left;
-	color: black;
-	font-size: 12px;
-	padding: 15px 15px;
-}
-
 div.filterdiv div.contain {
 	margin: 10px;
 }
@@ -285,8 +287,15 @@ div.newform {
 	color: #417ba3;
 }
 
+div.newform select{
+	font-size: 12px;
+}
 
 div.new-interview-form label.control-label{
+	text-align: left;
+}
+
+div.new-offer-form label.control-label{
 	text-align: left;
 }
 

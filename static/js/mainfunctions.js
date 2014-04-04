@@ -49,5 +49,9 @@ $(document).ready(function() {
 	$('div.newform').find('select').css('width', '100%');
 	$('div.newform').find('textarea').addClass('form-control');
 	$('div.newform').find('textarea').css('width', '100%');
+	
+    $(function () {
+        $("[rel='tooltip']").tooltip();
+    });
 
 });
