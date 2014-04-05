@@ -3,6 +3,7 @@ from django.template import  RequestContext
 from django.shortcuts import render_to_response,get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
+from django.db.models import Q
 from CSPortal.PostType import model_dict, form_dict
 from itertools import chain
 from django.core.urlresolvers import reverse
@@ -81,6 +82,36 @@ def get_company_posts(request, company_name):
 
     return render_to_response('GetHired/postlist.html', context_dict, context)
 
+def get_related_posts(post_type, post_id):
+    Model = model_dict[post_type]
+    post = Model.objects.get(pk=post_id)
+    #See if there are any posts that match all relevant criteria
+    candidates_posts = Model.objects.exclude(id=post_id)
+    relevance = []
+
+    for i in range(len(candidates_posts)):
+        p = candidates_posts[i]
+        points = 0
+
+        if p.company == post.company: points+=1
+        if p.location == post.location: points+=1 
+        if p.job_type == post.job_type: points+=1 
+
+        relevance.append((i,points))
+
+    #find more relevant ones and put them up front    
+    relevance.sort(key=lambda tup: tup[1], reverse=True)
+    #get the indexes of the top posts and retrieve them
+    logging.debug(relevance)
+    relevant_posts = []
+    for r in relevance[:5]:
+        index = r[0]
+        if r[1] > 0:
+            relevant_posts.append(candidates_posts[index])
+
+    return relevant_posts
+
+
 def get_location_posts(request, company_name):
     if request.method == 'GET':
         context = RequestContext(request)
@@ -110,6 +141,7 @@ def get_post(request, post_type, post_id):
         model = model_dict[post_type]
         post = get_object_or_404(model, pk=post_id)
         context_dict['post'] = post
+        context_dict['related_posts'] = get_related_posts(post_type, post_id)
 
         return render_to_response('GetHired/post.html',context_dict, context)
 
