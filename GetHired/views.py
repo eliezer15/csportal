@@ -3,6 +3,7 @@ from django.template import  RequestContext
 from django.shortcuts import render_to_response,get_object_or_404
 from django.http import HttpResponseRedirect
 from django.contrib.auth.models import User
+from django.db.models import Q
 from CSPortal.PostType import model_dict, form_dict
 from itertools import chain
 from django.core.urlresolvers import reverse
@@ -36,6 +37,8 @@ def get_filters():
                        reverse = True
                       )
     filters = {}
+	
+    """The top companies stuff is not used anymore
     top_companies = {}
     #initialize
     for post in all_posts:
@@ -53,11 +56,63 @@ def get_filters():
     limit = 5
     for i in range(0,limit):
         top_companies.append((sorted_list[i])[0])
-   
-    filters['companies']= top_companies
+    """
+    filters['companies']= models.Company.objects.all()
     return filters
 
 def get_company_posts(request, company_name):
+    if request.method == 'GET':
+        context = RequestContext(request)
+        context_dict = {}
+        #name__iexact is a case-insensitvie match
+        company = get_object_or_404(models.Company,name__iexact=company_name)
+        #implicit, if company found
+        interview_posts = models.Interview.objects.filter(company=company)
+        offer_posts = models.Offer.objects.filter(company=company)
+        
+        all_posts = sorted(
+                       chain(interview_posts,offer_posts),
+                       key=lambda post: post.date_posted,
+                       reverse=True
+                      )
+        
+        context_dict['company'] = company
+        context_dict['posts'] = all_posts
+        context_dict['filters'] = get_filters()
+
+    return render_to_response('GetHired/postlist.html', context_dict, context)
+
+def get_related_posts(post_type, post_id):
+    Model = model_dict[post_type]
+    post = Model.objects.get(pk=post_id)
+    #See if there are any posts that match all relevant criteria
+    candidates_posts = Model.objects.exclude(id=post_id)
+    relevance = []
+
+    for i in range(len(candidates_posts)):
+        p = candidates_posts[i]
+        points = 0
+
+        if p.company == post.company: points+=1
+        if p.location == post.location: points+=1 
+        if p.job_type == post.job_type: points+=1 
+
+        relevance.append((i,points))
+
+    #find more relevant ones and put them up front    
+    relevance.sort(key=lambda tup: tup[1], reverse=True)
+    #get the indexes of the top posts and retrieve them
+    logging.debug(relevance)
+    relevant_posts = []
+    for r in relevance[:5]:
+        index = r[0]
+        if r[1] > 0:
+            relevant_posts.append(candidates_posts[index])
+
+    return relevant_posts
+
+
+def get_location_posts(request, company_name):
     if request.method == 'GET':
         context = RequestContext(request)
         context_dict = {}
@@ -86,6 +141,7 @@ def get_post(request, post_type, post_id):
         model = model_dict[post_type]
         post = get_object_or_404(model, pk=post_id)
         context_dict['post'] = post
+        context_dict['related_posts'] = get_related_posts(post_type, post_id)
 
         return render_to_response('GetHired/post.html',context_dict, context)
 
@@ -102,6 +158,7 @@ def render_new_post_form(request,post_type,post_id=None):
             context_dict['post_id'] = post_id
         else:
             context_dict['form'] = form()
+            context_dict['location_form'] = forms.LocationForm()
             context_dict['header'] = 'Add New '
         
         context_dict['post_type'] = post_type
@@ -126,25 +183,38 @@ def render_edit_post_form(request,post_type,post_id):
 
 def create_post(request, post_type, post_id=None):
     if request.method == 'POST':
+        data = request.POST
+        logging.debug(request.POST)
         Form = form_dict[post_type]
         context = RequestContext(request)
         context_dict = {}
         user_form = Form(request.POST)
+        l = None
         if user_form.is_valid():
+            if ('country' in data) and ('state' in data) and ('city' in data):
+                l = models.Location(country=data['country'],state=data['state'],city=data['city'])
+                l.save()
+            else:
+                pass #some error
+
+            logging.debug(l)
             if post_id:
                 model = model_dict[post_type]
                 post = model.objects.get(pk=post_id)
                 user_form = Form(request.POST, instance=post) 
             
-            user_form.save()
-            return HttpResponseRedirect('/GetHired/')
-        
+            post = user_form.save()
+            post.location = l
+            post.save()
+            #return render_to_response('portal/newpost.html',context_dict, context)
+            return HttpResponseRedirect('/gethired/')
         else:
             context_dict['form'] = user_form
+            logging.debug(user_form)
             context_dict['post_type'] = post_type
             return render_to_response('portal/newpost.html',context_dict, context)
 
-def edit_post(request, post_type, post_id=None):
+"""def edit_post(request, post_type, post_id=None):
     if request.method == 'POST':
         Form = form_dict[post_type]
         context = RequestContext(request)
@@ -160,7 +230,7 @@ def edit_post(request, post_type, post_id=None):
             context_dict['form'] = user_form
             context_dict['post_type'] = post_type
             return render_to_response('portal/newpost.html',context_dict, context)
-
+"""
 
 def filter_posts(request):
     if request.method == 'GET':
@@ -184,20 +254,18 @@ def filter_posts(request):
         if 'job_title' in data and data['job_title'] != 'ALL': 
             filters['job_title']= data['job_title']
 
+        if 'company' in data and data['company'] != 'ALL': 
+            filters['company__name']= data['company']
+
         all_posts = []
         
         for m in models_requested:
             Model = model_dict[m]
-            if 'company' in data and data.getlist('company'): #the list is not empty
-                for c in data.getlist('company'):
-                    filters['company__name'] = c
-                    posts = Model.objects.filter(**filters)
-                    all_posts.extend(posts)
-            else:
-                posts = Model.objects.filter(**filters)
-                all_posts.extend(posts)
+            posts = Model.objects.filter(**filters)
+            all_posts.extend(posts)
 
         all_posts.sort(key=lambda post: post.date_posted,reverse=True)
         context_dict['posts'] = all_posts
+        context_dict['filters'] = get_filters()
         return render_to_response('GetHired/postlist.html',context_dict,context)
      

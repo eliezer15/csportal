@@ -3,26 +3,26 @@
 {% block title %} Get Hired {% endblock %}
 {% block header %} Get Hired {% endblock %}
 {% block filter_menu %}
+<h5><span class='labs'>Filter Posts:</span></h5>
 <form method="GET" action="{% url 'filter_posts' %}">
 <span class='labs'> Post Type: </span>
     <div class="checkbox">
         <label>
-            <input type="checkbox" class="Interview" name="post_type" value="Interview"> Interview
+            <input type="checkbox" name="post_type" value="Interview"> Interview
         </label>
     </div>
     <div class="checkbox">
         <label>
-            <input type="checkbox" class="Offer" name="post_type" value="Offer"> Offer
+            <input type="checkbox" name="post_type" value="Offer"> Offer
         </label>
     </div>
-    <span class='labs'> Companies:</span>
+    <span class='labs'> Company:</span>
+	<select class="form-control" name="company">
+	<option value="ALL">*All</option>
     {% for c in filters.companies %}
-    <div class="checkbox">
-        <label>
-            <input type="checkbox" class="{{c}}" name="company" value="{{c}}"> {{c}}
-        </label>
-    </div>
+    	<option value="{{c.name}}">{{c.name}}</option>
     {% endfor %}
+	</select>
     <span class='labs'>Location: </span>
         <select class="form-control" name="location">
 		<option value="ALL">*All</option>
@@ -120,7 +120,7 @@
         <input type="submit" class="updatebtn btn btn-default" value="Update" />
         <input type="submit" class="restbtn btn btn-default" value="Reset"/>
     </div> <!-- Button Div -->
-</form>
+	</form>
 {% endblock %}
 {% block content %}
 <div class="container-fluid">
@@ -132,9 +132,9 @@
 		New Post <span class="caret"></span>
 	</button>
 	<ul class="dropdown-menu" role="menu">
-		<li><a href="/GetHired/post/new/Interview/">Interview</a></li>
+		<li><a href="{% url 'render_new_post' post_type='Interview' %}">Interview</a></li>
 		<li class="divider"></li>
-		<li><a href="/GetHired/post/new/Offer/">Offer</a></li>
+		<li><a href="{% url 'render_new_post' post_type='Offer' %}">Offer</a></li>
 	</ul>
 </div>
 </div>
@@ -144,7 +144,8 @@
 		<div class="col-md-12 companyinfo panel">
 			<h4>Company Info:</h4>
 			<h1>{{company.name}}</h1>
-			<p>Average Salary: $90,000</p>
+			<p>Average Salary: {{company.avg_salary}}</p>
+			<p>Average Interview Rating: {{company.avg_interview_rating}}</p>
 			<p>Number of Interviews: 10</p>
 			<p>Number of Offers: 3</p>
 		</div>
@@ -175,7 +176,7 @@
                 {% endif %}
             </div>
             <div class="row">
-                <span class="Title" rel="tooltip" data-placement="right" title="Visit Company Data"><a href="/GetHired/company/{{post.company}}">{{post.company}}</a></span> 
+                <span class="Title" rel="tooltip" data-placement="right" title="Visit Company Data"><a href="/gethired/company/{{post.company}}">{{post.company}}</a></span> 
                 <span class="Date"> {{post.date_posted}}</span>
             </div>
         <a class="postLinks" href="{% url 'get_post' post_type=post.post_type post_id=post.pk %}">

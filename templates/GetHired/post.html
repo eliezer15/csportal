@@ -2,6 +2,12 @@
 {% load extra_templates %}
 {% block title %} Get Hired {% endblock %}
 {% block header %} Get Hired {% endblock %}
+{% block filter_menu %}
+<h5><span class='labs'> Related Posts: </span></h5>
+{% for post in related_posts %}
+        <a class="postLinks" href="{% url 'get_post' post_type=post.post_type post_id=post.pk %}">{{post.get_job_title_display}}</a><br>
+{% endfor %}
+{% endblock %}    
 {% block content %}
 <script>
 $(document).ready(function(){
@@ -42,7 +48,11 @@ $(document).ready(function(){
     {% else %}
 
     <p class="pay_type">Pay Type: {{post.get_pay_type_display}}</p>
+    {% if post.display_salary %}
     <p class="salary"> Salary: {{post.salary}}</p>
+    {% else %}
+    <p> Salary not displayed </p>
+    {% endif %}
     <p class="bonus"> Signing Bonus: {{post.signing_bonus}}</p>
     <p class="relocation">Relocation: {{post.relocation_bonus}}</p>
     <p class="status">Status: {{post.get_offer_status_display}}</p>

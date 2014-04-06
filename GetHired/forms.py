@@ -1,14 +1,16 @@
-from django.forms import ModelForm, Form
-from GetHired.models import Interview, Offer, GetHiredPost
+from django import forms
+from GetHired.models import Interview, Offer, GetHiredPost, Location, Company
 
-class InterviewForm(ModelForm):
+class InterviewForm(forms.ModelForm):
     class Meta:
         model = Interview
 
-class OfferForm(ModelForm):
+class OfferForm(forms.ModelForm):
     class Meta:
         model = Offer
 
-class FilterGetHiredForm(ModelForm):
+class LocationForm(forms.ModelForm):
     class Meta:
-        model = GetHiredPost
+        model = Location
+        fields = ('city','state')
+
