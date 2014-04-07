@@ -1,5 +1,6 @@
 {% extends "portal/base.html" %}
 {% load extra_templates %}
+{% load humanize %}
 {% block title %} Get Hired {% endblock %}
 {% block header %} Get Hired {% endblock %}
 {% block filter_menu %}
@@ -144,7 +145,7 @@
 		<div class="col-md-12 companyinfo panel">
 			<h4>Company Info:</h4>
 			<h1>{{company.name}}</h1>
-			<p>Average Salary: {{company.avg_salary}}</p>
+			<p>Average Salary: ${{company.avg_salary|intcomma}}</p>
 			<p>Average Interview Rating: {{company.avg_interview_rating}}</p>
 			<p>Number of Interviews: 10</p>
 			<p>Number of Offers: 3</p>
@@ -177,7 +178,7 @@
             </div>
             <div class="row">
                 <span class="Title" rel="tooltip" data-placement="right" title="Visit Company Data"><a href="/gethired/company/{{post.company}}">{{post.company}}</a></span> 
-                <span class="Date"> {{post.date_posted}}</span>
+                <span class="Date"> {{post.date_posted|naturalday|title}}</span>
             </div>
         <a class="postLinks" href="{% url 'get_post' post_type=post.post_type post_id=post.pk %}">
             <div class="row">

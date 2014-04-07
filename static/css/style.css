@@ -8,6 +8,11 @@ body {
 	font-family: "Open Sans";
 }
 
+div.main-container{
+	padding-left: 0px;
+	padding-right: 0px;
+}
+
 .back-to-top {
 	position: fixed;
 	bottom: 2em;
@@ -238,7 +243,7 @@ div.filterdiv select {
 }
 
 /* postView CSS */
-div.postView {
+div.postview {
 	color: #737373;
 	margin-top: 15px;
 	margin-bottom: 15px;
@@ -249,32 +254,81 @@ div.postView {
 	border-color: #DDD;
 }
 
-div.postView div.row {
-	margin: 10px;
+div.postview-button-row{
+    margin-top: 10px;
+    margin-bottom: 10px;
 }
 
-h3.title {
+div.postview-button-row input.btn{
+    background-color: #6D92AB;
+    border-color: #6D92AB;
+}
+
+div.postview-button-row span.glyphicon{
+    font-size: 25px;
+    color: #6D92AB;
+}
+
+div.postview h3.title {
 	color: #56A0D3;
 	float: left;
-	font-family: 'Droid Serif';
+	font-family: 'Droid Serif';	
+	line-height: 0px;
 }
 
-h3.title span.label {
-	font-size: 12px;
-	vertical-align: middle;
+span.postview-label{
+    margin-left: 5px;
 }
 
-div.title {
-	-webkit-box-shadow: inset 0px 0px 1px 1px rgba(209, 207, 209, 1);
-	-moz-box-shadow: inset 0px 0px 1px 1px rgba(209, 207, 209, 1);
-	box-shadow: inset 0px 0px 1px 1px rgba(209, 207, 209, 1);
+div.postview span.date{
+    font-weight: 700;
+    font-size: 12px;
+    padding-top: 10px;
 }
 
-div.title p {
+div.postview-jobinfo{
+	margin:2px;
+	padding-top: 10px;
+    font-size: 14px;
+}
+
+div.postview-jobinfo span.lab{
+    color: inherit;
+    font-weight: 600;
+    font-size: inherit;
+}
+
+div.postview-jobinfo span.content{
+	color: #4390c6;
+    font-weight: 500;
+}
+
+div.postview span.date, span.salary, span.rating{
 	float: right;
-	clear: right;
-	font-size: 12px;
-	padding-top: 5px;
+}
+
+div.postview-about-row{
+    font-size: 14px;
+    padding: 10px 0px;
+    text-align: center;
+}
+
+div.postview-about-row span{
+    padding: 5px;
+}
+div.postview-salary-block-row{
+    text-align:center;
+}
+div.postview-salary-blocks{
+    display:inline-block;
+    width: 120px;
+    text-align: center;
+}
+
+div.postview-report-rate div.content{
+	float: right;
+    font-size: 12px;
+    font-weight: 700;
 }
 
 /*New Post CSS*/

@@ -128,6 +128,7 @@ INSTALLED_APPS = (
     'dajaxice',
     'django.contrib.admin',
     'debug_toolbar',
+    'django.contrib.humanize',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )

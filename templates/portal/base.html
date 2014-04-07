@@ -3,66 +3,53 @@
 <!DOCTYPE html>
 <html>
 <head>
-<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
-<script src="{% static "/static/js/mainfunctions.js" %}"></script>
-<script src ="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.0/jquery.cookie.min.js"></script>
-<script
-	src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-<link rel="stylesheet"
-	href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-<link rel="stylesheet" href="{% static "/static/css/style.css" %}">
-<link href='http://fonts.googleapis.com/css?family=Anton'
-	rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Droid+Serif:700'
-	rel='stylesheet' type='text/css'>
-<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed'
-	rel='stylesheet' type='text/css'>
-<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,300,400italic,400,600italic,600,700italic,700,800italic,800" rel="stylesheet" type="text/css">
+	<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+	<script src="{% static "/static/js/mainfunctions.js" %}"></script>
+	<script src ="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.0/jquery.cookie.min.js"></script>
+	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
+	<link rel="stylesheet" href="{% static "/static/css/style.css" %}">
+	<link href='http://fonts.googleapis.com/css?family=Anton' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Droid+Serif:700' rel='stylesheet' type='text/css'>
+	<link href='http://fonts.googleapis.com/css?family=Roboto+Condensed' rel='stylesheet' type='text/css'>
+	<link href="//fonts.googleapis.com/css?family=Open+Sans:300italic,300,400italic,400,600italic,600,700italic,700,800italic,800" rel="stylesheet" type="text/css">
 <meta charset="ISO-8859-1">
 <title>{% block title %}Tutor Page{% endblock %}</title>
 </head>
 <body>
 <a href="#" class="back-to-top"></a>
+<div class="container-fluid main-container">
 	<div class="row">
 		<div class="main col-md-9">
-		<div class="row">
-		<div class="col-md-12">
-			<div class="row logorow">
-			<div class="logocontainer col-md-12">
-				<div class="logo col-md-6">
-					<span class="logo"><span class="unc logo">UNC</span> CHAPEL
-						HILL</span> <br> <span class="logotag">Computer Science
-						Student Portal</span>
-				</div>
-			</div>
-			</div>
-				<!-- Logo div End -->
-				<div class="navrow row">
-				<div class="navbar col-md-12">
-					<ul class="navlist">
-						<li><a href="#">HOME<span
-								class="glyphicon glyphicon-home"></span></a></li>
-						<li><a href="#">PROJECT MARKETPLACE <span
-								class="glyphicon glyphicon-folder-open"></span></a></li>
-						<li><a class="hired" 	href="/gethired/">GET HIRED<span
-								class="glyphicon glyphicon-briefcase"></span></a></li>
-						<li><a href="/tutor/">STUDY BUDDY<span
-								class="glyphicon glyphicon-user"></span></a></li>
-					</ul>
-				</div>
-				</div>
-				</div>
-				<!-- Nav Div -->
-			</div>
-			<!-- Nav Row End -->
+			<div class="row">
+				<div class="col-md-12">
+					<div class="row logorow">
+						<div class="logocontainer col-md-12">
+							<div class="logo col-md-6">
+								<span class="logo"><span class="unc logo">UNC</span> CHAPEL HILL</span> 
+								<br> 
+								<span class="logotag">Computer Science Student Portal</span>
+							</div><!-- End of Logo Div -->
+						</div><!-- End of Logo Container div -->
+					</div> <!-- Logo div End -->
+					<div class="navrow row">
+					<div class="navbar col-md-12">
+							<ul class="navlist">
+								<li><a href="#">HOME<span class="glyphicon glyphicon-home"></span></a></li>
+								<li><a href="#">PROJECT MARKETPLACE <span class="glyphicon glyphicon-folder-open"></span></a></li>
+								<li><a class="hired" 	href="/gethired/">GET HIRED<span class="glyphicon glyphicon-briefcase"></span></a></li>
+								<li><a href="/tutor/">STUDY BUDDY<span class="glyphicon glyphicon-user"></span></a></li>
+							</ul>
+						</div><!-- End of Navbar -->
+					</div><!-- End of navrow -->
+				</div> <!-- Nav Div -->
+			</div> <!-- End of Logo+Nav Row End -->
 			<div class="row">
 				<div class="info col-md-12">
 					<h1>{% block header %}{% endblock %}</h1>
-				</div>
-				<!-- Info Div -->
-			</div>
-			<!-- Info Div Row End -->
-			<div class="row">
+				</div> <!-- Info Div -->
+			</div><!-- Info Div Row End -->
+			<div class="row search">
 				<div class="buttondiv col-md-12" style="text-align: center;">
 					<form class="navbar-form" role="search">
        					<div class="form-group">
@@ -70,41 +57,36 @@
        					</div>
         				<button type="submit" class="btn btn-default">Submit</button>
                     </form>
-				</div>
-			</div>
+				</div><!-- End of Button Div -->
+			</div><!-- End of Search Row -->
 			<div class="container-fluid">
-			<div class="row">
-				<div class="filteroptions col-md-3">
-					<div class="filterdiv panel panel-default">
-					<div class="contain">
-						{% block filter_menu %}
-                        
-                        {% endblock %}
-                    </div>
-					</div> <!-- Filter Div -->
-				</div> <!-- Filter Options div -->
-				<div class="post_bar col-md-9">
+				<div class="row">
+					<div class="filteroptions col-md-3">
+						<div class="filterdiv panel panel-default">
+							<div class="contain">
+								{% block filter_menu %}
+                        		{% endblock %}
+                    		</div>
+						</div> <!-- Filter Div -->
+					</div> <!-- Filter Options div -->
+					<div class="post_bar col-md-9">
 						{% block content %}
 						{% endblock %}
-					<!-- Post Bar Container Div End -->
-				</div>
-				<!-- Post Bar End -->
-			</div>
-			<!-- Post Bar Row End -->
-			</div>
-		</div>
-		<!-- Main Div End -->
+					</div><!-- Post Bar Container Div End -->
+				</div><!-- Post Bar End -->
+			</div><!-- Post Bar Row End -->
+		</div><!-- Main Div End -->
 		<div class="footer col-md-12">
-		<div class="col-md-3">
-			<ul class="footernav">
-				<li><a href="#">HOME</a></li>
-				<li><a href="#">PROJECT MARKETPLACE</a></li>
-				<li><a class="hired" href="/GetHired/">GET HIRED</a></li>
-				<li><a href="/tutor/">STUDY BUDDY</a></li>
-			</ul>
-			</div>
+			<div class="col-md-3">
+				<ul class="footernav">
+					<li><a href="#">HOME</a></li>
+					<li><a href="#">PROJECT MARKETPLACE</a></li>
+					<li><a class="hired" href="/GetHired/">GET HIRED</a></li>
+					<li><a href="/tutor/">STUDY BUDDY</a></li>
+				</ul>
+			</div><!-- End of MiniNav -->
 		</div><!-- Footer Div End -->
-	</div>
-	<!-- Main Row End -->
+	</div><!-- Main Row End -->
+</div>
 </body>
 </html>
