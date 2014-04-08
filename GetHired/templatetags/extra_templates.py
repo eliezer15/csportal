@@ -10,6 +10,20 @@ def classname(obj):
     classname= obj.__class__.__name__
     return classname
 
+@register.filter
+def normdegree(value):
+    if value == "BS":
+        return "Bachelors of Science"
+    if value =="BA":
+        return "Bachelors of Arts"
+    else:
+        return value
+
+@register.filter
+def tagline(value):
+    return value[:140] + '...'
+    
+
 class AbsoluteURLNode(URLNode):
     def render(self, context):
         path = super(AbsoluteURLNode, self).render(context)

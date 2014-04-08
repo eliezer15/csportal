@@ -13,6 +13,11 @@ div.main-container{
 	padding-right: 0px;
 }
 
+.tooltip{
+	font-size: 12px;
+	font-weight: 500;
+}
+
 .back-to-top {
 	position: fixed;
 	bottom: 2em;
@@ -181,7 +186,7 @@ div.footer {
 	margin-top: 9px;
 }
 
-a.postLinks {
+a.post-panel-link {
 	text-decoration: none;
 	outline: none;
 }
@@ -191,10 +196,25 @@ div.posts {
 	border: thin solid #dbdbdb;
 	margin: 10px;
 	font-size: 18px;
-	color: black;
-	height: 200px;
+	color: #428BCA;
+	height: 220px;
 	width: 99%;
 	display: block;
+	position: relative;
+}
+
+span.post-link{
+	position:absolute; 
+	width:100%;
+	height:100%;
+	top:0;
+	left: 0;
+	z-index: 1;
+}
+
+a.norm{
+	position:relative;
+	z-index: 2;
 }
 
 div.posts:hover {
@@ -213,7 +233,8 @@ div.posts span.Date {
 	font-size: 14px;
 }
 
-div.posts span.preview {
+span.post-preview{
+	font-size: 12px;
 	color: #B2B2B2;
 }
 
@@ -278,6 +299,7 @@ div.postview h3.title {
 
 span.postview-label{
     margin-left: 5px;
+    font-size: 12px;
 }
 
 div.postview span.date{
@@ -288,8 +310,10 @@ div.postview span.date{
 
 div.postview-jobinfo{
 	margin:2px;
-	padding-top: 10px;
+    padding: 10px 0px;
+	margin-top: 15px;
     font-size: 14px;
+    border-top: 1px dashed #dbdbdb;
 }
 
 div.postview-jobinfo span.lab{
@@ -298,7 +322,7 @@ div.postview-jobinfo span.lab{
     font-size: inherit;
 }
 
-div.postview-jobinfo span.content{
+div.postview span.content{
 	color: #4390c6;
     font-weight: 500;
 }
@@ -313,16 +337,40 @@ div.postview-about-row{
     text-align: center;
 }
 
-div.postview-about-row span{
-    padding: 5px;
+span.postview-location a{
+	color: #a5a4a4;
+	text-decoration: underline;
+	padding-left: 4px;
 }
+
+div.postview-about-row div{
+    padding: 5px;
+    display: inline-block;
+}
+
+div.postview-about-row img{
+	vertical-align: bottom;
+	padding: 0px 2px 0px 9px;
+}
+
 div.postview-salary-block-row{
     text-align:center;
+    border-bottom: 1px dashed #dbdbdb;
 }
+
 div.postview-salary-blocks{
     display:inline-block;
     width: 120px;
     text-align: center;
+}
+
+div.postview-offer-info-row{
+    padding-top: 15px;
+}
+
+div.postview-interview-info-row{
+   	border-top: 1px dashed #dbdbdb;
+   	padding-top: 10px;
 }
 
 div.postview-report-rate div.content{
