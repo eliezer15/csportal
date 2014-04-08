@@ -1,4 +1,5 @@
 from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template import  RequestContext
 from django.shortcuts import render_to_response,get_object_or_404
 from django.http import HttpResponseRedirect
@@ -22,7 +23,17 @@ def main(request):
                        key=lambda post: post.date_posted,
                        reverse = True
                       )
-    context_dict['posts'] = all_posts
+
+    paginator = Paginator(all_posts, 10)
+    page = request.GET.get('page')
+    try:
+        posts = paginator.page(page)
+    except PageNotAnInteger:
+        posts = paginator.page(1)
+    except EmptyPage:
+        posts = paginator.page(paginator.num_pages)
+
+    context_dict['posts'] = posts
     context_dict['filters'] = get_filters()
     
     return render_to_response('GetHired/postlist.html', context_dict, context)
@@ -74,10 +85,19 @@ def get_company_posts(request, company_name):
                        chain(interview_posts,offer_posts),
                        key=lambda post: post.date_posted,
                        reverse=True
-                      )
+                       )
+
+        paginator = Paginator(all_posts, 10)
+        page = request.GET.get('page')
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)                  
         
         context_dict['company'] = company
-        context_dict['posts'] = all_posts
+        context_dict['posts'] = posts
         context_dict['filters'] = get_filters()
 
     return render_to_response('GetHired/postlist.html', context_dict, context)
