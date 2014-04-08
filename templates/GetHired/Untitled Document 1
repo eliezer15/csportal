@@ -1,0 +1,29 @@
+Go over last’s week goals:
+Sasha: COMPLETED
+Andrew: 
+We got SUDO access to the server
+Working with an expert to set-up the server
+We should be on server by next monday
+PostgreSQL is 9.1
+Dan:
+Added location to the new form
+Started working on the expanded post view
+Eli:
+Location is working on form
+Related posts is working
+Things to discuss:
+Dan’s Todo request
+Work on instructions
+Making reset works
+Slugify spaces on company names like Red Hat rather than accept spaces
+Proposition:
+How to represent salaries that are hourly or monthly?
+Make a REST interface to flag and maybe rate posts.
+Working on a preview for posts.
+Write the stuff that should be on the new post form.
+
+How to load pages?
+	Paginate posts: 10 posts per page
+	
+
+
