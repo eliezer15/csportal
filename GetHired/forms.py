@@ -13,5 +13,4 @@ class OfferForm(forms.ModelForm):
 class LocationForm(forms.ModelForm):
     class Meta:
         model = Location
-        fields = ('city','state')
 

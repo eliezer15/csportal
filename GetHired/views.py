@@ -85,8 +85,8 @@ def get_field_posts(request, field_name, field_value):
 
         elif (field_name == "location"):
             if (field_value == "International"):
-                interview_posts = models.Interview.objects.exclude(location__country="United States")
-                offer_posts = models.Offer.objects.exclude(location__country="United States")
+                interview_posts = models.Interview.objects.exclude(location__country="US")
+                offer_posts = models.Offer.objects.exclude(location__country="US")
 
             else:
                 interview_posts = models.Interview.objects.filter(location__state=field_value)
@@ -162,10 +162,13 @@ def render_new_post_form(request,post_type,post_id=None):
         context = RequestContext(request)
         context_dict = {}
         form = form_dict[post_type]
+
         if post_id:
             Model = model_dict[post_type]
             post = Model.objects.get(pk=post_id)
             context_dict['form'] = form(instance=post)
+            context_dict['location_form'] = forms.LocationForm(instance=post.location)
+
             context_dict['header'] = 'Edit '
             context_dict['post_id'] = post_id
         else:
@@ -175,7 +178,7 @@ def render_new_post_form(request,post_type,post_id=None):
         
         context_dict['post_type'] = post_type
         return render_to_response('portal/newpost.html',context_dict,context)
-
+"""
 def render_edit_post_form(request,post_type,post_id):
     if request.method == 'GET':
         context = RequestContext(request)
@@ -191,38 +194,38 @@ def render_edit_post_form(request,post_type,post_id):
         
         context_dict['post_type'] = post_type
         return render_to_response('portal/newpost.html',context_dict,context)
-
+"""
 
 def create_post(request, post_type, post_id=None):
     if request.method == 'POST':
         data = request.POST
-        logging.debug(request.POST)
         Form = form_dict[post_type]
         context = RequestContext(request)
         context_dict = {}
         user_form = Form(request.POST)
-        l = None
+        location = None
+
         if user_form.is_valid():
             if ('country' in data) and ('state' in data) and ('city' in data):
-                l = models.Location(country=data['country'],state=data['state'],city=data['city'])
-                l.save()
+                location = models.Location(country=data['country'],state=data['state'],city=data['city'])
+                location.save()
             else:
                 pass #some error
 
-            logging.debug(l)
             if post_id:
                 model = model_dict[post_type]
                 post = model.objects.get(pk=post_id)
                 user_form = Form(request.POST, instance=post) 
             
             post = user_form.save()
-            post.location = l
+            post.location = location
             post.save()
             #return render_to_response('portal/newpost.html',context_dict, context)
             return HttpResponseRedirect('/gethired/')
         else:
             context_dict['form'] = user_form
-            logging.debug(user_form)
+            context_dict['location_form'] = forms.LocationForm({'country':data['country'],'state':data['state'],'city':data['city']})
+            logging.debug(context_dict['location_form'])
             context_dict['post_type'] = post_type
             return render_to_response('portal/newpost.html',context_dict, context)
 
