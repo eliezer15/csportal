@@ -49,9 +49,40 @@ $(document).ready(function() {
 	$('div.newform').find('select').css('width', '100%');
 	$('div.newform').find('textarea').addClass('form-control');
 	$('div.newform').find('textarea').css('width', '100%');
+
+	//Do all except the checkbox
+	$('div.newform').find('input[type=checkbox]').removeClass('form-control');
+
 	
     $(function () {
         $("[rel='tooltip']").tooltip();
+    });
+
+    /* Event for disabling state selection when an international
+       country is selected when creating a new post */
+
+    $('#country').change(function() {
+    	if ($('#country').val() !== "United States") {
+    		$('#state option').prop("disabled", true);
+    		$('#state').val('IT');
+    		$('#city').prop("readonly", true);
+    		$('#city').val('International');
+    	}
+    	else {
+    		$('#state').prop("readonly", false);
+    		$('#state').val('AL');
+    		$('#city').prop("readonly", false);
+    		if ($('#city').val() === 'International') {
+    			$('#city').val('');
+    		}
+    	}
+    });
+
+    /* Parse number with commas on submit */
+    $('div.new-offer-form form').submit(function() {
+    	$(this).find('.money_field input').each(function() {
+    		$(this).val($(this).val().replace(/,/g,''));
+    	});
     });
 
 });

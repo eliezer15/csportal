@@ -27,7 +27,6 @@
 												<option value="Åland Islands">Åland Islands</option>
 												<option value="Albania">Albania</option>
 												<option value="Algeria">Algeria</option>
-												<option value="American Samoa">American Samoa</option>
 												<option value="Andorra">Andorra</option>
 												<option value="Angola">Angola</option>
 												<option value="Anguilla">Anguilla</option>
@@ -259,7 +258,6 @@
 												<option value="Venezuela">Venezuela</option>
 												<option value="Viet Nam">Viet Nam</option>
 												<option value="Virgin Islands, British">Virgin Islands, British</option>
-												<option value="Virgin Islands, U.S.">Virgin Islands, U.S.</option>
 												<option value="Wallis and Futuna">Wallis and Futuna</option>
 												<option value="Western Sahara">Western Sahara</option>
 												<option value="Yemen">Yemen</option>
@@ -323,13 +321,19 @@
 												<option value="WV">West Virginia</option>
 												<option value="WI">Wisconsin</option>
 												<option value="WY">Wyoming</option>
-		</select>
+												<option value="AS">American Samoa</option>
+												<option value="GU">Guam</option>
+												<option value="MP">Northern Mariana Islands</option>
+												<option value="PR">Puerto Rico</option>
+												<option value="VI">Virgin Islands</option>
+												<option value="IT" disabled>International</option>
+											</select>
         								</div>
 								</div>
 								<div class="form-group">
         							<label for="city" class="control-label col-md-12">City: </label>
         								<div class="col-md-12">
-       										<input type="text" name="city">
+       										<input type="text" name="city" id="city">
         								</div>
 								</div>
 								<div class="form-group">
@@ -738,6 +742,12 @@
 											<option  value="WV">West Virginia</option>
 											<option  value="WI">Wisconsin</option>
 											<option  value="WY">Wyoming</option>
+											<option  value="AS">American Samoa</option>
+											<option  value="GU">Guam</option>
+											<option  value="MP">Northern Mariana Islands</option>
+											<option  value="PR">Puerto Rico</option>
+											<option  value="VI">Virgin Islands</option>
+											<option  value="IT" disabled>International</option>
 										</select>
         							</div>
 								</div>
@@ -766,21 +776,24 @@
         						<div class="form-group">
         							<label for="questions_asked" class="control-label col-md-12">Salary: </label>
         							{{ form.salary.errors }}
-        							<div class="col-md-12">
+        							<div class="col-md-12 input-group money_field">
+        							<span class="input-group-addon">$</span>
         							{{ form.salary }}
        								</div>
 								</div>
 								<div class="form-group">
         							<label for="offer_status" class="control-label col-md-12">Signing Bonus: </label>
         							{{ form.signing_bonus.errors }}
-        							<div class="col-md-12">
+        							<div class="col-md-12 input-group money_field">
+        							<span class="input-group-addon">$</span>
         							{{ form.signing_bonus }}
         							</div>
 								</div>
 								<div class="form-group">
         							<label for="SOO" class="control-label col-md-12">Relocation Bonus: </label>
         							{{ form.relocation_bonus.errors }}
-        							<div class="col-md-12">
+        							<div class="col-md-12 input-group money_field">
+        							<span class="input-group-addon">$</span>
         							{{ form.relocation_bonus}}
        								</div>
     							</div>

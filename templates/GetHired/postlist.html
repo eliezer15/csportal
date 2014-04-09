@@ -186,16 +186,14 @@
                     <span class="job_title">{{post.get_job_title_display}}</span>
                 </p>
             </div>
-            <div class="row">
-                <p>
-                    <span class="location" rel="tooltip" data-placement="right" title="Visit Location Data">{{post.location}}</span>
-                </p>
-
-                <p>
-                    <span class="preview">{{post.preview}}</span>
-                </p>
-            </div>
         </a>
+        <div class="row">
+            <p>
+                <span class="location" rel="tooltip" data-placement="right" title="Visit Location Data">
+                    <a href="/gethired/location/{{post.location.state}}">{{post.location}}</a>
+                </span>
+            </p>
+        </div>
     </div>
 {% endfor %}
     
