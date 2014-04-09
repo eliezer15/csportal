@@ -326,7 +326,7 @@
 												<option value="MP">Northern Mariana Islands</option>
 												<option value="PR">Puerto Rico</option>
 												<option value="VI">Virgin Islands</option>
-												<option value="IT" disabled>International</option>
+												<option value="IT" id="international" disabled>International</option>
 											</select>
         								</div>
 								</div>
@@ -343,6 +343,13 @@
        								{{ form.job_title}}
         							</div>
 								</div>
+								<div class="form-group">
+        							<label for="date_interviewed" class="control-label col-md-12">Date of Interview: </label>
+        							{{form.date_interviewed.errors}}
+        							<div class="col-md-12" id="dateinterviewed">
+        							{{form.date_interviewed}}
+        							</div>
+    							</div>
 							</div><!-- New Company Info Div End -->
 							<div class="new-interview-other-info col-md-6">
 								<div class="form-group">
@@ -379,7 +386,7 @@
         							<div class="col-md-12">
         							{{form.interview_rating}}
         							</div>
-    						</div>
+    							</div>
 							</div><!-- Other Div End -->
 						</div> <!-- Company Info Row End -->
 					</div><!-- End of Company Info Container -->
@@ -747,7 +754,7 @@
 											<option  value="MP">Northern Mariana Islands</option>
 											<option  value="PR">Puerto Rico</option>
 											<option  value="VI">Virgin Islands</option>
-											<option  value="IT" disabled>International</option>
+											<option  value="IT" id="international" disabled>International</option>
 										</select>
         							</div>
 								</div>

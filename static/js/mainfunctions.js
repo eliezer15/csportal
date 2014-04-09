@@ -65,11 +65,13 @@ $(document).ready(function() {
     	if ($('#country').val() !== "United States") {
     		$('#state option').prop("disabled", true);
     		$('#state').val('IT');
+    		$('#state option #international').prop("disabled", false);
     		$('#city').prop("readonly", true);
     		$('#city').val('International');
     	}
     	else {
-    		$('#state').prop("readonly", false);
+    		$('#state option').prop("disabled", false);
+    		$('#state option #international').prop("disabled", true);
     		$('#state').val('AL');
     		$('#city').prop("readonly", false);
     		if ($('#city').val() === 'International') {
@@ -84,5 +86,11 @@ $(document).ready(function() {
     		$(this).val($(this).val().replace(/,/g,''));
     	});
     });
+
+    /* datepicker widget */
+    $(function() {
+ 		console.log($('div#dateinterviewed input'));
+    	$('div#dateinterviewed input').datepicker();
+  	});
 
 });

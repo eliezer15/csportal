@@ -9,7 +9,9 @@ from GetHired import models, forms
 
 model_dict = {
              "Interview": models.Interview,
-             "Offer": models.Offer
+             "Offer": models.Offer,
+             "Company": models.Company,
+             "Location": models.Location
 }
 
 form_dict = {

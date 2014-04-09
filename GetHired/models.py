@@ -5,7 +5,6 @@ Created on Mar 18, 2014
 '''
 from django.db import models
 from django.contrib.auth.models import User
-from localflavor.us.models import USStateField
 from django.core.validators import MinValueValidator
 from django.core.validators import MaxValueValidator
 import logging
@@ -15,7 +14,7 @@ class Post(models.Model):
     author = models.ForeignKey(User, editable=False, blank=True, null= True, related_name="%(app_label)s_%(class)s_user")
     url_slug = models.CharField(max_length=200, editable=False)
     post_type = models.CharField(max_length=20,editable=False)
-    date_posted = models.DateField(auto_now_add=True) #automatically set upon object creation
+    date_posted = models.DateTimeField(auto_now_add=True) #automatically set upon object creation
     times_reported = models.IntegerField(default=0, editable=False)
     def __unicode__(self):
         return self.url
@@ -66,7 +65,71 @@ class Company(models.Model):
 
 class Location(models.Model):
     city = models.CharField(max_length=30)
-    state = USStateField(default="NC")
+    # All 50 states, plus the District of Columbia.
+    US_STATES = (
+        ('AL', 'Alabama'),
+        ('AK', 'Alaska'),
+        ('AZ', 'Arizona'),
+        ('AR', 'Arkansas'),
+        ('CA', 'California'),
+        ('CO', 'Colorado'),
+        ('CT', 'Connecticut'),
+        ('DE', 'Delaware'),
+        ('DC', 'District of Columbia'),
+        ('FL', 'Florida'),
+        ('GA', 'Georgia'),
+        ('HI', 'Hawaii'),
+        ('ID', 'Idaho'),
+        ('IL', 'Illinois'),
+        ('IN', 'Indiana'),
+        ('IA', 'Iowa'),
+        ('KS', 'Kansas'),
+        ('KY', 'Kentucky'),
+        ('LA', 'Louisiana'),
+        ('ME', 'Maine'),
+        ('MD', 'Maryland'),
+        ('MA', 'Massachusetts'),
+        ('MI', 'Michigan'),
+        ('MN', 'Minnesota'),
+        ('MS', 'Mississippi'),
+        ('MO', 'Missouri'),
+        ('MT', 'Montana'),
+        ('NE', 'Nebraska'),
+        ('NV', 'Nevada'),
+        ('NH', 'New Hampshire'),
+        ('NJ', 'New Jersey'),
+        ('NM', 'New Mexico'),
+        ('NY', 'New York'),
+        ('NC', 'North Carolina'),
+        ('ND', 'North Dakota'),
+        ('OH', 'Ohio'),
+        ('OK', 'Oklahoma'),
+        ('OR', 'Oregon'),
+        ('PA', 'Pennsylvania'),
+        ('RI', 'Rhode Island'),
+        ('SC', 'South Carolina'),
+        ('SD', 'South Dakota'),
+        ('TN', 'Tennessee'),
+        ('TX', 'Texas'),
+        ('UT', 'Utah'),
+        ('VT', 'Vermont'),
+        ('VA', 'Virginia'),
+        ('WA', 'Washington'),
+        ('WV', 'West Virginia'),
+        ('WI', 'Wisconsin'),
+        ('WY', 'Wyoming'),
+        ('AS', 'American Samoa'),
+        ('GU', 'Guam'),
+        ('MP', 'Northern Mariana Islands'),
+        ('PR', 'Puerto Rico'),
+        ('VI', 'Virgin Islands'),
+        ('IT,', 'International'),
+    )
+
+    state = models.CharField(max_length=2,
+                             choices=US_STATES,
+                             default='AL')
+
     country = models.CharField(max_length=30, default="United States")
         
     def __unicode__(self):
@@ -182,6 +245,8 @@ class Interview(GetHiredPost):
     interview_source = models.CharField(max_length=2,
                                     choices=source_choices,
                                     default='WA')
+    
+    date_interviewed = models.DateField()
 
     offer_choices = (
             ('RC','Received'),

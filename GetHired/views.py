@@ -71,15 +71,28 @@ def get_filters():
     filters['companies']= models.Company.objects.all()
     return filters
 
-def get_company_posts(request, company_name):
+def get_field_posts(request, field_name, field_value):
     if request.method == 'GET':
         context = RequestContext(request)
         context_dict = {}
         #name__iexact is a case-insensitvie match
-        company = get_object_or_404(models.Company,name__iexact=company_name)
-        #implicit, if company found
-        interview_posts = models.Interview.objects.filter(company=company)
-        offer_posts = models.Offer.objects.filter(company=company)
+
+        if (field_name == "company"):
+            company = get_object_or_404(models.Company, name__iexact=field_value)
+            interview_posts = models.Interview.objects.filter(company=company)
+            offer_posts = models.Offer.objects.filter(company=company)
+            context_dict['company'] = company
+
+        elif (field_name == "location"):
+            if (field_value == "International"):
+                interview_posts = models.Interview.objects.exclude(location__country="United States")
+                offer_posts = models.Offer.objects.exclude(location__country="United States")
+
+            else:
+                interview_posts = models.Interview.objects.filter(location__state=field_value)
+                offer_posts = models.Offer.objects.filter(location__state=field_value)
+
+            
         
         all_posts = sorted(
                        chain(interview_posts,offer_posts),
@@ -96,7 +109,6 @@ def get_company_posts(request, company_name):
         except EmptyPage:
             posts = paginator.page(paginator.num_pages)                  
         
-        context_dict['company'] = company
         context_dict['posts'] = posts
         context_dict['filters'] = get_filters()
 
@@ -132,27 +144,7 @@ def get_related_posts(post_type, post_id):
     return relevant_posts
 
 
-def get_location_posts(request, company_name):
-    if request.method == 'GET':
-        context = RequestContext(request)
-        context_dict = {}
-        #name__iexact is a case-insensitvie match
-        company = get_object_or_404(models.Company,name__iexact=company_name)
-        #implicit, if company found
-        interview_posts = models.Interview.objects.filter(company=company)
-        offer_posts = models.Offer.objects.filter(company=company)
-        
-        all_posts = sorted(
-                       chain(interview_posts,offer_posts),
-                       key=lambda post: post.date_posted,
-                       reverse=True
-                      )
-        
-        context_dict['company'] = company
-        context_dict['posts'] = all_posts
-        context_dict['filters'] = get_filters()
 
-    return render_to_response('GetHired/postlist.html', context_dict, context)
 
 def get_post(request, post_type, post_id):
     if request.method == 'GET':
@@ -283,9 +275,18 @@ def filter_posts(request):
             Model = model_dict[m]
             posts = Model.objects.filter(**filters)
             all_posts.extend(posts)
-
         all_posts.sort(key=lambda post: post.date_posted,reverse=True)
-        context_dict['posts'] = all_posts
+
+        paginator = Paginator(all_posts, 10)
+        page = request.GET.get('page')
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
+
+        context_dict['posts'] = posts
         context_dict['filters'] = get_filters()
         return render_to_response('GetHired/postlist.html',context_dict,context)
      

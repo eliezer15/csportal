@@ -1,4 +1,5 @@
 from django import forms
+from django.forms.extras.widgets import SelectDateWidget
 from GetHired.models import Interview, Offer, GetHiredPost, Location, Company
 
 class InterviewForm(forms.ModelForm):
