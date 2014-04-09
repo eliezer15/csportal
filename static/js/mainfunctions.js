@@ -53,5 +53,8 @@ $(document).ready(function() {
     $(function () {
         $("[rel='tooltip']").tooltip();
     });
-
+    if ($(document).height() == $(window).height()) {
+    	$('div.footer').css('position','absolute');
+    	$('div.footer').css('bottom','0');
+    }
 });

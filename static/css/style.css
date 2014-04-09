@@ -1,16 +1,21 @@
 @CHARSET "ISO-8859-1";
-
+html{
+	height: 100%;
+}
 body {
 	overflow-x: hidden;
 	background: url(../images/background.jpg) no-repeat center center fixed;
 	font-family : "Open Sans";
 	font-size: 15px;
 	font-family: "Open Sans";
+	height: 100%
 }
 
 div.main-container{
+	position: relative;
 	padding-left: 0px;
 	padding-right: 0px;
+	height: 100%;
 }
 
 .tooltip{
