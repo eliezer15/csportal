@@ -12,12 +12,17 @@ def classname(obj):
 
 @register.filter
 def normdegree(value):
-    if value == "BS":
-        return "Bachelors of Science"
-    if value =="BA":
-        return "Bachelors of Arts"
-    else:
-        return value
+    degree_choices = {
+            'MI':'Minor',
+            'BA': 'Bachelor of Arts',
+            'BS': 'Bachelor of Science',
+            'MA': 'Master of Arts',
+            'MS': 'Master of Science',
+            'MB': 'MBA',
+            'PD': 'Ph.D',
+            'PR': 'Professional Degree',
+            'OT': 'Other'}
+    return degree_choices[value]
 
 @register.filter
 def tagline(value):

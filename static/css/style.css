@@ -18,6 +18,10 @@ div.main-container{
 	font-weight: 500;
 }
 
+.tooltip.in{
+	opacity: 0.5;
+}
+
 .back-to-top {
 	position: fixed;
 	bottom: 2em;
@@ -222,9 +226,15 @@ div.posts:hover {
 }
 
 div.posts span.Title {
-	font-size: 20px;
+	font-size: 22px;
 	font-weight: bold;
 	float: left;
+}
+
+p.post-preview-info{
+	font-size: 14px;
+	margin-bottom: 2px;
+	
 }
 
 div.posts span.Date {
@@ -253,6 +263,7 @@ div.filterdiv div.contain span.labs {
 	padding-top: 5px;
 	padding-bottom: 5px;
 	display: block;
+	color: #428bca;
 }
 
 div.filterdiv div.contain input.btn {
@@ -343,6 +354,10 @@ span.postview-location a{
 	padding-left: 4px;
 }
 
+span.postview-location a:hover{
+	color: #828181;
+}
+
 div.postview-about-row div{
     padding: 5px;
     display: inline-block;
@@ -415,4 +430,29 @@ div.post-404{
 div.companyinfo{
 	margin: 1em 0.3em;
 	border: thin solid #DBDBDB;
+}
+
+div.related-post{
+    font-size: 14px;
+    background-color: #fafafa;
+    border: 1px solid #bcbbbb;
+    padding-top: 4px;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-radius: 3px;
+    text-align: center;
+}
+
+div.related-post .tooltip .tooltop.in{
+	position: absolute;
+	width: 200px;
+	height: 50px;
+	opacity: 0.85;
+	display: block;
+	background-color: #bcbbbb;
+}
+
+div.related-post-location{
+    font-size: 12px;
+    color: #a4a4a4;
 }

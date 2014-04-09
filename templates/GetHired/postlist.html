@@ -168,11 +168,13 @@
  			<span class="Title" ><a class="norm" rel="tooltip" data-placement="right" title="Visit Company Data" href="/gethired/company/{{post.company}}">{{post.company}}</a></span> 
 			<span class="Date"> {{post.date_posted|naturalday|title}}</span>
 		</div>
+		<div class="container-fluid">
 		<div class="row">
-			<p><span class="job_title">{{post.get_job_title_display}}</span></p>
+			<p class="post-preview-info"><span class="job_title"><a class="norm"  rel="tooltip" data-placement="right" title="Posts by Position" href="/gethired/filter/?company=ALL&location=ALL&job_title={{post.job_title}}&job_type=ALL">{{post.get_job_title_display}}</a></span></p>
+			<p class="post-preview-info"><span class="post-preview-info job_type"><a class="norm" rel="tooltip" data-placement="right" title="Posts by Job Type" href="/gethired/filter/?company=ALL&location=ALL&job_title=ALL&job_type={{post.job_type}}">{{post.get_job_type_display}}</a></span></p>
+			<p class="post-preview-info"><span class="location"><a class="norm" rel="tooltip" data-placement="right" title="Posts by Location" href="/gethired/filter/?company=ALL&location={{post.location.state}}&job_title=ALL&job_type=ALL">{{post.location}}</a></span></p>
 		</div>
 		<div class="row">
-			<p><span class="location"><a class="norm" rel="tooltip" data-placement="right" title="Visit Location Data" href="/gethired/filter/?company=ALL&location={{post.location.state}}&job_title=ALL&job_type=ALL">{{post.location}}</a></span></p>
 			{% if post.post_type == "Interview" %}
 			<p><span class="post-preview">{{post.interview_process|tagline}}</span></p>
 			{% else %}
@@ -181,6 +183,7 @@
 			
 		</div>
 		<a class="post-panel-link" href="{% url 'get_post' post_type=post.post_type post_id=post.pk %}"><span class="post-link"></span></a>
+    </div>
     </div>
 {% endfor %}
 	<div class="pagination">

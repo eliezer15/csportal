@@ -6,10 +6,21 @@
 {% block header %} Get Hired {% endblock %}
 
 {% block filter_menu %}
-	<h5><span class='labs'> Related Posts: </span></h5>
+<div class="container-fluid">
+<div class="row">
+	<h5><span class='labs'>Related Posts:</span></h5>
 	{% for post in related_posts %}
-        <a class="postLinks" href="{% url 'get_post' post_type=post.post_type post_id=post.pk %}">{{post.get_job_title_display}}</a><br>
+		<div class="col-md-12 related-post">
+		<div class="row">
+        <a class="postLinks" href="{% url 'get_post' post_type=post.post_type post_id=post.pk %}">{{post.company}} - {{post.post_type}}</a><br>
+		</div>
+		<div class="row related-post-location">
+		{{post.location}}
+		</div>
+		</div>
 	{% endfor %}
+	</div>
+</div>
 {% endblock %}
     
 {% block content %}
@@ -30,7 +41,7 @@
 		<div class="row">
     		<div class="title col-md-12">
     			<div class="row">
-    				<h3 class="title" ><a  href="/gethired/company/{{post.company}}">{{post.company}}</a></h3>
+    				<h3 class="title" ><a href="/gethired/company/{{post.company}}">{{post.company}}</a></h3>
     				{% if post.post_type == "Interview" %}
                     <span class="postview-label label label-success">{{post.post_type}}</span>
                		{% else %}
@@ -41,10 +52,10 @@
 				<div class="row postview-jobinfo">
 					<div class="container-fluid">
 						<div class="row">
-							<span class="job_title lab">Job Title: <span class="content">{{post.get_job_title_display}}</span></span>
+							<span class="job_title lab">Job Title: <span class="content"><a class="norm" href="/gethired/filter/?company=ALL&location=ALL&job_title={{post.job_title}}&job_type=ALL">{{post.get_job_title_display}}</a></span></span>
 						</div>
 						<div class="row">
-							<span class="job_type lab">Job Type: <span class="content">{{post.get_job_type_display}}</span></span>
+							<span class="job_type lab">Job Type: <span class="content"><a class="norm" href="/gethired/filter/?company=ALL&location=ALL&job_title=ALL&job_type={{post.job_type}}">{{post.get_job_type_display}}</a></span></span>
 							 {% if post.post_type == "Interview" %}  
 							<span class="rating">Interview Rating: {{post.interview_rating}}</span>
 							{% endif %}
