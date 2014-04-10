@@ -1,7 +1,9 @@
 @CHARSET "ISO-8859-1";
+
 html{
 	height: 100%;
 }
+
 body {
 	overflow-x: hidden;
 	background: url(../images/background.jpg) no-repeat center center fixed;
@@ -111,7 +113,7 @@ div.postBar {
 span.logo {
 	color: #f4f4f4;
 	font-family: 'Droid Serif', 'Arial', 'Helvetica', sans-serif;
-	font-size: 35px;
+	font-size: 26px;
 	font-style: normal;
 	font-weight: 400;
 }
@@ -123,7 +125,7 @@ span.unc {
 span.logotag {
 	color: #56a0d3;
 	font-family: 'Roboto Condensed';
-	font-size: 30px;
+	font-size: 22px;
 	text-shadow: 1px 1px 1px black;
 }
 
@@ -399,6 +401,26 @@ div.postview-report-rate div.content{
     font-weight: 700;
 }
 
+div.related-post{
+    font-size: 14px;
+    background-color: #fafafa;
+    border: 1px solid #bcbbbb;
+    padding-top: 4px;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-radius: 3px;
+    text-align: center;
+}
+
+div.related-post:hover{
+	background-color: #ffffff;
+}
+
+div.related-post-location{
+    font-size: 12px;
+    color: #a4a4a4;
+}
+
 /*New Post CSS*/
 div.newform h2 {
 	font-family: 'Roboto Condensed';
@@ -415,10 +437,12 @@ div.newform select{
 
 div.new-interview-form label.control-label{
 	text-align: left;
+	font-size: 14px;
 }
 
 div.new-offer-form label.control-label{
 	text-align: left;
+	font-size: 14px;
 }
 
 ul.errorlist {
@@ -437,27 +461,6 @@ div.companyinfo{
 	border: thin solid #DBDBDB;
 }
 
-div.related-post{
-    font-size: 14px;
-    background-color: #fafafa;
-    border: 1px solid #bcbbbb;
-    padding-top: 4px;
-    margin-bottom: 8px;
-    padding-bottom: 4px;
-    border-radius: 3px;
-    text-align: center;
-}
-
-div.related-post .tooltip .tooltop.in{
-	position: absolute;
-	width: 200px;
-	height: 50px;
-	opacity: 0.85;
-	display: block;
-	background-color: #bcbbbb;
-}
-
-div.related-post-location{
-    font-size: 12px;
-    color: #a4a4a4;
+div.pagination{
+	float:right;
 }

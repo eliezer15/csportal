@@ -186,6 +186,7 @@
     </div>
     </div>
 {% endfor %}
+	{% if posts.has_other_pages %}
 	<div class="pagination">
         <span class="step-links">
             {% if posts.has_previous %}
@@ -201,5 +202,6 @@
             {% endif %}
         </span>
     </div>
+    {% endif %}
 </div>
 {% endblock %}

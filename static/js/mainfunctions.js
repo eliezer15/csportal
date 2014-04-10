@@ -6,7 +6,6 @@ $(document).ready(function() {
 
 	var offset = 420;
 	var offsetbottom = $('div.footer').offset().top - 900;
-	console.log(offsetbottom);
 	var duration = 200;
 	jQuery(window).scroll(function() {
 		if (jQuery(this).scrollTop() > offsetbottom) {
@@ -27,22 +26,6 @@ $(document).ready(function() {
 		return false;
 	})
 	
-	$('div.filteroptions input.updatebtn').click(function(){
-	$('div.filteroptions input').each(function(){
-	this.checked ? sessionStorage.setItem(this.value, true) : sessionStorage.removeItem(this.value);
-	});
-
-	$('div.filteroptions select').each(function(event) {
-		console.log(event.currentTarget.value.substr(0,str.indexOf(' ')));
-	});
-	});
-	
-	var L = sessionStorage.length;
-	for(var i = 0; i < L; i ++){
-		$('div.filteroptions input.'+sessionStorage.key(i)).prop("checked", true);
-		console.log(sessionStorage.key(i));
-	}
-
 	$('div.newform').find('input').addClass('form-control');
 	$('div.newform').find('input').css('width', '100%');
 	$('div.newform').find('select').addClass('form-control');
@@ -57,4 +40,22 @@ $(document).ready(function() {
     	$('div.footer').css('position','absolute');
     	$('div.footer').css('bottom','0');
     }
+    
+    var uri = new URI(document.URL);
+    if(uri.hasSearch("location")){
+    	var search = uri.search(true);
+    	for(key in search){
+    		if(key == 'post_type'){
+    			if(search[key] == 'Interview,Offer'){
+    				$('div.filterdiv input[value="Offer"]').prop("checked", true);
+    				$('div.filterdiv input[value="Interview"]').prop("checked", true);
+    			} else
+    			$('div.filterdiv input[value='+search[key]+']').prop("checked", true);
+    		} else{
+    			$('div.filterdiv select[name="'+key+'"] option[value="'+search[key]+'"]').prop('selected', true);
+    		}
+    	}
+    }
+    
+    
 });
