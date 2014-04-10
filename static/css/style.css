@@ -192,6 +192,13 @@ div.buttondiv {
 div.footer {
 	background: url(../images/pw_maze_black.png);
 }
+ul.footernav {
+	padding-top: 3px;
+}
+ul.footernav li {
+	display: inline;	
+	padding: 6px;
+}
 
 .filterdiv {
 	margin-top: 9px;
@@ -454,7 +461,7 @@ ul.errorlist {
 
 div.post-404{
 	text-align: center;
-	color: red;
+	margin-top: 50px;
 }
 div.companyinfo{
 	margin: 1em 0.3em;
@@ -463,4 +470,21 @@ div.companyinfo{
 
 div.pagination{
 	float:right;
+}
+
+div.filterdiv select{
+	width: 90%;
+}
+
+input.ui-autocomplete-input{
+	font-size: 12px;
+	height: 24px;
+	border-radius:0px;
+	width: 100%;
+}
+
+ul.ui-autocomplete{
+	max-height: 150px;
+	overflow-y: auto;
+	font-size: 12px;
 }

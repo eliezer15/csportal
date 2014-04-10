@@ -41,6 +41,9 @@ $(document).ready(function() {
     	$('div.footer').css('bottom','0');
     }
     
+    /*URI implementation to grab URL search parameters and track user searches. We then select the
+     * appropriate selectors/input values in the filterdiv
+     */
     var uri = new URI(document.URL);
     if(uri.hasSearch("location")){
     	var search = uri.search(true);
@@ -55,7 +58,10 @@ $(document).ready(function() {
     			$('div.filterdiv select[name="'+key+'"] option[value="'+search[key]+'"]').prop('selected', true);
     		}
     	}
+    } else{
+    		if(uri.segment(1) == "company"){
+    			$('div.filterdiv select[name="company"] option[value="'+uri.segment(2)+'"]').prop('selected', true);
+    		}
     }
-    
     
 });
