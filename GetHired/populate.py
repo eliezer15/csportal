@@ -102,10 +102,9 @@ def add_Offer(user, degree, company, location, title, type, pay_type, salary, bo
                                  offer_status=status,
                                  other_details=details)
     return o
-'''	
+
 # Start execution here!
 if __name__ == '__main__':
     print "Starting population script..."
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "CSPortal.settings")
-    populate()
-'''    
+    populate()  

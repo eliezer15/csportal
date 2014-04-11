@@ -4,12 +4,14 @@
 <html>
 <head>
 	<script src="http://code.jquery.com/jquery-2.1.0.min.js"></script>
+	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
 	<script src="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/jquery-ui.min.js"></script>
+	<script src="{% static "/static/js/URI.js" %}"></script>
+	<script src="{% static "/static/js/mainfunctions.js" %}"></script>
+	<script src="{% static "/static/js/combobox.js" %}"></script>
 	<script src ="//cdnjs.cloudflare.com/ajax/libs/jquery-cookie/1.4.0/jquery.cookie.min.js"></script>
 	<script src="//netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
-	<script src="{% static "/static/js/mainfunctions.js" %}"></script>
 	<link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-	<link rel="stylesheet" href="//ajax.googleapis.com/ajax/libs/jqueryui/1.10.4/themes/smoothness/jquery-ui.css" />
 	<link rel="stylesheet" href="{% static "/static/css/style.css" %}">
 	<link href='http://fonts.googleapis.com/css?family=Anton' rel='stylesheet' type='text/css'>
 	<link href='http://fonts.googleapis.com/css?family=Droid+Serif:700' rel='stylesheet' type='text/css'>
@@ -37,10 +39,10 @@
 					<div class="navrow row">
 					<div class="navbar col-md-12">
 							<ul class="navlist">
-								<li><a href="#">HOME<span class="glyphicon glyphicon-home"></span></a></li>
-								<li><a href="#">PROJECT MARKETPLACE <span class="glyphicon glyphicon-folder-open"></span></a></li>
-								<li><a class="hired" 	href="/gethired/">GET HIRED<span class="glyphicon glyphicon-briefcase"></span></a></li>
-								<li><a href="/tutor/">STUDY BUDDY<span class="glyphicon glyphicon-user"></span></a></li>
+								<li><a href="#">Home<span class="glyphicon glyphicon-home"></span></a></li>
+								<li><a href="#">Project Market <span class="glyphicon glyphicon-folder-open"></span></a></li>
+								<li><a class="hired" href="/gethired/">Get Hired<span class="glyphicon glyphicon-briefcase"></span></a></li>
+								<li><a href="/tutor/">Study Buddy<span class="glyphicon glyphicon-user"></span></a></li>
 							</ul>
 						</div><!-- End of Navbar -->
 					</div><!-- End of navrow -->
@@ -78,17 +80,17 @@
 				</div><!-- Post Bar End -->
 			</div><!-- Post Bar Row End -->
 		</div><!-- Main Div End -->
+	</div><!-- Main Row End -->
 		<div class="footer col-md-12">
-			<div class="col-md-3">
+			<div class="row">
 				<ul class="footernav">
-					<li><a href="#">HOME</a></li>
-					<li><a href="#">PROJECT MARKETPLACE</a></li>
-					<li><a class="hired" href="/GetHired/">GET HIRED</a></li>
-					<li><a href="/tutor/">STUDY BUDDY</a></li>
+					<li><a href="#">HOME<span class="glyphicon glyphicon-home"></span></a></li>
+					<li><a href="#">PROJECT MARKETPLACE <span class="glyphicon glyphicon-folder-open"></span></a></li>
+					<li><a class="hired" href="/gethired/">GET HIRED <span class="glyphicon glyphicon-briefcase"></span></a></li>
+					<li><a href="/tutor/">STUDY BUDDY <span class="glyphicon glyphicon-user"></span></a></li>
 				</ul>
 			</div><!-- End of MiniNav -->
 		</div><!-- Footer Div End -->
-	</div><!-- Main Row End -->
 </div>
 </body>
 </html>

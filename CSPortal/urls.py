@@ -15,7 +15,7 @@ urlpatterns = patterns('',
     url(r'^gethired/post/new/(?P<post_type>\w+)/$',views.render_new_post_form, name='render_new_post'),
     url(r'^gethired/post/edit/(?P<post_type>\w+)/(?P<post_id>\d+)/$',views.render_new_post_form, name='render_edit_post'),
     url(r'^gethired/post/new/(?P<post_type>\w+)/(?P<post_id>\d*)/$',views.create_post,name='create_post'),
-    url(r'^gethired/(?P<field_name>\w+)/(?P<field_value>[0-9A-Za-z ]+)/$', views.get_field_posts, name='get_field_posts'),
+    url(r'^gethired/(?P<field_name>\w+)/(?P<field_value>[0-9A-Za-z\-]+)/$', views.get_field_posts, name='get_field_posts'),
     url(r'^gethired/filter/', views.filter_posts,name='filter_posts'),
     url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
 )

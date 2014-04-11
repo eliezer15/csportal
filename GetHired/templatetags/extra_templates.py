@@ -10,6 +10,28 @@ def classname(obj):
     classname= obj.__class__.__name__
     return classname
 
+@register.filter
+def normdegree(value):
+    degree_choices = {
+            'MI':'Minor',
+            'BA': 'Bachelor of Arts',
+            'BS': 'Bachelor of Science',
+            'MA': 'Master of Arts',
+            'MS': 'Master of Science',
+            'MB': 'MBA',
+            'PD': 'Ph.D',
+            'PR': 'Professional Degree',
+            'OT': 'Other'}
+    return degree_choices[value]
+
+@register.filter
+def tagline(value):
+    return value[:140] + '...'
+
+@register.filter
+def normcompname(value):
+    return value.replace(' ', '%20')
+	
 class AbsoluteURLNode(URLNode):
     def render(self, context):
         path = super(AbsoluteURLNode, self).render(context)

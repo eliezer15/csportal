@@ -18,15 +18,15 @@
         </label>
     </div>
     <span class='labs'> Company:</span>
-	<select class="form-control" name="company">
-	<option value="ALL">*All</option>
+	<select class="form-control combobox" name="company">
+	<option value="ALL"></option>
     {% for c in filters.companies %}
     	<option value="{{c.name}}">{{c.name}}</option>
     {% endfor %}
 	</select>
-    <span class='labs'>Location: </span>
-        <select class="form-control" name="location">
-		<option value="ALL">*All</option>
+    <span class='labs'>State: </span>
+        <select class="form-control combobox" name="location">
+		<option value="ALL"></option>
         <option value="AL">Alabama</option>
         <option value="AK">Alaska</option>
         <option value="AZ">Arizona</option>
@@ -87,8 +87,8 @@
     </select>
 
     <span class='labs'>Job Title: </span>
-        <select class="form-control" name="job_title">
-		<option value="ALL">*All</option>
+        <select name="job_title">
+		<option value="ALL"></option>
         <option value="SE">Software Engineer</option>
         <option value="SE">Software Developer</option>
         <option value="SE">Programmer</option>
@@ -106,8 +106,8 @@
     </select>
 
     <span class='labs'>Job Type: </span>
-        <select class="form-control" name="job_type">
-		<option value="ALL">*All</option>
+        <select name="job_type">
+		<option value="ALL"></option>
         <option value="FT">Full Time</option>
         <option value="PT">Part Time</option>
         <option value="PI">Paid Internship</option>
@@ -119,27 +119,24 @@
     </select>
     <div style="padding-top: 5px;text-align: center;">
         <input type="submit" class="updatebtn btn btn-default" value="Update" />
-        <input type="submit" class="restbtn btn btn-default" value="Reset"/>
+        <a class="btn btn-default" href="/gethired/" style="width: 75px;">Reset</a>
     </div> <!-- Button Div -->
 	</form>
 {% endblock %}
 {% block content %}
 <div class="container-fluid">
-<div class="row">
-<div class="col-md-12">
-<div class="btn-group" style="padding-top: 5px;">
-	<button type="button" class="btn btn-default dropdown-toggle"
-		data-toggle="dropdown">
-		New Post <span class="caret"></span>
-	</button>
-	<ul class="dropdown-menu" role="menu">
-		<li><a href="{% url 'render_new_post' post_type='Interview' %}">Interview</a></li>
-		<li class="divider"></li>
-		<li><a href="{% url 'render_new_post' post_type='Offer' %}">Offer</a></li>
-	</ul>
-</div>
-</div>
-</div>
+	<div class="row">
+		<div class="col-md-12">
+			<div class="btn-group" style="padding-top: 5px;">
+				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">New Post <span class="caret"></span></button>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="{% url 'render_new_post' post_type='Interview' %}">Interview</a></li>
+						<li class="divider"></li>
+						<li><a href="{% url 'render_new_post' post_type='Offer' %}">Offer</a></li>
+				</ul>
+			</div>
+		</div>
+	</div>
 {% if company %}
 	<div class="row">
 		<div class="col-md-12 companyinfo panel">
@@ -151,65 +148,61 @@
 			<p>Number of Offers: 3</p>
 		</div>
 	</div>
-</div>
-{% else %}
-</div>
 {% endif %} 
 {% if posts %}
 {% else %}
-<div class="container-fluid">
-	<div class="col-md-12 post-404">
-		<p>Your search has returned no results.</p>
+	<div class="col-md-12 post-404 alert alert-danger">
+		<p><span style="font-weight: 700;">Error: </span>Your search has returned no results.</p>
 	</div>
-</div>
 {% endif %}
 {% for post in posts %}
-    <div class="posts panel">
-            <div class="row">
-                {% if post.post_type == "Interview" %}
-                <p>
-                    <span class="label label-success">{{post.post_type}}</span>
-                </p>
-                {% else %}
-                <p>
-                    <span class="label label-warning">{{post.post_type}}</span>
-                </p>
-                {% endif %}
-            </div>
-            <div class="row">
-                <span class="Title" rel="tooltip" data-placement="right" title="Visit Company Data"><a href="/gethired/company/{{post.company}}">{{post.company}}</a></span> 
-                <span class="Date"> {{post.date_posted|naturalday|title}}</span>
-            </div>
-        <a class="postLinks" href="{% url 'get_post' post_type=post.post_type post_id=post.pk %}">
-            <div class="row">
-                <p>
-                    <span class="job_title">{{post.get_job_title_display}}</span>
-                </p>
-            </div>
-        </a>
-        <div class="row">
-            <p>
-                <span class="location" rel="tooltip" data-placement="right" title="Visit Location Data">
-                    <a href="/gethired/location/{{post.location.state}}">{{post.location}}</a>
-                </span>
-            </p>
-        </div>
+	<div class="posts panel">
+    	<div class="row">
+    		{% if post.post_type == "Interview" %}
+    		<p><span class="label label-success">{{post.post_type}}</span></p>
+    		{% else %}
+    		<p><span class="label label-warning">{{post.post_type}}</span></p>
+    		{% endif %}
+    	</div>
+    	<div class="row">
+ 			<span class="Title" ><a class="norm" rel="tooltip" data-placement="right" title="Visit Company Data" href="/gethired/company/{{post.company.name|slugify}}">{{post.company.name}}</a></span> 
+			<span class="Date"> {{post.date_posted|naturalday|title}}</span>
+		</div>
+		<div class="container-fluid">
+		<div class="row">
+			<p class="post-preview-info"><span class="job_title"><a class="norm"  rel="tooltip" data-placement="right" title="Posts by Position" href="/gethired/filter/?company=ALL&location=ALL&job_title={{post.job_title}}&job_type=ALL">{{post.get_job_title_display}}</a></span></p>
+			<p class="post-preview-info"><span class="post-preview-info job_type"><a class="norm" rel="tooltip" data-placement="right" title="Posts by Job Type" href="/gethired/filter/?company=ALL&location=ALL&job_title=ALL&job_type={{post.job_type}}">{{post.get_job_type_display}}</a></span></p>
+			<p class="post-preview-info"><span class="location"><a class="norm" rel="tooltip" data-placement="right" title="Posts by Location" href="/gethired/filter/?company=ALL&location={{post.location.state}}&job_title=ALL&job_type=ALL">{{post.location}}</a></span></p>
+		</div>
+		<div class="row">
+			{% if post.post_type == "Interview" %}
+			<p><span class="post-preview">{{post.interview_process|tagline}}</span></p>
+			{% else %}
+			<p><span class="post-preview">{{post.other_details|tagline}}</span></p>
+			{% endif %}
+			
+		</div>
+		<a class="post-panel-link" href="{% url 'get_post' post_type=post.post_type post_id=post.pk %}"><span class="post-link"></span></a>
+    </div>
     </div>
 {% endfor %}
-    
-    <div class="pagination">
+
+	{% if posts.has_other_pages %}
+	<div class="pagination">
         <span class="step-links">
             {% if posts.has_previous %}
-                <a href="?page={{posts.previous_page_number}}">previous</a>
+                <a href="?page={{posts.previous_page_number}}">&lsaquo;&lsaquo;</a>
             {% endif %}
 
             <span class="current">
-                Page {{posts.number}} of {{posts.paginator.num_pages}}.
+                Page {{posts.number}} of {{posts.paginator.num_pages}}
             </span>
             
             {% if posts.has_next %}
-                <a href="?page={{posts.next_page_number}}">next</a>
+                <a href="?page={{posts.next_page_number}}">&rsaquo;&rsaquo;</a>
             {% endif %}
         </span>
     </div>
+    {% endif %}
+</div>
 {% endblock %}

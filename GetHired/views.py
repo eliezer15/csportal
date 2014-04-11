@@ -78,6 +78,7 @@ def get_field_posts(request, field_name, field_value):
         #name__iexact is a case-insensitvie match
 
         if (field_name == "company"):
+            field_value = field_value.replace('-', ' ')
             company = get_object_or_404(models.Company, name__iexact=field_value)
             interview_posts = models.Interview.objects.filter(company=company)
             offer_posts = models.Offer.objects.filter(company=company)

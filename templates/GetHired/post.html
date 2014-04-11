@@ -1,14 +1,26 @@
 {% extends "portal/base.html" %}
 {% load extra_templates %}
+{% load static %}
 {% load humanize %}
 {% block title %} Get Hired {% endblock %}
 {% block header %} Get Hired {% endblock %}
 
 {% block filter_menu %}
-	<h5><span class='labs'> Related Posts: </span></h5>
+<div class="container-fluid">
+<div class="row">
+	<h5><span class='labs'>Related Posts:</span></h5>
 	{% for post in related_posts %}
-        <a class="postLinks" href="{% url 'get_post' post_type=post.post_type post_id=post.pk %}">{{post.get_job_title_display}}</a><br>
+		<div class="col-md-12 related-post">
+		<div class="row">
+        <a class="postLinks" href="{% url 'get_post' post_type=post.post_type post_id=post.pk %}">{{post.company}} - {{post.post_type}}</a><br>
+		</div>
+		<div class="row related-post-location">
+		{{post.location}}
+		</div>
+		</div>
 	{% endfor %}
+	</div>
+</div>
 {% endblock %}
     
 {% block content %}
@@ -20,8 +32,6 @@
 <div class="postview col-md-12">
 	<div class="container-fluid">
 		<div class="postview-button-row row">
-			<span class="glyphicon glyphicon-arrow-left pull-left"></span>
-			<input type="button" onclick="history.back();" name="submit" class="btn btn-danger pull-left btn-info" value="Go Back" />
 			<a href="{% url 'render_edit_post' post_type=post.post_type post_id=post.pk %}">
    			 <input type="button" class="btn btn-danger pull-right btn-info" value="Edit/Delete Post" />
 			</a>
@@ -31,7 +41,7 @@
 		<div class="row">
     		<div class="title col-md-12">
     			<div class="row">
-    				<h3 class="title"><a href="/gethired/company/{{post.company}}">{{post.company}}</a></h3>
+    				<h3 class="title"><a href="/gethired/company/{{post.company|slugify}}">{{post.company}}</a></h3>
     				{% if post.post_type == "Interview" %}
                     <span class="postview-label label label-success">{{post.post_type}}</span>
                		{% else %}
@@ -42,22 +52,18 @@
 				<div class="row postview-jobinfo">
 					<div class="container-fluid">
 						<div class="row">
-							<span class="job_title lab">Job Title: <span class="content">{{post.get_job_title_display}}</span></span>
-				   			{% if post.post_type == "Interview" %} 
-    						{% else %}
-    						<span class="salary content"> ${{post.salary|intcomma}}{% if post.get_pay_type_display == "Yearly Salary" %}/yr{% endif %}</span>
-    						{% endif %}
+							<span class="job_title lab">Job Title: <span class="content"><a class="norm" href="/gethired/filter/?company=ALL&location=ALL&job_title={{post.job_title}}&job_type=ALL">{{post.get_job_title_display}}</a></span></span>
 						</div>
 						<div class="row">
-							<span class="job_type lab">Job Type: <span class="content">{{post.get_job_type_display}}</span></span>
+							<span class="job_type lab">Job Type: <span class="content"><a class="norm" href="/gethired/filter/?company=ALL&location=ALL&job_title=ALL&job_type={{post.job_type}}">{{post.get_job_type_display}}</a></span></span>
 							 {% if post.post_type == "Interview" %}  
 							<span class="rating">Interview Rating: {{post.interview_rating}}</span>
 							{% endif %}
 						</div>
 						<div class="row postview-about-row">
-							<span>Location: {{post.location}}</span>
-							<span class="applicant_degree">Applicant Degree: {{post.applicant_degree}}</span>
-							<span class="offer_status">Offer Status:{{post.get_offer_status_display}}</span>
+							<div><img src="{% static "/static/images/gethired/map_location_test.png" %}"><span class="postview-location"><a href="/gethired/filter/?company=ALL&location={{post.location.state}}&job_title=ALL&job_type=ALL"><em>{{post.location}}</em></a></span></div>
+							<div><img src="{% static "/static/images/gethired/grad_cap_test_g.png" %}"><span>{{post.applicant_degree|normdegree}}</span></div>
+							<div><img src="{% static "/static/images/gethired/thumbs_up_test.png" %}"><span>{{post.get_offer_status_display}}</span></div>
 						</div>
 					</div>
 				</div>
@@ -67,35 +73,36 @@
 			<div class="row">
 				<div class="col-md-12">
     				{% if post.post_type == "Interview" %}
-    				<label>Details:</label>   
-    				<p class="process">{{post.interview_process}}</p>
-    				<label>Questions Asked:</label>   
-    				<p class="questions">{{post.questions_asked}}</p>
-    				{% if post.offer_details %} <!--if offer received-->
-    				<p class="offer_details"><a href={{post.offer_details.url_slug}}>Offer</a></p>
-    				{% endif %}
-    
+    				<div class="row postview-interview-info-row">
+    					<label>Details:</label>   
+    					<p class="process">{{post.interview_process}}</p>
+    					<label>Questions Asked:</label>   
+    					<p class="questions">{{post.questions_asked}}</p>
+    					{% if post.offer_details %} <!--if offer received-->
+    					<p class="offer_details"><a href={{post.offer_details.url_slug}}>Offer</a></p>
+    					{% endif %}
+    				</div>
     				{% else %}
     				<div class="row postview-salary-block-row">
     					<div class="postview-salary-blocks">
     						<label>Salary:</label>
-							<p class="salary">${{post.salary|intcomma}}{% if post.get_pay_type_display == "Yearly Salary" %}/yr{% endif %}</p>
+							<p class="salary"><span class="content">${{post.salary|intcomma}}{% if post.get_pay_type_display == "Yearly Salary" %}/yr{% endif %}</span></p>
 						</div>
 						<div class="postview-salary-blocks">
 							<label>Signing Bonus:</label>
-    						<p class="bonus">${{post.signing_bonus|intcomma}}</p>
+    						<p class="bonus"><span class="content">${{post.signing_bonus|intcomma}}</span></p>
     					</div>
     					<div class="postview-salary-blocks">
     						<label>Relocation:</label>
-    						<p class="relocation">${{post.relocation_bonus|intcomma}}</p>
+    						<p class="relocation"><span class="content">${{post.relocation_bonus|intcomma}}</span></p>
     					</div>
     				</div>
-    				<div class="row">
-    				<label>Status:</label>
-    				<p class="status">{{post.get_offer_status_display}}</p>
-    				{% if post.other_details %}
-    				<label>Details:</label>
-    				<p class="details">{{post.other_details}}</p>
+    				<div class="row postview-offer-info-row">
+    					<label>Status:</label>
+    					<p class="status">{{post.get_offer_status_display}}</p>
+    					{% if post.other_details %}
+    					<label>Details:</label>
+    					<p class="details">{{post.other_details}}</p>
    		 			</div>
    		 			{% endif %}
 

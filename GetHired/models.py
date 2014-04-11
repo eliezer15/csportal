@@ -27,6 +27,7 @@ class Post(models.Model):
 
     class Meta:
         abstract = True
+        app_label = "GetHired"
 
 class Company(models.Model):
     name = models.CharField(max_length=30)
@@ -39,6 +40,7 @@ class Company(models.Model):
 
     class Meta:
         verbose_name_plural="companies"
+        app_label = "GetHired"
 
     def add_offer(self,offer):
         self.num_offers += 1
@@ -62,6 +64,7 @@ class Company(models.Model):
     def add_interview(self, interview):
         self.num_interviews+= 1
         self.avg_interview_rating = (self.avg_interview_rating + interview.interview_rating) / self.num_interviews
+    
 
 class Location(models.Model):
     city = models.CharField(max_length=40)
@@ -374,7 +377,7 @@ class Location(models.Model):
         ('MP', 'Northern Mariana Islands'),
         ('PR', 'Puerto Rico'),
         ('VI', 'Virgin Islands'),
-        ('IT,', 'International'),
+        ('IT', 'International'),
     )
 
     state = models.CharField(max_length=2,
@@ -386,6 +389,9 @@ class Location(models.Model):
             return self.country
         else:
             return "%s, %s, %s"%(self.city, self.state, self.country)
+    
+    class Meta:
+        app_label = 'GetHired'
 
 class GetHiredPost(Post):
     degree_choices = (
@@ -443,6 +449,7 @@ class GetHiredPost(Post):
 
     class Meta:
         abstract = True
+        app_label = 'GetHired'
 
 class Offer(GetHiredPost):
     pay_choices = (
@@ -478,6 +485,9 @@ class Offer(GetHiredPost):
         super(Offer, self).save()
         self.company.add_offer(self)
         self.company.save()
+        
+    class Meta:
+        app_label = 'GetHired'
 
 class Interview(GetHiredPost):
     interview_process = models.TextField()
@@ -514,3 +524,6 @@ class Interview(GetHiredPost):
         super(Interview, self).save()
         self.company.add_interview(self)
         self.company.save()
+        
+    class Meta:
+        app_label = 'GetHired'

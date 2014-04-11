@@ -1,16 +1,32 @@
 @CHARSET "ISO-8859-1";
 
+html{
+	height: 100%;
+}
+
 body {
 	overflow-x: hidden;
 	background: url(../images/background.jpg) no-repeat center center fixed;
 	font-family : "Open Sans";
 	font-size: 15px;
 	font-family: "Open Sans";
+	height: 100%
 }
 
 div.main-container{
+	position: relative;
 	padding-left: 0px;
 	padding-right: 0px;
+	height: 100%;
+}
+
+.tooltip{
+	font-size: 12px;
+	font-weight: 500;
+}
+
+.tooltip.in{
+	opacity: 0.5;
 }
 
 .back-to-top {
@@ -25,6 +41,7 @@ div.main-container{
 	text-align: center;
 	background: url(../images/backtotoptestinvert.png) no-repeat 0% 105% transparent;
 }
+
 a.back-to-top:focus{
 	outline:none;
 }
@@ -69,6 +86,8 @@ div.logorow {
 	background: url(../images/braintech.jpg) no-repeat 15% 85% transparent;
 	border: 1px solid #808080;
 	border-radius: 4px;
+	border-bottom-right-radius: 0;
+	border-bottom-left-radius: 0;
 }
 
 div.logocontainer {
@@ -97,7 +116,7 @@ div.postBar {
 span.logo {
 	color: #f4f4f4;
 	font-family: 'Droid Serif', 'Arial', 'Helvetica', sans-serif;
-	font-size: 35px;
+	font-size: 26px;
 	font-style: normal;
 	font-weight: 400;
 }
@@ -109,8 +128,13 @@ span.unc {
 span.logotag {
 	color: #56a0d3;
 	font-family: 'Roboto Condensed';
-	font-size: 30px;
+	font-size: 22px;
 	text-shadow: 1px 1px 1px black;
+}
+
+div.navrow{
+	background: url(../images/pw_maze_black.png);
+	border: 1px solid #808080;
 }
 
 div.navbar {
@@ -140,17 +164,40 @@ span.glyphicon {
 }
 
 ul.navlist li a {
-	color: #8C8C8C;
-	font-family: 'Anton', 'Arial', 'Helvetica', sans-serif;
-	font-size: 24px;
+	color: #428BCA;
+	font-family: 'Open Sans', 'Arial', 'Helvetica', sans-serif;
+	font-size: 20px;
 	line-height: 20px;
 	padding: 0px 15px 0px;
 	text-decoration: none;
-	text-transform: uppercase;
 }
 
 ul.navlist li a:hover {
-	color: #56a0d3;
+	color: white;
+}
+ul.navlist li a.current:after{
+  content: "";
+  margin-left: -15px; /* <-- moves it back half it's own width */
+  width: 0px; /* <-- don't need unit on 0 */
+  height: 0px; /* <-- don't need unit on 0 */
+  xxmargin: 0px auto; /* <-- eliminate, use above margin */
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid white; /* <-- change to bottom for up arrow */
+  position: absolute;
+  bottom: 1px;
+}
+ul.navlist li a:hover:after {
+  content: "";
+  margin-left: -15px; /* <-- moves it back half it's own width */
+  width: 0px; /* <-- don't need unit on 0 */
+  height: 0px; /* <-- don't need unit on 0 */
+  xxmargin: 0px auto; /* <-- eliminate, use above margin */
+  border-left: 5px solid transparent;
+  border-right: 5px solid transparent;
+  border-bottom: 5px solid #f00; /* <-- change to bottom for up arrow */
+  position: absolute;
+  bottom: 1px;
 }
 
 ul.navlist li a.current {
@@ -181,12 +228,20 @@ div.buttondiv {
 div.footer {
 	background: url(../images/pw_maze_black.png);
 }
+ul.footernav {
+	padding-top: 3px;
+}
+
+ul.footernav li {
+	display: inline;	
+	padding: 6px;
+}
 
 .filterdiv {
 	margin-top: 9px;
 }
 
-a.postLinks {
+a.post-panel-link {
 	text-decoration: none;
 	outline: none;
 }
@@ -196,10 +251,25 @@ div.posts {
 	border: thin solid #dbdbdb;
 	margin: 10px;
 	font-size: 18px;
-	color: black;
-	height: 200px;
+	color: #428BCA;
+	height: 220px;
 	width: 99%;
 	display: block;
+	position: relative;
+}
+
+span.post-link{
+	position:absolute; 
+	width:100%;
+	height:100%;
+	top:0;
+	left: 0;
+	z-index: 1;
+}
+
+a.norm{
+	position:relative;
+	z-index: 2;
 }
 
 div.posts:hover {
@@ -207,9 +277,15 @@ div.posts:hover {
 }
 
 div.posts span.Title {
-	font-size: 20px;
+	font-size: 22px;
 	font-weight: bold;
 	float: left;
+}
+
+p.post-preview-info{
+	font-size: 14px;
+	margin-bottom: 2px;
+	
 }
 
 div.posts span.Date {
@@ -218,7 +294,8 @@ div.posts span.Date {
 	font-size: 14px;
 }
 
-div.posts span.preview {
+span.post-preview{
+	font-size: 12px;
 	color: #B2B2B2;
 }
 
@@ -237,6 +314,7 @@ div.filterdiv div.contain span.labs {
 	padding-top: 5px;
 	padding-bottom: 5px;
 	display: block;
+	color: #428bca;
 }
 
 div.filterdiv div.contain input.btn {
@@ -283,6 +361,7 @@ div.postview h3.title {
 
 span.postview-label{
     margin-left: 5px;
+    font-size: 12px;
 }
 
 div.postview span.date{
@@ -293,8 +372,10 @@ div.postview span.date{
 
 div.postview-jobinfo{
 	margin:2px;
-	padding-top: 10px;
+    padding: 10px 0px;
+	margin-top: 15px;
     font-size: 14px;
+    border-top: 1px dashed #dbdbdb;
 }
 
 div.postview-jobinfo span.lab{
@@ -303,7 +384,7 @@ div.postview-jobinfo span.lab{
     font-size: inherit;
 }
 
-div.postview-jobinfo span.content{
+div.postview span.content{
 	color: #4390c6;
     font-weight: 500;
 }
@@ -318,22 +399,70 @@ div.postview-about-row{
     text-align: center;
 }
 
-div.postview-about-row span{
-    padding: 5px;
+span.postview-location a{
+	color: #a5a4a4;
+	text-decoration: underline;
+	padding-left: 4px;
 }
+
+span.postview-location a:hover{
+	color: #828181;
+}
+
+div.postview-about-row div{
+    padding: 5px;
+    display: inline-block;
+}
+
+div.postview-about-row img{
+	vertical-align: bottom;
+	padding: 0px 2px 0px 9px;
+}
+
 div.postview-salary-block-row{
     text-align:center;
+    border-bottom: 1px dashed #dbdbdb;
 }
+
 div.postview-salary-blocks{
     display:inline-block;
     width: 120px;
     text-align: center;
 }
 
+div.postview-offer-info-row{
+    padding-top: 15px;
+}
+
+div.postview-interview-info-row{
+   	border-top: 1px dashed #dbdbdb;
+   	padding-top: 10px;
+}
+
 div.postview-report-rate div.content{
 	float: right;
     font-size: 12px;
     font-weight: 700;
+}
+
+div.related-post{
+    font-size: 14px;
+    background-color: #fafafa;
+    border: 1px solid #bcbbbb;
+    padding-top: 4px;
+    margin-bottom: 8px;
+    padding-bottom: 4px;
+    border-radius: 3px;
+    text-align: center;
+}
+
+div.related-post:hover{
+	background-color: #ffffff;
+}
+
+div.related-post-location{
+    font-size: 12px;
+    color: #a4a4a4;
 }
 
 /*New Post CSS*/
@@ -352,10 +481,12 @@ div.newform select{
 
 div.new-interview-form label.control-label{
 	text-align: left;
+	font-size: 14px;
 }
 
 div.new-offer-form label.control-label{
 	text-align: left;
+	font-size: 14px;
 }
 
 ul.errorlist {
@@ -367,9 +498,31 @@ ul.errorlist {
 
 div.post-404{
 	text-align: center;
-	color: red;
+	margin-top: 50px;
 }
+	
 div.companyinfo{
 	margin: 1em 0.3em;
 	border: thin solid #DBDBDB;
+}
+
+div.pagination{
+	float:right;
+}
+
+div.filterdiv select{
+	width: 90%;
+}
+
+input.ui-autocomplete-input{
+	font-size: 12px;
+	height: 24px;
+	border-radius:0px;
+	width: 100%;
+}
+
+ul.ui-autocomplete{
+	max-height: 150px;
+	overflow-y: auto;
+	font-size: 12px;
 }
