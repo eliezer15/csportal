@@ -31,7 +31,7 @@ def tagline(value):
 @register.filter
 def normcompname(value):
     return value.replace(' ', '%20')
-
+	
 class AbsoluteURLNode(URLNode):
     def render(self, context):
         path = super(AbsoluteURLNode, self).render(context)

@@ -18,7 +18,7 @@
         </label>
     </div>
     <span class='labs'> Company:</span>
-	<select class="combobox" name="company">
+	<select class="form-control combobox" name="company">
 	<option value="ALL"></option>
     {% for c in filters.companies %}
     	<option value="{{c.name}}">{{c.name}}</option>
@@ -186,6 +186,7 @@
     </div>
     </div>
 {% endfor %}
+
 	{% if posts.has_other_pages %}
 	<div class="pagination">
         <span class="step-links">

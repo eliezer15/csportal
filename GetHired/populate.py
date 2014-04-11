@@ -2,7 +2,7 @@ import os
 from random import choice, randint
 from models import Offer, Interview, Location, Company
 from django.contrib.auth.models import User
-
+from datetime import datetime
 def populate():
 
     #companies and locations
@@ -22,7 +22,6 @@ def populate():
     Location.objects.create(city='Boston',state='MA')
     Location.objects.create(city='Raleigh',state='NC')
     Location.objects.create(city='San Francisco',state='CA')
-
 
     companies = Company.objects.all()
     locations = Location.objects.all()
@@ -46,7 +45,7 @@ What is your salary expectation?'''
     
     interview_source = ['CF','AO','RE']
     interview_offer = ['RC','NR','WA']
-	
+    date_interviewed = datetime.now()
     for i in range(0,20):
         add_Offer(user,
                   choice(degree),
@@ -71,10 +70,10 @@ What is your salary expectation?'''
                       questions,
                       choice(interview_source),
                       choice(interview_offer),
-                      randint(1,5))
+                      randint(1,5), date_interviewed)
 
 
-def add_Interview(user, degree, company, location, title, type, process, questions, source, status, rating):
+def add_Interview(user, degree, company, location, title, type, process, questions, source, status, rating, date_interviewed):
     p = Interview.objects.create(author= user, 
 								 applicant_degree = degree, 
                                  company = company,
@@ -86,7 +85,8 @@ def add_Interview(user, degree, company, location, title, type, process, questio
                                  interview_source = source,
                                  offer_status = status,
                                  offer_details = None,
-                                 interview_rating = rating)
+                                 interview_rating = rating,
+                                 date_interviewed = date_interviewed)
 
 
 def add_Offer(user, degree, company, location, title, type, pay_type, salary, bonus, relocation, status, details):
@@ -102,10 +102,9 @@ def add_Offer(user, degree, company, location, title, type, pay_type, salary, bo
                                  offer_status=status,
                                  other_details=details)
     return o
-'''	
+
 # Start execution here!
 if __name__ == '__main__':
     print "Starting population script..."
     os.environ.setdefault("DJANGO_SETTINGS_MODULE", "CSPortal.settings")
-    populate()
-'''    
+    populate()  

@@ -32,10 +32,49 @@ $(document).ready(function() {
 	$('div.newform').find('select').css('width', '100%');
 	$('div.newform').find('textarea').addClass('form-control');
 	$('div.newform').find('textarea').css('width', '100%');
+	//Do all except the checkbox
+	$('div.newform').find('input[type=checkbox]').removeClass('form-control');
+	
+	/* Event for disabling state selection when an international
+       country is selected when creating a new post */
+
+    $('div.newform select[name="country"]').change(function() {
+    	console.log($('div.newform select[name="country"] option:selected').val());
+    	if ($('div.newform select[name="country"] option:selected').val() !== "US") {
+    		$('div.newform select[name="state"]').prop("disabled", true);
+    		$('div.newform select[name="state"]').val('IT');
+    		$('div.newform select[name="state"] option[value="IT"]').removeAttr('disabled');
+    		$('div.newform input[name="city"]').prop("readonly", true);
+    		$('div.newform input[name="city"]').val('International');
+    	}
+    	else {
+    		$('div.newform select[name="state"]').removeAttr('disabled');
+    		$('div.newform select[name="state"] option[value="IT"]').removeAttr('disabled');
+    		$('div.newform select[name="state"]').val('AL');
+    		$('div.newform input[name="city"]').removeAttr('readonly');
+    		if ($('div.newform input[name="city"]').val() === 'International') {
+    			$('div.newform input[name="city"]').val('');
+    		}
+    	}
+    });
+
+    /* Parse number with commas on submit */
+    $('div.new-offer-form form').submit(function() {
+    	$(this).find('.money_field input').each(function() {
+    		$(this).val($(this).val().replace(/,/g,''));
+    	});
+    });
+
+    /* datepicker widget */
+    $(function() {
+ 		console.log($('div#dateinterviewed input'));
+    	$('div#dateinterviewed input').datepicker();
+  	});
 	
     $(function () {
         $("[rel='tooltip']").tooltip();
     });
+	
     if ($(document).height() == $(window).height()) {
     	$('div.footer').css('position','absolute');
     	$('div.footer').css('bottom','0');

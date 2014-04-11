@@ -71,16 +71,29 @@ def get_filters():
     filters['companies']= models.Company.objects.all()
     return filters
 
-def get_company_posts(request, company_name):
+def get_field_posts(request, field_name, field_value):
     if request.method == 'GET':
         context = RequestContext(request)
         context_dict = {}
         #name__iexact is a case-insensitvie match
-        company_name = company_name.replace('-', ' ')
-        company = get_object_or_404(models.Company,name__iexact=company_name)
-        #implicit, if company found
-        interview_posts = models.Interview.objects.filter(company=company)
-        offer_posts = models.Offer.objects.filter(company=company)
+
+        if (field_name == "company"):
+            field_value = field_value.replace('-', ' ')
+            company = get_object_or_404(models.Company, name__iexact=field_value)
+            interview_posts = models.Interview.objects.filter(company=company)
+            offer_posts = models.Offer.objects.filter(company=company)
+            context_dict['company'] = company
+
+        elif (field_name == "location"):
+            if (field_value == "International"):
+                interview_posts = models.Interview.objects.exclude(location__country="US")
+                offer_posts = models.Offer.objects.exclude(location__country="US")
+
+            else:
+                interview_posts = models.Interview.objects.filter(location__state=field_value)
+                offer_posts = models.Offer.objects.filter(location__state=field_value)
+
+            
         
         all_posts = sorted(
                        chain(interview_posts,offer_posts),
@@ -97,7 +110,6 @@ def get_company_posts(request, company_name):
         except EmptyPage:
             posts = paginator.page(paginator.num_pages)                  
         
-        context_dict['company'] = company
         context_dict['posts'] = posts
         context_dict['filters'] = get_filters()
 
@@ -133,27 +145,7 @@ def get_related_posts(post_type, post_id):
     return relevant_posts
 
 
-def get_location_posts(request, company_name):
-    if request.method == 'GET':
-        context = RequestContext(request)
-        context_dict = {}
-        #name__iexact is a case-insensitvie match
-        company = get_object_or_404(models.Company,name__iexact=company_name)
-        #implicit, if company found
-        interview_posts = models.Interview.objects.filter(company=company)
-        offer_posts = models.Offer.objects.filter(company=company)
-        
-        all_posts = sorted(
-                       chain(interview_posts,offer_posts),
-                       key=lambda post: post.date_posted,
-                       reverse=True
-                      )
-        
-        context_dict['company'] = company
-        context_dict['posts'] = all_posts
-        context_dict['filters'] = get_filters()
 
-    return render_to_response('GetHired/postlist.html', context_dict, context)
 
 def get_post(request, post_type, post_id):
     if request.method == 'GET':
@@ -171,10 +163,13 @@ def render_new_post_form(request,post_type,post_id=None):
         context = RequestContext(request)
         context_dict = {}
         form = form_dict[post_type]
+
         if post_id:
             Model = model_dict[post_type]
             post = Model.objects.get(pk=post_id)
             context_dict['form'] = form(instance=post)
+            context_dict['location_form'] = forms.LocationForm(instance=post.location)
+
             context_dict['header'] = 'Edit '
             context_dict['post_id'] = post_id
         else:
@@ -184,7 +179,7 @@ def render_new_post_form(request,post_type,post_id=None):
         
         context_dict['post_type'] = post_type
         return render_to_response('portal/newpost.html',context_dict,context)
-
+"""
 def render_edit_post_form(request,post_type,post_id):
     if request.method == 'GET':
         context = RequestContext(request)
@@ -200,38 +195,38 @@ def render_edit_post_form(request,post_type,post_id):
         
         context_dict['post_type'] = post_type
         return render_to_response('portal/newpost.html',context_dict,context)
-
+"""
 
 def create_post(request, post_type, post_id=None):
     if request.method == 'POST':
         data = request.POST
-        logging.debug(request.POST)
         Form = form_dict[post_type]
         context = RequestContext(request)
         context_dict = {}
         user_form = Form(request.POST)
-        l = None
+        location = None
+
         if user_form.is_valid():
             if ('country' in data) and ('state' in data) and ('city' in data):
-                l = models.Location(country=data['country'],state=data['state'],city=data['city'])
-                l.save()
+                location = models.Location(country=data['country'],state=data['state'],city=data['city'])
+                location.save()
             else:
                 pass #some error
 
-            logging.debug(l)
             if post_id:
                 model = model_dict[post_type]
                 post = model.objects.get(pk=post_id)
                 user_form = Form(request.POST, instance=post) 
             
             post = user_form.save()
-            post.location = l
+            post.location = location
             post.save()
             #return render_to_response('portal/newpost.html',context_dict, context)
             return HttpResponseRedirect('/gethired/')
         else:
             context_dict['form'] = user_form
-            logging.debug(user_form)
+            context_dict['location_form'] = forms.LocationForm({'country':data['country'],'state':data['state'],'city':data['city']})
+            logging.debug(context_dict['location_form'])
             context_dict['post_type'] = post_type
             return render_to_response('portal/newpost.html',context_dict, context)
 
@@ -284,9 +279,18 @@ def filter_posts(request):
             Model = model_dict[m]
             posts = Model.objects.filter(**filters)
             all_posts.extend(posts)
-
         all_posts.sort(key=lambda post: post.date_posted,reverse=True)
-        context_dict['posts'] = all_posts
+
+        paginator = Paginator(all_posts, 10)
+        page = request.GET.get('page')
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
+
+        context_dict['posts'] = posts
         context_dict['filters'] = get_filters()
         return render_to_response('GetHired/postlist.html',context_dict,context)
      

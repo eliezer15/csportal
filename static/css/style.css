@@ -41,6 +41,7 @@ div.main-container{
 	text-align: center;
 	background: url(../images/backtotoptestinvert.png) no-repeat 0% 105% transparent;
 }
+
 a.back-to-top:focus{
 	outline:none;
 }
@@ -214,6 +215,11 @@ div.moreinfo {
 	font-size: 14px;
 }
 
+div.money_field {
+	margin-left:15px;
+	width:92%;
+}
+
 div.buttondiv {
 	border-bottom: thin solid #dbdbdb;
 	padding-bottom: 10px margin-bottom: 15px;
@@ -225,6 +231,7 @@ div.footer {
 ul.footernav {
 	padding-top: 3px;
 }
+
 ul.footernav li {
 	display: inline;	
 	padding: 6px;
@@ -493,6 +500,7 @@ div.post-404{
 	text-align: center;
 	margin-top: 50px;
 }
+	
 div.companyinfo{
 	margin: 1em 0.3em;
 	border: thin solid #DBDBDB;
