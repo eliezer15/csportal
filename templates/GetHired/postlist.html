@@ -165,7 +165,7 @@
     		{% endif %}
     	</div>
     	<div class="row">
- 			<span class="Title" ><a class="norm" rel="tooltip" data-placement="right" title="Visit Company Data" href="/gethired/company/{{post.company}}">{{post.company}}</a></span> 
+ 			<span class="Title" ><a class="norm" rel="tooltip" data-placement="right" title="Visit Company Data" href="/gethired/company/{{post.company.name|slugify}}">{{post.company.name}}</a></span> 
 			<span class="Date"> {{post.date_posted|naturalday|title}}</span>
 		</div>
 		<div class="container-fluid">

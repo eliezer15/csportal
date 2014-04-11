@@ -27,7 +27,10 @@ def normdegree(value):
 @register.filter
 def tagline(value):
     return value[:140] + '...'
-    
+
+@register.filter
+def normcompname(value):
+    return value.replace(' ', '%20')
 
 class AbsoluteURLNode(URLNode):
     def render(self, context):

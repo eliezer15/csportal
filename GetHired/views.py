@@ -76,6 +76,7 @@ def get_company_posts(request, company_name):
         context = RequestContext(request)
         context_dict = {}
         #name__iexact is a case-insensitvie match
+        company_name = company_name.replace('-', ' ')
         company = get_object_or_404(models.Company,name__iexact=company_name)
         #implicit, if company found
         interview_posts = models.Interview.objects.filter(company=company)

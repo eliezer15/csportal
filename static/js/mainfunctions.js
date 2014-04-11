@@ -60,8 +60,12 @@ $(document).ready(function() {
     	}
     } else{
     		if(uri.segment(1) == "company"){
-    			$('div.filterdiv select[name="company"] option[value="'+uri.segment(2)+'"]').prop('selected', true);
+    			var name = uri.segment(2).replace("-"," ");
+    			$('div.filterdiv select[name="company"] option[value="'+name.toProperCase()+'"]').prop('selected', true);
     		}
     }
-    
 });
+
+String.prototype.toProperCase = function () {
+    return this.replace(/\w\S*/g, function(txt){return txt.charAt(0).toUpperCase() + txt.substr(1).toLowerCase();});
+};
