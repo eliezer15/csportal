@@ -48,27 +48,8 @@ def get_filters():
                        reverse = True
                       )
     filters = {}
-	
-    """The top companies stuff is not used anymore
-    top_companies = {}
-    #initialize
-    for post in all_posts:
-        top_companies[post.company.name] = 0
 
-    #count the occurences of each company
-    for post in all_posts:
-        top_companies[post.company.name] += 1
-
-    sorted_list = sorted(top_companies.iteritems(), 
-                         key=operator.itemgetter(1),
-                         reverse=True
-                         )
-    top_companies = []
-    limit = 5
-    for i in range(0,limit):
-        top_companies.append((sorted_list[i])[0])
-    """
-    filters['companies']= models.Company.objects.all()
+    filters['companies']= models.Company.objects.order_by('name')
     return filters
 
 def get_field_posts(request, field_name, field_value):
@@ -165,6 +146,8 @@ def render_new_post_form(request,post_type,post_id=None):
         context_dict = {}
         form = form_dict[post_type]
 
+        context_dict['companies'] = models.Company.objects.order_by('name');
+
         if post_id:
             Model = model_dict[post_type]
             post = Model.objects.get(pk=post_id)
@@ -180,23 +163,7 @@ def render_new_post_form(request,post_type,post_id=None):
         
         context_dict['post_type'] = post_type
         return render_to_response('portal/newpost.html',context_dict,context)
-"""
-def render_edit_post_form(request,post_type,post_id):
-    if request.method == 'GET':
-        context = RequestContext(request)
-        context_dict = {}
-        form = form_dict[post_type]
-        
-        if post_id:
-            Model = model_dict[post_type]
-            post = Model.objects.get(pk=post_id)
-            context_dict['form'] = form(instance=post)
-            context_dict['header'] = 'Edit '
-            context_dict['post_id'] = post_id
-        
-        context_dict['post_type'] = post_type
-        return render_to_response('portal/newpost.html',context_dict,context)
-"""
+
 
 def create_post(request, post_type, post_id=None):
     if request.method == 'POST':
@@ -207,12 +174,9 @@ def create_post(request, post_type, post_id=None):
         user_form = Form(request.POST)
         location = None
 
-        if user_form.is_valid():
-            if ('country' in data) and ('state' in data) and ('city' in data):
-                location = models.Location(country=data['country'],state=data['state'],city=data['city'])
-                location.save()
-            else:
-                pass #some error
+        if user_form.is_valid() and ('country' in data) and ('state' in data) and ('city' in data) and ('company' in data):
+            location = models.Location(country=data['country'],state=data['state'],city=data['city'])
+            location.save()
 
             if post_id:
                 model = model_dict[post_type]
@@ -227,27 +191,9 @@ def create_post(request, post_type, post_id=None):
         else:
             context_dict['form'] = user_form
             context_dict['location_form'] = forms.LocationForm({'country':data['country'],'state':data['state'],'city':data['city']})
-            logging.debug(context_dict['location_form'])
             context_dict['post_type'] = post_type
+            context_dict['companies'] = models.Company.objects.order_by('name')
             return render_to_response('portal/newpost.html',context_dict, context)
-
-"""def edit_post(request, post_type, post_id=None):
-    if request.method == 'POST':
-        Form = form_dict[post_type]
-        context = RequestContext(request)
-        context_dict = {}
-        if user_form.is_valid():
-            model = model_dict[post_type]
-            post = model.objects.get(pk=post_id)
-            user_form = Form(request.POST, instance=post)
-
-            user_form.save()
-            return HttpResponseRedirect('/GetHired/')
-        else:
-            context_dict['form'] = user_form
-            context_dict['post_type'] = post_type
-            return render_to_response('portal/newpost.html',context_dict, context)
-"""
 
 def filter_posts(request):
     if request.method == 'GET':

@@ -16,7 +16,12 @@
         							<label for="id_company" class="control-label col-md-12"><span class="required">* </span>Company: </label>
         							{{ form.company.errors }}
         							<div class="col-md-12">
-        								{{form.company}}
+    								    <select class="form-control combobox" name="company">
+                                        <option></option>
+                                        {% for c in companies %}
+                                            <option value="{{c.pk}}">{{c.name}}</option>
+                                        {% endfor %}
+                                        </select>
         							</div>
 								</div>
 								<div class="form-group">
