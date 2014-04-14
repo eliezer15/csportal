@@ -144,8 +144,8 @@
 			<h1>{{company.name}}</h1>
 			<p>Average Salary: ${{company.avg_salary|intcomma}}</p>
 			<p>Average Interview Rating: {{company.avg_interview_rating}}</p>
-			<p>Number of Interviews: 10</p>
-			<p>Number of Offers: 3</p>
+			<p>Number of Interviews: {{interview_count}}</p>
+			<p>Number of Offers: {{offer_count}}</p>
 		</div>
 	</div>
 {% endif %} 
@@ -166,7 +166,7 @@
     	</div>
     	<div class="row">
  			<span class="Title" ><a class="norm" rel="tooltip" data-placement="right" title="Visit Company Data" href="/gethired/company/{{post.company.name|slugify}}">{{post.company.name}}</a></span> 
-			<span class="Date"> {{post.date_posted|naturalday|title}}</span>
+			<span class="Date"> {{post.date_posted|naturaltime|title}}</span>
 		</div>
 		<div class="container-fluid">
 		<div class="row">

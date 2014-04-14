@@ -31,7 +31,16 @@ def tagline(value):
 @register.filter
 def normcompname(value):
     return value.replace(' ', '%20')
-	
+
+@register.filter
+def rating(value):
+    starstring = ""
+    for x in range (0, value):
+        starstring = starstring + "<span class=fill>&#9733</span>"
+    for x in range(0, 5-value):
+        starstring= starstring +"<span>&#9734;</span>"
+    return starstring
+
 class AbsoluteURLNode(URLNode):
     def render(self, context):
         path = super(AbsoluteURLNode, self).render(context)

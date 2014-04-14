@@ -383,6 +383,14 @@ div.postview-jobinfo span.lab{
     font-weight: 600;
     font-size: inherit;
 }
+div.postview span.stars{
+    cursor: default;
+}
+div.postview span.stars{
+    font-size: 18px;
+    font-weight: 500;
+    color: #f9df00;
+}
 
 div.postview span.content{
 	color: #4390c6;
@@ -525,4 +533,9 @@ ul.ui-autocomplete{
 	max-height: 150px;
 	overflow-y: auto;
 	font-size: 12px;
+}
+
+.required{
+    color: red;
+    font-size: 10px;
 }

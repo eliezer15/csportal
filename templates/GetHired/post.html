@@ -57,7 +57,7 @@
 						<div class="row">
 							<span class="job_type lab">Job Type: <span class="content"><a class="norm" href="/gethired/filter/?company=ALL&location=ALL&job_title=ALL&job_type={{post.job_type}}">{{post.get_job_type_display}}</a></span></span>
 							 {% if post.post_type == "Interview" %}  
-							<span class="rating">Interview Rating: {{post.interview_rating}}</span>
+							<span class="rating lab">Interview Experience:<span class="stars"> {{post.interview_rating|rating|safe}}</span></span>
 							{% endif %}
 						</div>
 						<div class="row postview-about-row">
@@ -74,6 +74,8 @@
 				<div class="col-md-12">
     				{% if post.post_type == "Interview" %}
     				<div class="row postview-interview-info-row">
+    					<label>Date of Interview:</label>   
+    					<p class="date-interviewed">{{post.date_interviewed}}</p>
     					<label>Details:</label>   
     					<p class="process">{{post.interview_process}}</p>
     					<label>Questions Asked:</label>   
@@ -113,7 +115,6 @@
 		<div class="postview-report-rate row">
     		<div class="content">
     			<p>Report this post</p>
-    			<p>Rate this post</p>
     		</div>
     	</div>
 	</div>
