@@ -83,8 +83,6 @@ def get_field_posts(request, field_name, field_value):
             interview_posts = models.Interview.objects.filter(company=company)
             offer_posts = models.Offer.objects.filter(company=company)
             context_dict['company'] = company
-            context_dict['interview_count'] = len(interview_posts)
-            context_dict['offer_count'] = len(offer_posts)
 
         elif (field_name == "location"):
             if (field_value == "International"):
