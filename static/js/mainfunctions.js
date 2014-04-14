@@ -114,7 +114,6 @@ $(document).ready(function() {
         	hover_div.show();
         	hover_div.css('top', action_div.offset().top+'px');
         	hover_div.css('left', (action_div.offset().left + hover_div.width()) +'px');
-        	console.log(action_div.offset().top);
         	}).mouseleave(function(){
         	hover_div.hide();
         	});

@@ -383,10 +383,8 @@ div.postview-jobinfo span.lab{
     font-weight: 600;
     font-size: inherit;
 }
-div.postview span.stars{
+span.stars{
     cursor: default;
-}
-div.postview span.stars{
     font-size: 18px;
     font-weight: 500;
     color: #f9df00;
@@ -549,6 +547,7 @@ div.hover-div{
     padding: 10px;
     opacity: .80;
     border: 1px solid #dbdbdb;
+    z-index: 2;
 }
 
 div.hover-div span{
