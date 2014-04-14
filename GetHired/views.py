@@ -132,6 +132,7 @@ def get_post(request, post_type, post_id):
     if request.method == 'GET':
         context = RequestContext(request)
         context_dict = {}
+        post_type = post_type.capitalize()
         model = model_dict[post_type]
         post = get_object_or_404(model, pk=post_id)
         context_dict['post'] = post

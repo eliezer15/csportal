@@ -7,18 +7,23 @@
 
 {% block filter_menu %}
 <div class="container-fluid">
-<div class="row">
-	<h5><span class='labs'>Related Posts:</span></h5>
-	{% for post in related_posts %}
-		<div class="col-md-12 related-post">
-		<div class="row">
-        <a class="postLinks" href="{% url 'get_post' post_type=post.post_type post_id=post.pk %}">{{post.company}} - {{post.post_type}}</a><br>
-		</div>
-		<div class="row related-post-location">
-		{{post.location}}
-		</div>
-		</div>
-	{% endfor %}
+	<div class="row">
+		<h5><span class='labs'>Related Posts:</span></h5>
+		{% for post in related_posts %}
+			<div class="col-md-12 related-post" data-num="{{forloop.counter}}">
+				<div class="row">
+        			<a class="postLinks" href="{% url 'get_post' post_type=post.post_type.lower post_id=post.pk %}">{{post.company}} - {{post.post_type}}</a><br>
+				</div>
+				<div class="row related-post-location">
+					{{post.location}}
+				</div>
+			</div>
+			<div class="hover-test" style="display: none;" data-num="{{forloop.counter}}">
+				<p>Date posted: <span class="data">{{post.date_posted|naturalday|title}}</span></p>
+				<p>Job Title: <span class="data">{{post.get_job_title_display}}</span></p>
+				<p>Job Type: <span class="data">{{post.get_job_type_display}}</span></p>
+			</div>
+		{% endfor %}
 	</div>
 </div>
 {% endblock %}
