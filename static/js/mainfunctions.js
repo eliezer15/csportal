@@ -39,16 +39,16 @@ $(document).ready(function() {
        country is selected when creating a new post */
 
     $('div.newform select[name="country"]').change(function() {
-    	console.log($('div.newform select[name="country"] option:selected').val());
+
     	if ($('div.newform select[name="country"] option:selected').val() !== "US") {
-    		$('div.newform select[name="state"]').prop("disabled", true);
+    		$('div.newform select[name="state"] option').prop("disabled", true);
     		$('div.newform select[name="state"]').val('IT');
     		$('div.newform select[name="state"] option[value="IT"]').removeAttr('disabled');
     		$('div.newform input[name="city"]').prop("readonly", true);
     		$('div.newform input[name="city"]').val('International');
     	}
     	else {
-    		$('div.newform select[name="state"]').removeAttr('disabled');
+    		$('div.newform select[name="state"] option').removeAttr('disabled');
     		$('div.newform select[name="state"] option[value="IT"]').removeAttr('disabled');
     		$('div.newform select[name="state"]').val('AL');
     		$('div.newform input[name="city"]').removeAttr('readonly');

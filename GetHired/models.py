@@ -386,7 +386,7 @@ class Location(models.Model):
         
     def __unicode__(self):
         if self.country != 'US':
-            return self.country
+            return self.get_country_display()
         else:
             return "%s, %s, %s"%(self.city, self.state, self.country)
     
