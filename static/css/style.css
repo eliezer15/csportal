@@ -539,3 +539,19 @@ ul.ui-autocomplete{
     color: red;
     font-size: 10px;
 }
+
+div.hover-div{
+    width: 200px;
+    height: 100px;
+    font-size: 10px;
+    background-color: white;
+    border-radius: 5px;
+    padding: 10px;
+    opacity: .80;
+    border: 1px solid #dbdbdb;
+}
+
+div.hover-div span{
+    color: #428BCA;
+    font-weight: 700;
+}

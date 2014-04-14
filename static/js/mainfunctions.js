@@ -39,7 +39,6 @@ $(document).ready(function() {
        country is selected when creating a new post */
 
     $('div.newform select[name="country"]').change(function() {
-    	console.log($('div.newform select[name="country"] option:selected').val());
     	if ($('div.newform select[name="country"] option:selected').val() !== "US") {
     		$('div.newform select[name="state"]').prop("disabled", true);
     		$('div.newform select[name="state"]').val('IT');
@@ -67,7 +66,6 @@ $(document).ready(function() {
 
     /* datepicker widget */
     $(function() {
- 		console.log($('div#dateinterviewed input'));
     	$('div#dateinterviewed input').datepicker();
   	});
 	
@@ -103,6 +101,25 @@ $(document).ready(function() {
     			$('div.filterdiv select[name="company"] option[value="'+name.toProperCase()+'"]').prop('selected', true);
     		}
     }
+    
+    
+    
+    $('div.hover-test').each(function(index, value){
+    	var number = $(value).attr('data-num');
+        $(value).remove();
+        $('body').append('<div class="hover-div hover-'+number+'" style="display: none; position:absolute;">'+$(value).html()+'</div>');
+        var hover_div = $('div.hover-'+number);
+        var action_div = $('div.related-post[data-num="'+number+'"]');
+        	action_div.mouseenter(function(){
+        	hover_div.show();
+        	hover_div.css('top', action_div.offset().top+'px');
+        	hover_div.css('left', (action_div.offset().left + hover_div.width()) +'px');
+        	console.log(action_div.offset().top);
+        	}).mouseleave(function(){
+        	hover_div.hide();
+        	});
+    });
+    
 });
 
 String.prototype.toProperCase = function () {
