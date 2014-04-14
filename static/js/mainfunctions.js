@@ -39,10 +39,7 @@ $(document).ready(function() {
        country is selected when creating a new post */
 
     $('div.newform select[name="country"]').change(function() {
-<<<<<<< HEAD
 
-=======
->>>>>>> 7126ea4a42755a65d3eed9ca8d4088e351722daf
     	if ($('div.newform select[name="country"] option:selected').val() !== "US") {
     		$('div.newform select[name="state"] option').prop("disabled", true);
     		$('div.newform select[name="state"]').val('IT');
