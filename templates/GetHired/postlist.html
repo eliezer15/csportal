@@ -193,7 +193,7 @@
 	<div class="pagination">
         <span class="step-links">
             {% if posts.has_previous %}
-                <a href="?page={{posts.previous_page_number}}">&lsaquo;&lsaquo;</a>
+                <a href="{% append_to_get page=posts.previous_page_number %}">&lsaquo;&lsaquo;</a>
             {% endif %}
 
             <span class="current">
@@ -201,7 +201,7 @@
             </span>
             
             {% if posts.has_next %}
-                <a href="?page={{posts.next_page_number}}">&rsaquo;&rsaquo;</a>
+                <a href="{% append_to_get page=posts.next_page_number %}">&rsaquo;&rsaquo;</a>
             {% endif %}
         </span>
     </div>
