@@ -9,12 +9,12 @@
 <span class='labs'> Post Type: </span>
     <div class="checkbox">
         <label>
-            <input type="checkbox" name="post_type" value="Interview"> Interview
+            <input type="checkbox" name="post_type" value="interview"> Interview
         </label>
     </div>
     <div class="checkbox">
         <label>
-            <input type="checkbox" name="post_type" value="Offer"> Offer
+            <input type="checkbox" name="post_type" value="offer"> Offer
         </label>
     </div>
     <span class='labs'> Company:</span>
@@ -132,9 +132,9 @@
 			<div class="btn-group" style="padding-top: 5px;">
 				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">New Post <span class="caret"></span></button>
 				<ul class="dropdown-menu" role="menu">
-					<li><a href="{% url 'render_new_post' post_type='Interview' %}">Interview</a></li>
+					<li><a href="{% url 'render_new_post' post_type='interview' %}">Interview</a></li>
 						<li class="divider"></li>
-						<li><a href="{% url 'render_new_post' post_type='Offer' %}">Offer</a></li>
+						<li><a href="{% url 'render_new_post' post_type='offer' %}">Offer</a></li>
 				</ul>
 			</div>
 		</div>
@@ -160,7 +160,7 @@
 {% for post in posts %}
 	<div class="posts panel">
     	<div class="row">
-    		{% if post.post_type == "Interview" %}
+    		{% if post.post_type == "interview" %}
     		<p><span class="label label-success">{{post.post_type}}</span></p>
     		{% else %}
     		<p><span class="label label-warning">{{post.post_type}}</span></p>
@@ -177,7 +177,7 @@
 			<p class="post-preview-info"><span class="location"><a class="norm" rel="tooltip" data-placement="right" title="Posts by Location" href="/gethired/filter/?company=ALL&location={{post.location.state}}&job_title=ALL&job_type=ALL">{{post.location}}</a></span></p>
 		</div>
 		<div class="row">
-			{% if post.post_type == "Interview" %}
+			{% if post.post_type == "interview" %}
 			<p><span class="post-preview">{{post.interview_process|tagline}}</span></p>
 			{% else %}
 			<p><span class="post-preview">{{post.other_details|tagline}}</span></p>

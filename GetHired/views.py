@@ -3,14 +3,12 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template import  RequestContext
 from django.shortcuts import render_to_response,get_object_or_404
 from django.http import HttpResponseRedirect
-from django.contrib.auth.models import User
-from django.db.models import Q
+from django.http import HttpResponse
 from CSPortal.PostType import model_dict, form_dict
 from itertools import chain
-from django.core.urlresolvers import reverse
 from GetHired import models, forms
 import logging
-import operator
+import simplejson
 #main page view
 
 def main(request):
@@ -125,14 +123,10 @@ def get_related_posts(post_type, post_id):
 
     return relevant_posts
 
-
-
-
 def get_post(request, post_type, post_id):
     if request.method == 'GET':
         context = RequestContext(request)
         context_dict = {}
-        post_type = post_type.capitalize()
         model = model_dict[post_type]
         post = get_object_or_404(model, pk=post_id)
         context_dict['post'] = post
@@ -241,3 +235,15 @@ def filter_posts(request):
         context_dict['filters'] = get_filters()
         return render_to_response('GetHired/postlist.html',context_dict,context)
      
+def get_json_list(request, post_type):
+    if request.method == 'GET':
+        Model = model_dict[post_type]
+        all_posts = Model.objects.values_list('name', flat= True).order_by('name') 
+        #convert unicode to string
+        string_list = []
+        for p in all_posts:
+            string_list.append(p.encode('ascii','ignore'))
+
+        return HttpResponse(simplejson.dumps(string_list),
+                            content_type="application/json")
+

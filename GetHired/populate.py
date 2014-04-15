@@ -45,6 +45,7 @@ What is your salary expectation?'''
     
     interview_source = ['CF','AO','RE']
     interview_offer = ['RC','NR','WA']
+    interview_type = ['OC', 'OS', 'TP', 'VC']
     date_interviewed = datetime.now()
     for i in range(0,20):
         add_Offer(user,
@@ -69,11 +70,12 @@ What is your salary expectation?'''
                       interview_process,
                       questions,
                       choice(interview_source),
+                      choice(interview_type),
                       choice(interview_offer),
                       randint(1,5), date_interviewed)
 
 
-def add_Interview(user, degree, company, location, title, type, process, questions, source, status, rating, date_interviewed):
+def add_Interview(user, degree, company, location, title, type, process, questions, source, interview_type, status, rating, date_interviewed):
     p = Interview.objects.create(author= user, 
 								 applicant_degree = degree, 
                                  company = company,
@@ -83,6 +85,7 @@ def add_Interview(user, degree, company, location, title, type, process, questio
                                  interview_process = process,
                                  questions_asked = questions,
                                  interview_source = source,
+                                 interview_type = interview_type,
                                  offer_status = status,
                                  offer_details = None,
                                  interview_rating = rating,

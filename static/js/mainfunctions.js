@@ -78,6 +78,8 @@ $(document).ready(function() {
     	$('div.footer').css('position','absolute');
     	$('div.footer').css('bottom','0');
     }
+
+
     
     /*URI implementation to grab URL search parameters and track user searches. We then select the
      * appropriate selectors/input values in the filterdiv

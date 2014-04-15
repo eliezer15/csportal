@@ -5,8 +5,6 @@ Created on Mar 18, 2014
 '''
 from django.db import models
 from django.contrib.auth.models import User
-from django.core.validators import MinValueValidator
-from django.core.validators import MaxValueValidator
 import logging
 
 class Post(models.Model):
@@ -16,12 +14,14 @@ class Post(models.Model):
     post_type = models.CharField(max_length=20,editable=False)
     date_posted = models.DateTimeField(auto_now_add=True) #automatically set upon object creation
     times_reported = models.IntegerField(default=0, editable=False)
+    deleted = models.BooleanField(default=False, editable=False)
+
     def __unicode__(self):
         return self.url
 
     def save(self, **kwargs):
         super(Post, self).save()
-        self.post_type = self.__class__.__name__
+        self.post_type = self.__class__.__name__.lower()
         self.url_slug = '/post/%s/%i/' % (self.post_type, self.id)
         super(Post, self).save()
 
@@ -381,8 +381,7 @@ class Location(models.Model):
     )
 
     state = models.CharField(max_length=2,
-                             choices=US_STATES,
-                             default='AL')
+                             choices=US_STATES)
         
     def __unicode__(self):
         if self.country != 'US':
@@ -406,8 +405,7 @@ class GetHiredPost(Post):
             ('OT','Other'),
                       )
     applicant_degree = models.CharField(max_length=2,
-                                        choices=degree_choices,
-                                        default='BS')
+                                        choices=degree_choices)
     company = models.ForeignKey(Company, related_name = "%(app_label)s_%(class)s_location")
     location = models.ForeignKey(Location, related_name="%(app_label)s_%(class)s_location", blank = True, null = True)
 
@@ -426,8 +424,7 @@ class GetHiredPost(Post):
     )
 
     job_title = models.CharField(max_length=2,
-                                 choices=title_choices,
-                                 default='SE')
+                                 choices=title_choices)
 
     type_choices = (
             ('FT','Full Time'),
@@ -441,8 +438,7 @@ class GetHiredPost(Post):
             ('OT','Other'),
             )
     job_type = models.CharField(max_length=2,
-                                choices=type_choices,
-                                default='FT')
+                                choices=type_choices)
 
     def __unicode__(self):
         return "%s, %s, %s"%(self.author, self.company, self.location)
@@ -461,8 +457,7 @@ class Offer(GetHiredPost):
             ('OT','Other'),
             )
     pay_type = models.CharField(max_length=2,
-                                choices=pay_choices,
-                                default='YS')
+                                choices=pay_choices)
 
     display_salary = models.BooleanField()
     salary = models.DecimalField(decimal_places=2, max_digits=8)
@@ -477,8 +472,7 @@ class Offer(GetHiredPost):
             ('OT','Other'),
             )
     offer_status = models.CharField(max_length=2,
-                                    choices=offer_choices,
-                                    default='WA')
+                                    choices=offer_choices)
     other_details = models.TextField(blank=True, null=True)
 
     def save(self, **kwargs):
@@ -490,6 +484,16 @@ class Offer(GetHiredPost):
         app_label = 'GetHired'
 
 class Interview(GetHiredPost):
+    type_choices = (
+        ('OC', 'On campus'),
+        ('OS', 'On site'),
+        ('TP', 'Telephone'),
+        ('VC', 'Videoconference'),
+        ('OT', 'Other'),
+        )
+
+    interview_type = models.CharField(max_length=2,
+                                    choices=type_choices)
     interview_process = models.TextField()
     questions_asked = models.TextField()
 
@@ -502,8 +506,7 @@ class Interview(GetHiredPost):
             ('OT','Other'),
             )
     interview_source = models.CharField(max_length=2,
-                                    choices=source_choices,
-                                    default='WA')
+                                    choices=source_choices)
     
     date_interviewed = models.DateField()
 
@@ -513,11 +516,24 @@ class Interview(GetHiredPost):
             ('WA','Waiting for Offer'),
             )
     offer_status = models.CharField(max_length=2,
-                                    choices=offer_choices,
-                                    default='WA')
+                                    choices=offer_choices)
     offer_details = models.OneToOneField(Offer, null=True, blank=True)
-    interview_rating = models.IntegerField(validators=[MaxValueValidator(5),
-                                                      MinValueValidator(0)])
+
+    #this looks dumb, but it's necessary, Django won't accept int literals in the tuple
+    ONE=1
+    TWO=2
+    THREE=3
+    FOUR=4
+    FIVE=5
+
+    rating_choices = (
+        (ONE, '1'),
+        (TWO, '2'),
+        (THREE,'3'),
+        (FOUR,'4'),
+        (FIVE,'5'),
+        )
+    interview_rating = models.IntegerField(choices=rating_choices)
 
 
     def save(self, **kwargs):
