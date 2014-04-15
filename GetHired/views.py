@@ -185,7 +185,7 @@ def create_post(request, post_type, post_id=None):
                 post = model.objects.get(pk=post_id)
                 user_form = Form(request.POST, instance=post) 
             
-            post = user_form.save()
+            post = user_form.save(commit=False)
             post.location = location
             post.company = company
             post.save()
@@ -198,6 +198,8 @@ def create_post(request, post_type, post_id=None):
             context_dict['company_form'] = forms.CompanyForm({'name':data['name']})
             context_dict['post_type'] = post_type
             context_dict['companies'] = models.Company.objects.order_by('name')
+            logging.debug(user_form)
+
             return render_to_response('portal/newpost.html',context_dict, context)
 
 def filter_posts(request):

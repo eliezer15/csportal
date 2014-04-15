@@ -30,7 +30,7 @@ def populate():
     title = ['SE','WD','ST','DE','BA','CO']
     job_type = ['FT','PT','PI','CO']
     
-    pay_type = ['YS']
+    pay_type = ['YS','MS', 'WS']
     salaries = [50000, 60000, 70000, 80000]
     bonus = [3000, 10000, 5000]
     offer_status = ['AC','NA','NE','WA']
@@ -90,8 +90,11 @@ def add_Interview(user, degree, company, location, title, type, process, questio
                                  offer_details = None,
                                  interview_rating = rating,
                                  date_interviewed = date_interviewed)
-    p.company.add_interview(p)
-
+    print("Added interview for company %s"%p.company)
+    print("The interview rating was %i"%(p.interview_rating))
+    print("The number of interviews for company %s is now %i"%(p.company, p.company.num_interviews))
+    print("The average interview rating is %.2f"%(p.company.avg_interview_rating))
+    print("END")
 
 def add_Offer(user, degree, company, location, title, type, pay_type, salary, bonus, relocation, status, details):
     o = Offer.objects.create(author= user, 
@@ -101,11 +104,17 @@ def add_Offer(user, degree, company, location, title, type, pay_type, salary, bo
                                  job_title = title,
                                  job_type = type,
                                  salary = salary,
+                                 pay_type = pay_type,
                                  signing_bonus=bonus,
                                  relocation_bonus=relocation,
                                  offer_status=status,
                                  other_details=details)
-    o.company.add_offer(o)
+
+    print("Added offer for company %s"%o.company)
+    print("The offer salary was %i"%(o.salary))
+    print("The number of offers for company %s is now %i"%(o.company, o.company.num_offers))
+    print("The average salary is %.2f"%(o.company.avg_salary))
+    print("END")
 
 # Start execution here!
 if __name__ == '__main__':

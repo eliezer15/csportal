@@ -31,7 +31,7 @@ class Post(models.Model):
 
 class Company(models.Model):
     name = models.CharField(max_length=30)
-    avg_salary = models.DecimalField(decimal_places=2, max_digits=10, default=0, editable=False)
+    avg_salary = models.DecimalField(decimal_places=2, max_digits=10, default=999.99, editable=False)
     avg_interview_rating = models.DecimalField(decimal_places=1, max_digits=10, default=0, editable=False)
     num_offers = models.IntegerField(default=0, editable=False)
     num_interviews = models.IntegerField(default=0, editable=False)
@@ -44,28 +44,11 @@ class Company(models.Model):
 
     def add_offer(self,offer):
         self.num_offers += 1
-        #Need to check what type of salary we're dealing with
-        salary = 0
-        if offer.pay_type == "YS":
-            salary = offer.salary
-
-        elif offer.pay_type == "MS":
-            salary = offer.salary * 12
-
-        elif offer.pay_type == "HS":
-            #Assume 40 hr week
-            salary = offer.salary * 40 * 12
-        elif offer.pay_type == "TS":
-            #Do not account salary
-            salary = self.avg_salary
-
-        self.avg_salary = (self.avg_salary + salary)/self.num_offers
-        logging.debug("Added salary")
     
     def add_interview(self, interview):
+        current_rating = self.avg_interview_rating * self.num_interviews
         self.num_interviews+= 1
-        self.avg_interview_rating = (self.avg_interview_rating + interview.interview_rating) / self.num_interviews
-        logging.debug("Added interview")
+        self.avg_interview_rating = (current_rating + interview.interview_rating) / self.num_interviews
 
 class Location(models.Model):
     city = models.CharField(max_length=40)
@@ -407,8 +390,8 @@ class GetHiredPost(Post):
                       )
     applicant_degree = models.CharField(max_length=2,
                                         choices=degree_choices)
-    company = models.ForeignKey(Company, related_name = "%(app_label)s_%(class)s_location", blank=True, null=True)
-    location = models.ForeignKey(Location, related_name="%(app_label)s_%(class)s_location", blank = True, null = True)
+    company = models.ForeignKey(Company, related_name = "%(app_label)s_%(class)s_location",blank=True, null=True)
+    location = models.ForeignKey(Location, related_name="%(app_label)s_%(class)s_location",blank=True, null=True)
 
     title_choices = (
         ('SE', 'Software Engineer/Developer/Programmer'),
@@ -475,7 +458,12 @@ class Offer(GetHiredPost):
     offer_status = models.CharField(max_length=2,
                                     choices=offer_choices)
     other_details = models.TextField(blank=True, null=True)
-        
+    
+    def save(self, **kwargs):
+        super(Offer, self).save()
+        self.company.add_offer(self)
+        self.company.save()
+    
     class Meta:
         app_label = 'GetHired'
 
@@ -530,6 +518,11 @@ class Interview(GetHiredPost):
         (FIVE,'5'),
         )
     interview_rating = models.IntegerField(choices=rating_choices)
-        
+    
+    def save(self, **kwargs):
+        super(Interview, self).save()
+        self.company.add_interview(self)
+        self.company.save() 
+
     class Meta:
         app_label = 'GetHired'
