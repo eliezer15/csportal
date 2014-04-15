@@ -9,7 +9,7 @@
             url: 'http://127.0.0.1:8000/gethired/post/list/company/',
             success:function(data) {
                 
-                $('#company_field').autocomplete({
+                $('#company_field input').autocomplete({
                     source:data
                 });            
             }
@@ -27,10 +27,10 @@
 						<div class="row">
 							<div class="new-company-info col-md-6">
 								<div class="form-group">
-        							<label for="id_company" class="control-label col-md-12"><span class="required">* </span>Company: </label>
-        							{{ form.company.errors }}
-        							<div class="col-md-12">
-    								    <input type="text" id ="company_field" class="form-control" name="company">
+        							<label for="company" class="control-label col-md-12"><span class="required">* </span>Company: </label>
+                                    {{company_form.name.errors}}
+        							<div class="col-md-12" id="company_field">
+    								    {{company_form.name}}
         							</div>
 								</div>
 								<div class="form-group">
@@ -68,6 +68,14 @@
     							</div>
 							</div><!-- New Company Info Div End -->
 							<div class="new-interview-other-info col-md-6">
+
+                                <div class="form-group">
+                                    <label for="id_job_type" class="control-label col-md-12">Interview Type: </label>
+                                    {{form.interview_type.errors}}
+                                    <div class="col-md-12">
+                                    {{ form.interview_type }}
+                                    </div>
+                                </div>
 								<div class="form-group">
        								<label for="id_job_type" class="control-label col-md-12">Job Type: </label>
        								{{form.job_type.errors}}
@@ -140,13 +148,13 @@
 					<div class="container-fluid">
 						<div class="row">
 							<div class="new-company-info col-md-6">
-								<div class="form-group">
-       								<label for="company" class="control-label col-md-12"><span class="required">* </span>Company: </label>
-        							{{ form.company.errors }}
-        							<div class="col-md-12">
-        							{{form.company}}
-        							</div>
-								</div>
+                                <div class="form-group">
+                                    <label for="company" class="control-label col-md-12"><span class="required">* </span>Company: </label>
+                                    {{company_form.name.errors}}
+                                    <div class="col-md-12" id="company_field">
+                                        {{company_form.name}}
+                                    </div>
+                                </div>
 								<div class="form-group">
         							<label for="job_title" class="control-label col-md-12">Job title: </label>
         							{{ form.job_title.errors }}

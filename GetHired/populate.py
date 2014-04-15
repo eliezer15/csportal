@@ -90,6 +90,7 @@ def add_Interview(user, degree, company, location, title, type, process, questio
                                  offer_details = None,
                                  interview_rating = rating,
                                  date_interviewed = date_interviewed)
+    p.company.add_interview(p)
 
 
 def add_Offer(user, degree, company, location, title, type, pay_type, salary, bonus, relocation, status, details):
@@ -104,7 +105,7 @@ def add_Offer(user, degree, company, location, title, type, pay_type, salary, bo
                                  relocation_bonus=relocation,
                                  offer_status=status,
                                  other_details=details)
-    return o
+    o.company.add_offer(o)
 
 # Start execution here!
 if __name__ == '__main__':

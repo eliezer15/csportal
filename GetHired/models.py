@@ -60,11 +60,12 @@ class Company(models.Model):
             salary = self.avg_salary
 
         self.avg_salary = (self.avg_salary + salary)/self.num_offers
+        logging.debug("Added salary")
     
     def add_interview(self, interview):
         self.num_interviews+= 1
         self.avg_interview_rating = (self.avg_interview_rating + interview.interview_rating) / self.num_interviews
-    
+        logging.debug("Added interview")
 
 class Location(models.Model):
     city = models.CharField(max_length=40)
@@ -406,7 +407,7 @@ class GetHiredPost(Post):
                       )
     applicant_degree = models.CharField(max_length=2,
                                         choices=degree_choices)
-    company = models.ForeignKey(Company, related_name = "%(app_label)s_%(class)s_location")
+    company = models.ForeignKey(Company, related_name = "%(app_label)s_%(class)s_location", blank=True, null=True)
     location = models.ForeignKey(Location, related_name="%(app_label)s_%(class)s_location", blank = True, null = True)
 
     title_choices = (
@@ -474,11 +475,6 @@ class Offer(GetHiredPost):
     offer_status = models.CharField(max_length=2,
                                     choices=offer_choices)
     other_details = models.TextField(blank=True, null=True)
-
-    def save(self, **kwargs):
-        super(Offer, self).save()
-        self.company.add_offer(self)
-        self.company.save()
         
     class Meta:
         app_label = 'GetHired'
@@ -534,12 +530,6 @@ class Interview(GetHiredPost):
         (FIVE,'5'),
         )
     interview_rating = models.IntegerField(choices=rating_choices)
-
-
-    def save(self, **kwargs):
-        super(Interview, self).save()
-        self.company.add_interview(self)
-        self.company.save()
         
     class Meta:
         app_label = 'GetHired'

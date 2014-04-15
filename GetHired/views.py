@@ -147,12 +147,14 @@ def render_new_post_form(request,post_type,post_id=None):
             post = Model.objects.get(pk=post_id)
             context_dict['form'] = form(instance=post)
             context_dict['location_form'] = forms.LocationForm(instance=post.location)
+            context_dict['company_form'] = forms.CompanyForm(instance=post.company)
 
             context_dict['header'] = 'Edit '
             context_dict['post_id'] = post_id
         else:
             context_dict['form'] = form()
             context_dict['location_form'] = forms.LocationForm()
+            context_dict['company_form'] = forms.CompanyForm()
             context_dict['header'] = 'Add New '
         
         context_dict['post_type'] = post_type
@@ -168,9 +170,15 @@ def create_post(request, post_type, post_id=None):
         user_form = Form(request.POST)
         location = None
 
-        if user_form.is_valid() and ('country' in data) and ('state' in data) and ('city' in data) and ('company' in data):
-            location = models.Location(country=data['country'],state=data['state'],city=data['city'])
-            location.save()
+        if user_form.is_valid() and ('country' in data) and ('state' in data) and ('city' in data) and ('name' in data):
+
+            location = models.Location.objects.create(country=data['country'],state=data['state'],city=data['city'])
+            company = None
+            try:
+                company = models.Company.objects.get(name=data['name'])
+
+            except ObjectDoesNotExist:
+                company = models.Company.objects.create(name=data['name'])
 
             if post_id:
                 model = model_dict[post_type]
@@ -179,12 +187,15 @@ def create_post(request, post_type, post_id=None):
             
             post = user_form.save()
             post.location = location
+            post.company = company
             post.save()
+
             #return render_to_response('portal/newpost.html',context_dict, context)
             return HttpResponseRedirect('/gethired/')
         else:
             context_dict['form'] = user_form
             context_dict['location_form'] = forms.LocationForm({'country':data['country'],'state':data['state'],'city':data['city']})
+            context_dict['company_form'] = forms.CompanyForm({'name':data['name']})
             context_dict['post_type'] = post_type
             context_dict['companies'] = models.Company.objects.order_by('name')
             return render_to_response('portal/newpost.html',context_dict, context)
@@ -200,7 +211,7 @@ def filter_posts(request):
         if 'post_type' in data:
             models_requested = data.getlist('post_type')    
         else:
-            models_requested = ['Interview','Offer']
+            models_requested = ['interview','offer']
 
         if 'location' in data and data['location'] != 'ALL':
             filters['location__state'] = data['location']
