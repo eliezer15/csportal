@@ -170,6 +170,7 @@ ul.navlist li a {
 	line-height: 20px;
 	padding: 0px 15px 0px;
 	text-decoration: none;
+	outline: none;
 }
 
 ul.navlist li a:hover {
@@ -201,7 +202,7 @@ ul.navlist li a:hover:after {
 }
 
 ul.navlist li a.current {
-	color: #6d92ab;
+	color: #D7EBF9;
 }
 
 div.info {
@@ -220,7 +221,7 @@ div.money_field {
 	width:92%;
 }
 
-div.buttondiv {
+div.user-bar {
 	border-bottom: thin solid #dbdbdb;
 	padding-bottom: 10px margin-bottom: 15px;
 }
@@ -399,20 +400,14 @@ div.postview span.date, span.salary, span.rating{
 	float: right;
 }
 
-div.postview-about-row{
+div.postview-about-row, span.postview-location a{
     font-size: 14px;
     padding: 10px 0px;
     text-align: center;
 }
 
-span.postview-location a{
-	color: #a5a4a4;
-	text-decoration: underline;
-	padding-left: 4px;
-}
-
-span.postview-location a:hover{
-	color: #828181;
+span.postview-location, span.postview-offer{
+	padding: 0px 3px;
 }
 
 div.postview-about-row div{
@@ -510,6 +505,7 @@ div.post-404{
 div.companyinfo{
 	margin: 1em 0.3em;
 	border: thin solid #DBDBDB;
+	color: #7b7b7b;
 }
 
 div.pagination{
