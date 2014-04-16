@@ -158,7 +158,7 @@ def render_new_post_form(request,post_type,post_id=None):
             context_dict['header'] = 'Add New '
         
         context_dict['post_type'] = post_type
-        return render_to_response('portal/newpost.html',context_dict,context)
+        return render_to_response('GetHired/newpost.html',context_dict,context)
 
 
 def create_post(request, post_type, post_id=None):
@@ -175,7 +175,7 @@ def create_post(request, post_type, post_id=None):
             location = models.Location.objects.create(country=data['country'],state=data['state'],city=data['city'])
             company = None
             try:
-                company = models.Company.objects.get(name=data['name'])
+                company = models.Company.objects.get(name__iexact=data['name'])
 
             except ObjectDoesNotExist:
                 company = models.Company.objects.create(name=data['name'])
@@ -200,7 +200,7 @@ def create_post(request, post_type, post_id=None):
             context_dict['companies'] = models.Company.objects.order_by('name')
             logging.debug(user_form)
 
-            return render_to_response('portal/newpost.html',context_dict, context)
+            return render_to_response('GetHired/newpost.html',context_dict, context)
 
 def filter_posts(request):
     if request.method == 'GET':
