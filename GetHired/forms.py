@@ -15,6 +15,6 @@ class LocationForm(forms.ModelForm):
         model = Location
 
 class CompanyForm(forms.ModelForm):
-	class Meta:
-		model = Company
+    class Meta:
+        model = Company
 

@@ -303,7 +303,7 @@ class Location(models.Model):
                                choices=COUNTRIES, 
                                default='US')
 
-     # All 50 states, plus the District of Columbia.
+# All 50 states, plus the District of Columbia.
     US_STATES = (
         ('AL', 'Alabama'),
         ('AK', 'Alaska'),

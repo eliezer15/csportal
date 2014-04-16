@@ -1,6 +1,3 @@
-from dajaxice.core import dajaxice_autodiscover, dajaxice_config
-dajaxice_autodiscover()
-
 from django.conf.urls import patterns, include, url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 
@@ -18,7 +15,7 @@ urlpatterns = patterns('',
     url(r'^gethired/(?P<field_name>\w+)/(?P<field_value>[0-9A-Za-z\-]+)/$', views.get_field_posts, name='get_field_posts'),
     url(r'^gethired/filter/', views.filter_posts,name='filter_posts'),
     url(r'^gethired/post/list/(?P<post_type>\w+)/$', views.get_json_list),
-    url(dajaxice_config.dajaxice_url, include('dajaxice.urls')),
+    url(r'^accounts/', include('registration.backends.default.urls')),
 )
 
 urlpatterns += staticfiles_urlpatterns()

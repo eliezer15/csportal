@@ -78,7 +78,6 @@ STATICFILES_DIRS = (
 STATICFILES_FINDERS = (
     'django.contrib.staticfiles.finders.FileSystemFinder',
     'django.contrib.staticfiles.finders.AppDirectoriesFinder',
-    'dajaxice.finders.DajaxiceFinder',
 #    'django.contrib.staticfiles.finders.DefaultStorageFinder',
 )
 
@@ -104,6 +103,10 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'CSPortal.urls'
 
+EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_FILE_PATH = os.path.join(BASE_DIR, "tmp")
+ACCOUNT_ACTIVATION_DAYS = 7
+
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'CSPortal.wsgi.application'
 
@@ -124,11 +127,10 @@ INSTALLED_APPS = (
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'GetHired',
-    'dajax',
-    'dajaxice',
     'django.contrib.admin',
     'debug_toolbar',
     'django.contrib.humanize',
+    'registration',
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
