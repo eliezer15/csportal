@@ -11,6 +11,7 @@ import logging
 import simplejson
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
+from django.contrib.auth.models import User
 #main page view
 
 def main(request):
@@ -190,6 +191,8 @@ def create_post(request, post_type, post_id=None):
                 user_form = Form(request.POST, instance=post) 
             
             post = user_form.save(commit=False)
+            post.author = User.objects.get(username=request.user) 
+            print request.user
             post.location = location
             post.company = company
             post.save()
