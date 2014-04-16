@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     url(r'^gethired/(?P<field_name>\w+)/(?P<field_value>[0-9A-Za-z\-]+)/$', views.get_field_posts, name='get_field_posts'),
     url(r'^gethired/filter/', views.filter_posts,name='filter_posts'),
     url(r'^gethired/post/list/(?P<post_type>\w+)/$', views.get_json_list),
+    url(r'^accounts/logout/$', views.logout_view),
     url(r'^accounts/', include('registration.backends.default.urls')),
 )
 

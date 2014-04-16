@@ -1,0 +1,26 @@
+{% extends "registration/base.html" %}
+{% block loginheader %}
+Login
+{% endblock %}
+{% block logincontent %}
+<script>
+	$(document).ready(function() {
+		$('div.panel-login').find('input').addClass('form-control');
+		});
+</script>
+	{% if form.errors %}<p class="error">Your username and password didn't match. Please try again.</p>{% endif %}
+<form class="form-horizontal" method="post" action="{% url 'django.contrib.auth.views.login' %}">
+	{% csrf_token %}
+	<div class="container-fluid">
+	<div class="row">{{ form.username.label_tag }}</div>
+	<div class="row">{{ form.username }}</div>
+   	<div class="row">{{ form.password.label_tag }}</div>
+   	<div class="row">{{ form.password }}</div>
+   	<div class="row" style="padding: 10px 0px; text-align: center;">
+   		<input class="btn btn-default" style="width: auto;" type="submit" value="Login" />
+	   	<a href="/accounts/register/" class="btn btn-default">Register</a>
+   	</div>
+   	<input type="hidden" name="next" value="{{ next }}" />
+	</div>
+</form>
+{% endblock %}

@@ -497,6 +497,10 @@ ul.errorlist {
 	font-size: 12px;
 }
 
+.error{
+	color: red;
+}
+
 div.post-404{
 	text-align: center;
 	margin-top: 50px;
@@ -553,4 +557,8 @@ div.hover-div span{
 
 button.ui-corner-right{
 	background-color: #fff;
+}
+
+div.panel-login, div.panel-login div.panel-heading{
+	color: #428BCA;
 }

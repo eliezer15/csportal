@@ -4,8 +4,10 @@
 {% load humanize %}
 {% block title %} Get Hired {% endblock %}
 {% block header %} Get Hired {% endblock %}
-
-{% block filter_menu %}
+{% block content %}
+<div class="filteroptions col-md-3">
+<div class="filterdiv panel panel-default">
+<div class="contain">
 <div class="container-fluid">
 	<div class="row">
 		<h5><span class='labs'>Related Posts:</span></h5>
@@ -26,14 +28,15 @@
 		{% endfor %}
 	</div>
 </div>
-{% endblock %}
-    
-{% block content %}
-	<script>
+</div>
+</div>
+</div>
+<script>
 		$(document).ready(function(){
 			$(document).scrollTop( $("div.navrow").offset().top );   
 		});
-	</script>
+</script>
+<div class="post_bar col-md-9">
 <div class="postview col-md-12">
 	<div class="container-fluid">
 		<div class="postview-button-row row">
@@ -123,6 +126,7 @@
     		</div>
     	</div>
 	</div>
+</div>
 </div>
 {% endblock %}
 

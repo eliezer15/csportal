@@ -103,6 +103,7 @@ MIDDLEWARE_CLASSES = (
 
 ROOT_URLCONF = 'CSPortal.urls'
 
+LOGIN_URL = '/accounts/login/'
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, "tmp")
 ACCOUNT_ACTIVATION_DAYS = 7

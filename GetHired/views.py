@@ -1,7 +1,7 @@
 from django.core.exceptions import ObjectDoesNotExist
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.template import  RequestContext
-from django.shortcuts import render_to_response,get_object_or_404
+from django.shortcuts import render_to_response,get_object_or_404, redirect
 from django.http import HttpResponseRedirect
 from django.http import HttpResponse
 from CSPortal.PostType import model_dict, form_dict
@@ -9,6 +9,8 @@ from itertools import chain
 from GetHired import models, forms
 import logging
 import simplejson
+from django.contrib.auth.decorators import login_required
+from django.contrib.auth import logout
 #main page view
 
 def main(request):
@@ -37,7 +39,6 @@ def main(request):
     return render_to_response('GetHired/postlist.html', context_dict, context)
 
 def get_filters():
-
     interview_posts = models.Interview.objects.all()
     offer_posts = models.Offer.objects.all()
     all_posts = sorted(
@@ -50,6 +51,7 @@ def get_filters():
     filters['companies']= models.Company.objects.order_by('name')
     return filters
 
+@login_required
 def get_field_posts(request, field_name, field_value):
     if request.method == 'GET':
         context = RequestContext(request)
@@ -123,6 +125,7 @@ def get_related_posts(post_type, post_id):
 
     return relevant_posts
 
+@login_required
 def get_post(request, post_type, post_id):
     if request.method == 'GET':
         context = RequestContext(request)
@@ -134,6 +137,7 @@ def get_post(request, post_type, post_id):
 
         return render_to_response('GetHired/post.html',context_dict, context)
 
+@login_required
 def render_new_post_form(request,post_type,post_id=None):
     if request.method == 'GET':
         context = RequestContext(request)
@@ -260,3 +264,8 @@ def get_json_list(request, post_type):
         return HttpResponse(simplejson.dumps(string_list),
                             content_type="application/json")
 
+def logout_view(request):
+    logout(request)
+    return redirect('/accounts/login/')
+    
+    

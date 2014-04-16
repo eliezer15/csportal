@@ -3,7 +3,7 @@
 {% load humanize %}
 {% block title %} Get Hired {% endblock %}
 {% block header %} Get Hired {% endblock %}
-{% block filter_menu %}
+{% block content %}
 <script>
 $(document).ready(function(){
 	$(document).scroll(function() {
@@ -15,8 +15,10 @@ $(document).ready(function(){
 	}
 	
 });
-	
 </script>
+<div class="filteroptions col-md-3">
+<div class="filterdiv panel panel-default">
+<div class="contain">
 <h5><span class='labs'>Filter Posts:</span></h5>
 <form method="GET" action="{% url 'filter_posts' %}">
 <span class='labs'> Post Type: </span>
@@ -137,9 +139,12 @@ $(document).ready(function(){
         <a class="btn btn-default" href="/gethired/" style="width: 75px;">Reset</a>
     </div> <!-- Button Div -->
 	</form>
-{% endblock %}
-{% block content %}
+	</div>
+</div> <!-- Filter Div -->
+</div> <!-- Filter Options div -->
+<div class="post_bar col-md-9">
 <div class="container-fluid">
+{% if user.is_authenticated %}
 	<div class="row">
 		<div class="col-md-12">
 			<div class="btn-group" style="padding-top: 5px;">
@@ -163,7 +168,7 @@ $(document).ready(function(){
 			<p>Number of Offers: {{company.num_offers}}</p>
 		</div>
 	</div>
-{% endif %} 
+{% endif %}
 {% if posts %}
 {% else %}
 	<div class="col-md-12 post-404 alert alert-danger">
@@ -219,5 +224,14 @@ $(document).ready(function(){
         </span>
     </div>
     {% endif %}
+{% else %}
+<div class ="row">
+	<div class="col-md-12 post-404 alert alert-info">
+		<p>We are sorry, access is restricted to this part of the website. You need to login. </p>
+		<p><a href="/accounts/login/?next=/gethired/">Click here to login.</a></p>
+	</div>
+</div>
+{% endif %}
+</div>
 </div>
 {% endblock %}

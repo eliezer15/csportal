@@ -56,23 +56,13 @@
 			</div><!-- Info Div Row End -->
 			<div class="row search">
 				<div class="user-bar col-md-12">
-					<span style="float: right;">Welcome User!</span>
+					<span style="float: right;">{% if user.is_authenticated %}Welcome {{user.username}}! <a href="/accounts/logout/">Logout</a>{% else %} Welcome, new user. Please <a href="/accounts/login/">log in.</a> {% endif %}</span>
 				</div><!-- End of user-bar Div -->
 			</div><!-- End of Search Row -->
 			<div class="container-fluid">
 				<div class="row">
-					<div class="filteroptions col-md-3">
-						<div class="filterdiv panel panel-default">
-							<div class="contain">
-								{% block filter_menu %}
-                        		{% endblock %}
-                    		</div>
-						</div> <!-- Filter Div -->
-					</div> <!-- Filter Options div -->
-					<div class="post_bar col-md-9">
-						{% block content %}
-						{% endblock %}
-					</div><!-- Post Bar Container Div End -->
+					{% block content %}
+					{% endblock %}
 				</div><!-- Post Bar End -->
 			</div><!-- Post Bar Row End -->
 		</div><!-- Main Div End -->
