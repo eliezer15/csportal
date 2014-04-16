@@ -550,3 +550,7 @@ div.hover-div span{
     color: #428BCA;
     font-weight: 700;
 }
+
+button.ui-corner-right{
+	background-color: #fff;
+}

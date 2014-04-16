@@ -78,8 +78,6 @@ $(document).ready(function() {
     	$('div.footer').css('position','absolute');
     	$('div.footer').css('bottom','0');
     }
-
-
     
     /*URI implementation to grab URL search parameters and track user searches. We then select the
      * appropriate selectors/input values in the filterdiv
@@ -113,10 +111,18 @@ $(document).ready(function() {
         $('body').append('<div class="hover-div hover-'+number+'" style="display: none; position:absolute;">'+$(value).html()+'</div>');
         var hover_div = $('div.hover-'+number);
         var action_div = $('div.related-post[data-num="'+number+'"]');
+        var width = action_div.offset().left + hover_div.width();
+        var width2 = action_div.offset().left + action_div.width();
         	action_div.mouseenter(function(){
         	hover_div.show();
         	hover_div.css('top', action_div.offset().top+'px');
-        	hover_div.css('left', (action_div.offset().left + action_div.width()) +'px');
+        	
+        	if(width > width2){
+        		hover_div.css('left', (width) +'px');
+        	} else{
+        		hover_div.css('left', (width2) +'px');
+        	}
+        	
         	}).mouseleave(function(){
         	hover_div.hide();
         	});
