@@ -211,9 +211,13 @@ div.info {
 	font-family: 'Roboto Condensed';
 }
 
-div.moreinfo {
-	padding: 30px 30px;
-	font-size: 14px;
+div.info h1 a{
+    color: white;
+    text-decoration: none;
+}
+
+div.info h1 a:hover{
+    color: rgba(222, 218, 218, 1);
 }
 
 div.money_field {
@@ -343,15 +347,11 @@ div.postview-button-row{
     margin-bottom: 10px;
 }
 
-div.postview-button-row input.btn{
+a.btn-edit, a.btn-go-back{
     background-color: #6D92AB;
     border-color: #6D92AB;
 }
 
-div.postview-button-row span.glyphicon{
-    font-size: 25px;
-    color: #6D92AB;
-}
 
 div.postview h3.title {
 	color: #56A0D3;

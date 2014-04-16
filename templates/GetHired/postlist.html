@@ -4,6 +4,19 @@
 {% block title %} Get Hired {% endblock %}
 {% block header %} Get Hired {% endblock %}
 {% block filter_menu %}
+<script>
+$(document).ready(function(){
+	$(document).scroll(function() {
+		$.cookie('document', $(document).scrollTop());
+	});
+	
+	if ($.cookie('document')) {
+		$(document).scrollTop($.cookie('document'));
+	}
+	
+});
+	
+</script>
 <h5><span class='labs'>Filter Posts:</span></h5>
 <form method="GET" action="{% url 'filter_posts' %}">
 <span class='labs'> Post Type: </span>
@@ -154,16 +167,16 @@
 {% if posts %}
 {% else %}
 	<div class="col-md-12 post-404 alert alert-danger">
-		<p><span style="font-weight: 700;">Error: </span>Your search has returned no results.</p>
+		<p>Your search has returned no results.</p>
 	</div>
 {% endif %}
 {% for post in posts %}
 	<div class="posts panel">
     	<div class="row">
     		{% if post.post_type == "interview" %}
-    		<p><span class="label label-success">{{post.post_type}}</span></p>
+    		<p><span class="label label-success">{{post.post_type|title}}</span></p>
     		{% else %}
-    		<p><span class="label label-warning">{{post.post_type}}</span></p>
+    		<p><span class="label label-warning">{{post.post_type|title}}</span></p>
     		{% endif %}
     	</div>
     	<div class="row">
@@ -174,7 +187,7 @@
 		<div class="row">
 			<p class="post-preview-info"><span class="job_title"><a class="norm"  rel="tooltip" data-placement="right" title="Posts by Position" href="/gethired/filter/?company=ALL&location=ALL&job_title={{post.job_title}}&job_type=ALL">{{post.get_job_title_display}}</a></span></p>
 			<p class="post-preview-info"><span class="post-preview-info job_type"><a class="norm" rel="tooltip" data-placement="right" title="Posts by Job Type" href="/gethired/filter/?company=ALL&location=ALL&job_title=ALL&job_type={{post.job_type}}">{{post.get_job_type_display}}</a></span></p>
-			<p class="post-preview-info"><span class="location"><a class="norm" rel="tooltip" data-placement="right" title="Posts by Location" href="/gethired/filter/?company=ALL&location={{post.location.state}}&job_title=ALL&job_type=ALL">{{post.location}}</a></span></p>
+			<p class="post-preview-info"><span class="location"><a class="norm" rel="tooltip" data-placement="right" title="Posts by Location" href="/gethired/filter/?company=ALL&location={{post.location.state}}&job_title=ALL&job_type=ALL">{{post.location.city|title}}, {{post.location.state}}, {{post.location.country}}</a></span></p>
 		</div>
 		<div class="row">
 			{% if post.post_type == "interview" %}

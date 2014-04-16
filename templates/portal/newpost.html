@@ -6,7 +6,7 @@
     /* autocomplete for companie on form */
     $(function() {
         $.ajax({
-            url: 'http://127.0.0.1:8000/gethired/post/list/company/',
+            url: 'http://localhost:8000/gethired/post/list/company/',
             success:function(data) {
                 
                 $('#company_field input').autocomplete({
@@ -17,8 +17,10 @@
     });
 </script>
 <div class="newform col-md-12">
+<div class="row">
+</div>
 {% if post_type == "interview" %}
-	<h2>{{header}}Interview</h2>
+	<div class="row"><a style="margin: 10px;" href="/gethired/" class="btn pull-left btn-info btn-go-back">Cancel</a><h2>{{header}}Interview</h2></div>
 	<p class="required"><span class="required">* </span>Required Fields</p>
 		<div class="new-interview-form">
 			<form class="form-horizontal" id="post_form" method="post" action="/gethired/post/new/{{post_type}}/{{post_id}}/">	
@@ -134,13 +136,14 @@
 						</div><!-- Interview Input Div End -->
 					</div><!-- Input Row End -->
 				</div><!-- Input Row Container -->
-    			<div class="form-group col-md-12">
+    			<div class="form-group col-md-12" style="text-align: center;">
         			<button type="submit" class="btn btn-default">Submit</button>
+        			<a style="margin: 10px;" href="/gethired/" class="btn btn-default">Cancel</a>
     			</div>
 			</form>
 		</div>
 {% elif post_type == "offer" %}
-	<h2>{{header}}offer</h2>
+	<div class="row"><a style="margin: 10px;" href="/gethired/" class="btn pull-left btn-info btn-go-back">Cancel</a><h2>{{header}}Offer</h2></div>
 	<p class="required"><span class="required">* </span>Required Fields</p>
 		<div class="new-offer-form">
 			<form class="form-horizontal" id=post_form method="post" action="{% url 'create_post' post_type=post_type post_id=post_id %}" style="margin: 20px;">
@@ -245,8 +248,9 @@
         				{{ form.other_details}}
         				</div>
     				</div>
-    		<div class="form-group">
+    		<div class="form-group col-md-12" style="text-align: center;">
         		<button type="submit" class="btn btn-default">Submit</button>
+        		<a style="margin: 10px;" href="/gethired/" class="btn btn-default">Cancel</a>
     		</div>
 		</form>
 	</div><!-- End of New Offer Div -->

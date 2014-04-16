@@ -15,7 +15,7 @@
         			<a class="postLinks" href="{% url 'get_post' post_type=post.post_type.lower post_id=post.pk %}">{{post.company}} - {{post.post_type}}</a><br>
 				</div>
 				<div class="row related-post-location">
-					{{post.location}}
+					{{post.location.city|title}}, {{post.location.state}}, {{post.location.country}}
 				</div>
 			</div>
 			<div class="hover-test" style="display: none;" data-num="{{forloop.counter}}">
@@ -37,8 +37,8 @@
 <div class="postview col-md-12">
 	<div class="container-fluid">
 		<div class="postview-button-row row">
-			<a href="{% url 'render_edit_post' post_type=post.post_type post_id=post.pk %}">
-   			 <input type="button" class="btn btn-danger pull-right btn-info" value="Edit/Delete Post" />
+			<a href="/gethired/" class="btn pull-left btn-info btn-go-back">Go Back</a>
+			<a href="{% url 'render_edit_post' post_type=post.post_type post_id=post.pk %}" class="btn pull-right btn-info btn-edit">Edit/Delete Post</a>
 			</a>
 		</div> <!-- Button Row -->
 	</div>
@@ -48,9 +48,9 @@
     			<div class="row">
     				<h3 class="title"><a href="/gethired/company/{{post.company|slugify}}">{{post.company}}</a></h3>
     				{% if post.post_type == "interview" %}
-                    <span class="postview-label label label-success">{{post.post_type}}</span>
+                    <span class="postview-label label label-success">{{post.post_type|title}}</span>
                		{% else %}
-                    <span class="postview-label label label-warning">{{post.post_type}}</span>
+                    <span class="postview-label label label-warning">{{post.post_type|title}}</span>
                		{% endif %}
     				<span class="date">Posted: {{post.date_posted|naturalday|title}}</span>
 				</div>
@@ -66,7 +66,7 @@
 							{% endif %}
 						</div>
 						<div class="row postview-about-row">
-							<div><img src="{% static "/static/images/gethired/map_location_test.png" %}"><span class="postview-location"><a href="/gethired/filter/?company=ALL&location={{post.location.state}}&job_title=ALL&job_type=ALL">{{post.location}}</a></span></div>
+							<div><img src="{% static "/static/images/gethired/map_location_test.png" %}"><span class="postview-location"><a href="/gethired/filter/?company=ALL&location={{post.location.state}}&job_title=ALL&job_type=ALL">{{post.location.city|title}}, {{post.location.state}}, {{post.location.country}}</a></span></div>
 							<div><img src="{% static "/static/images/gethired/grad_cap_test_g.png" %}"><span>{{post.applicant_degree|normdegree}}</span></div>
 							<div><img src="{% static "/static/images/gethired/thumbs_up_test.png" %}"><span class="postview-offer">{{post.get_offer_status_display}}</span></div>
 						</div>
