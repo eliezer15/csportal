@@ -41,7 +41,9 @@
 	<div class="container-fluid">
 		<div class="postview-button-row row">
 			<a href="/gethired/" class="btn pull-left btn-info btn-go-back">Go Back</a>
+			{% if user.username == post.author.username %}
 			<a href="{% url 'render_edit_post' post_type=post.post_type post_id=post.pk %}" class="btn pull-right btn-info btn-edit">Edit/Delete Post</a>
+			{% endif %}
 			</a>
 		</div> <!-- Button Row -->
 	</div>

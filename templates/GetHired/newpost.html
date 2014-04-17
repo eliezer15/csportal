@@ -17,8 +17,7 @@
     });
 </script>
 <div class="newform col-md-12">
-<div class="row">
-</div>
+{% if user.username == author.username or not author %}
 {% if post_type == "interview" %}
 	<div class="row"><a style="margin: 10px;" href="/gethired/" class="btn pull-left btn-info btn-go-back">Cancel</a><h2>{{header}}Interview</h2></div>
 	<p class="required"><span class="required">* </span>Required Fields</p>
@@ -255,6 +254,9 @@
 		</form>
 	</div><!-- End of New Offer Div -->
 {% endif %}
+{% endif %}
+{% if user.username != author.username and author %}
+<p class="alert alert-danger" style="text-align: center; margin: 100px;">Sorry, we apologize for the inconvenience, it seems you must have ended up here by accident.</p>
+{% endif %}
 </div><!-- End new form Div -->
 {% endblock %}
-<!-- Modal -->

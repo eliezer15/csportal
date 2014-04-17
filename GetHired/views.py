@@ -155,7 +155,8 @@ def render_new_post_form(request,post_type,post_id=None):
             context_dict['form'] = form(instance=post)
             context_dict['location_form'] = forms.LocationForm(instance=post.location)
             context_dict['company_form'] = forms.CompanyForm(instance=post.company)
-
+            context['author'] = post.author
+            
             context_dict['header'] = 'Edit '
             context_dict['post_id'] = post_id
         else:
@@ -276,3 +277,5 @@ def logout_view(request):
 class RegistrationViewUniqueEmail(RegistrationView):
     form_class = forms.RegistrationFormZ
     
+def UserProfile(request):
+    return redirect('/accounts/login/')
