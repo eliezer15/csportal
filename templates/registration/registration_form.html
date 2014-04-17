@@ -9,6 +9,9 @@
 <form class="form-horizontal" action="/accounts/register/" method="post">
 {% csrf_token %}
 <div class="conatiner-fluid">
+{% for err in form.non_field_errors %}
+      <p class="error">{{ err }}</p>
+{% endfor %}
 {% for field in form %}
 	<div class="col-md-12">
    		<div class="row">{{ field.label_tag }}</div>

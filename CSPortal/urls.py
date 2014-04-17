@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
-
-from GetHired import views
+from registration import views as reg_views
+from GetHired import views, forms
 from django.contrib import admin
 admin.autodiscover()
 
@@ -16,6 +16,9 @@ urlpatterns = patterns('',
     url(r'^gethired/filter/', views.filter_posts,name='filter_posts'),
     url(r'^gethired/post/list/(?P<post_type>\w+)/$', views.get_json_list),
     url(r'^accounts/logout/$', views.logout_view),
+    url(r'^accounts/register/$',
+        views.RegistrationViewUniqueEmail.as_view(),
+        name='registration_register'),
     url(r'^accounts/', include('registration.backends.default.urls')),
 )
 

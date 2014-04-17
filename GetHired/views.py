@@ -12,6 +12,8 @@ import simplejson
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
+from registration.backends.default.views import RegistrationView
+
 #main page view
 
 def main(request):
@@ -271,4 +273,6 @@ def logout_view(request):
     logout(request)
     return redirect('/accounts/login/')
     
+class RegistrationViewUniqueEmail(RegistrationView):
+    form_class = forms.RegistrationFormZ
     
