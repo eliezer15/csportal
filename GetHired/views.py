@@ -69,17 +69,6 @@ def get_field_posts(request, field_name, field_value):
             offer_posts = models.Offer.objects.filter(company=company)
             context_dict['company'] = company
 
-        elif (field_name == "location"):
-            if (field_value == "International"):
-                interview_posts = models.Interview.objects.exclude(location__country="US")
-                offer_posts = models.Offer.objects.exclude(location__country="US")
-
-            else:
-                interview_posts = models.Interview.objects.filter(location__state=field_value)
-                offer_posts = models.Offer.objects.filter(location__state=field_value)
-
-            
-        
         all_posts = sorted(
                        chain(interview_posts,offer_posts),
                        key=lambda post: post.date_posted,
