@@ -20,6 +20,10 @@ div.main-container{
 	height: 100%;
 }
 
+h2.styled{
+	font-family: 'Roboto Condensed';
+	color: #56A0D3;
+}
 .tooltip{
 	font-size: 12px;
 	font-weight: 500;
@@ -31,8 +35,8 @@ div.main-container{
 
 .back-to-top {
 	position: fixed;
-	bottom: 2em;
-	left: 16em;
+	bottom: 2%;
+	left: 20%;
 	display: none;
 	height: 47px;
 	width: 46px;
@@ -47,8 +51,8 @@ a.back-to-top:focus{
 }
 a.back-to-top:hover {
 	position: fixed;
-	bottom: 2em;
-	left: 16em;
+	bottom: 2%;
+	left: 20%;
 	display: none;
 	height: 47px;
 	width: 46px;
@@ -561,4 +565,40 @@ button.ui-corner-right{
 
 div.panel-login, div.panel-login div.panel-heading{
 	color: #428BCA;
+}
+
+div.panel-login a{
+	color: #939191;
+}
+
+ul.profile-list{
+    list-style: none inside none;
+    border-radius: 5px;
+    border: 1px solid #fbfbfb;
+    margin: 0px;
+    padding: 0px;
+    font-size: 12px;
+    background-color: white;
+    box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
+}
+ul.profile-list li:last-child{
+    border-bottom: none;
+}
+
+ul.profile-list li{
+    display: block;
+    border-bottom: 1px solid #fbfbfb;
+    padding: 5px 10px;
+}
+
+h4.profile-header{
+    font-family: 'Roboto Condensed';
+    color: #56A0D3;
+    font-weight: 600;
+}
+
+ul.profile-links{
+    margin: 0px;
+    padding: 0px;
+    list-style: none;
 }
