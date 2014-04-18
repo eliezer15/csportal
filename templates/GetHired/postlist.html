@@ -14,6 +14,17 @@ $(document).ready(function(){
 		$(document).scrollTop($.cookie('document'));
 	}
 	
+	$('span.step-links a').click(function(){
+		$.cookie('document', 0);
+	});
+	
+	$('a.resetbtn').click(function(){
+		$.cookie('document', 0);
+	});
+	$('input.updatebtn').click(function(){
+		$.cookie('document', 0);
+	});
+	
 });
 </script>
 <div class="filteroptions col-md-3">
@@ -136,7 +147,7 @@ $(document).ready(function(){
     </select>
     <div style="padding-top: 5px;text-align: center;">
         <input type="submit" class="updatebtn btn btn-default" value="Update" />
-        <a class="btn btn-default" href="/gethired/" style="width: 75px;">Reset</a>
+        <a class="resetbtn btn btn-default" href="/gethired/" style="width: 75px;">Reset</a>
     </div> <!-- Button Div -->
 	</form>
 	</div>
@@ -184,14 +195,14 @@ $(document).ready(function(){
     		{% endif %}
     	</div>
     	<div class="row">
- 			<span class="Title" ><a class="norm" rel="tooltip" data-placement="right" title="Visit Company Data" href="/gethired/company/{{post.company.name|slugify}}">{{post.company.name}}</a></span> 
+ 			<span class="Title" ><a class="norm" data-rel="tooltip" data-placement="right" title="Visit Company Data" href="/gethired/company/{{post.company.name|slugify}}">{{post.company.name}}</a></span> 
 			<span class="Date"> {{post.date_posted|naturaltime|title}}</span>
 		</div>
 		<div class="container-fluid">
 		<div class="row">
-			<p class="post-preview-info"><span class="job_title"><a class="norm"  rel="tooltip" data-placement="right" title="Posts by Position" href="/gethired/filter/?company=ALL&location=ALL&job_title={{post.job_title}}&job_type=ALL">{{post.get_job_title_display}}</a></span></p>
-			<p class="post-preview-info"><span class="post-preview-info job_type"><a class="norm" rel="tooltip" data-placement="right" title="Posts by Job Type" href="/gethired/filter/?company=ALL&location=ALL&job_title=ALL&job_type={{post.job_type}}">{{post.get_job_type_display}}</a></span></p>
-			<p class="post-preview-info"><span class="location"><a class="norm" rel="tooltip" data-placement="right" title="Posts by Location" href="/gethired/filter/?company=ALL&location={{post.location.state}}&job_title=ALL&job_type=ALL">{{post.location.city|title}}, {{post.location.state}}, {{post.location.country}}</a></span></p>
+			<p class="post-preview-info"><span class="job_title"><a class="norm"  data-rel="tooltip" data-placement="right" title="Posts by Position" href="/gethired/filter/?company=ALL&amp;location=ALL&amp;job_title={{post.job_title}}&amp;job_type=ALL">{{post.get_job_title_display}}</a></span></p>
+			<p class="post-preview-info"><span class="post-preview-info job_type"><a class="norm" data-rel="tooltip" data-placement="right" title="Posts by Job Type" href="/gethired/filter/?company=ALL&amp;location=ALL&amp;job_title=ALL&amp;job_type={{post.job_type}}">{{post.get_job_type_display}}</a></span></p>
+			<p class="post-preview-info"><span class="location"><a class="norm" data-rel="tooltip" data-placement="right" title="Posts by Location" href="/gethired/filter/?company=ALL&amp;location={{post.location.state}}&amp;job_title=ALL&amp;job_type=ALL">{{post.location.city|title}}, {{post.location.state}}, {{post.location.country}}</a></span></p>
 		</div>
 		<div class="row">
 			{% if post.post_type == "interview" %}
