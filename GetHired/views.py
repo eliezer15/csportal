@@ -7,12 +7,13 @@ from django.http import HttpResponse
 from CSPortal.PostType import model_dict, form_dict
 from itertools import chain
 from GetHired import models, forms
-import logging
-import simplejson
+from django.forms.util import ErrorList
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from registration.backends.default.views import RegistrationView
+import logging
+import simplejson
 
 #main page view
 
@@ -178,7 +179,11 @@ def create_post(request, post_type, post_id=None):
         user_form = Form(request.POST)
         location = None
 
-        if user_form.is_valid() and data['country'] and data['state'] and data['city'] and data['name']:
+        valid_form = user_form.is_valid() #calling it here so I can access the clean data below
+        valid_company = data['name']
+        valid_location = data['country'] and data['state'] and data['city']
+
+        if valid_form and valid_company and valid_location:
 
             location = models.Location.objects.create(country=data['country'],state=data['state'],city=data['city'])
             company = None

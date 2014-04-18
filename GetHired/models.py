@@ -5,7 +5,10 @@ Created on Mar 18, 2014
 '''
 from django.db import models
 from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+from datetime import date
 import logging
+
 
 class Post(models.Model):
     #related_name is required for all abstract classes with ForeignKey fields. See Django docs for more info
@@ -34,6 +37,7 @@ class Company(models.Model):
     avg_salary = models.DecimalField(decimal_places=2, max_digits=10, default=999.99, editable=False)
     avg_interview_rating = models.DecimalField(decimal_places=1, max_digits=10, default=0, editable=False)
     num_offers = models.IntegerField(default=0, editable=False)
+    num_offers_to_calculate_salary = models.IntegerField(default=0, editable=False)
     num_interviews = models.IntegerField(default=0, editable=False)
     def __unicode__(self):
         return self.name
@@ -44,6 +48,10 @@ class Company(models.Model):
 
     def add_offer(self,offer):
         self.num_offers += 1
+        if (offer.pay_type == 'YS' and offer.job_type == 'FT'):
+            current_avg = self.avg_salary * self.num_offers_to_calculate_salary
+            self.num_offers_to_calculate_salary += 1
+            self.avg_salary = (current_avg + offer.salary) / self.num_offers_to_calculate_salary
     
     def add_interview(self, interview):
         current_rating = self.avg_interview_rating * self.num_interviews
@@ -468,6 +476,9 @@ class Offer(GetHiredPost):
     class Meta:
         app_label = 'GetHired'
 
+def validate_date(value):
+    if value > date.today():
+        raise ValidationError(u'Date cannot be in the future')
 class Interview(GetHiredPost):
     type_choices = (
         ('OC', 'On campus'),
@@ -493,7 +504,7 @@ class Interview(GetHiredPost):
     interview_source = models.CharField(max_length=2,
                                     choices=source_choices)
     
-    date_interviewed = models.DateField()
+    date_interviewed = models.DateField(validators=[validate_date])
 
     offer_choices = (
             ('RC','Received'),
