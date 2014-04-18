@@ -365,7 +365,8 @@ class Location(models.Model):
     )
 
     state = models.CharField(max_length=2,
-                             choices=US_STATES)
+                             choices=US_STATES,
+                             blank = False, null = False)
         
     def __unicode__(self):
         if self.country != 'US':

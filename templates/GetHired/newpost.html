@@ -36,12 +36,14 @@
 								</div>
 								<div class="form-group">
         							<label for="country" class="control-label col-md-12"><span class="required">* </span>Country: </label>
+                                        {{location_form.country.errors}}
         								<div class="col-md-12">
         									{{location_form.country}}
 										</div>
 								</div>
 								<div class="form-group">
         							<label for="state" class="control-label col-md-12"><span class="required">* </span>State: </label>
+                                        {{location_form.state.errors}}
         								<div class="col-md-12">
  											{{location_form.state}}
         								</div>

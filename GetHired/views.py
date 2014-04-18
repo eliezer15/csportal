@@ -178,7 +178,7 @@ def create_post(request, post_type, post_id=None):
         user_form = Form(request.POST)
         location = None
 
-        if user_form.is_valid() and ('country' in data) and ('state' in data) and ('city' in data) and ('name' in data):
+        if user_form.is_valid() and data['country'] and data['state'] and data['city'] and data['name']:
 
             location = models.Location.objects.create(country=data['country'],state=data['state'],city=data['city'])
             company = None
@@ -200,7 +200,7 @@ def create_post(request, post_type, post_id=None):
             post.company = company
             post.save()
 
-            #return render_to_response('portal/newpost.html',context_dict, context)
+            #return render_to_response('GetHired/newpost.html',context_dict, context)
             return HttpResponseRedirect('/gethired/')
         else:
             context_dict['form'] = user_form
