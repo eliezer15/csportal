@@ -1,11 +1,11 @@
 from django import forms
-
-from GetHired.models import Interview, Offer, Location, Company
+from django.forms.extras.widgets import SelectDateWidget
+from GetHired.models import Interview, Offer, GetHiredPost, Location, Company
 from django.contrib.auth.models import User
 from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
 from django.utils.translation import ugettext_lazy as _
-import logging
+
 
 class InterviewForm(forms.ModelForm):
     class Meta:

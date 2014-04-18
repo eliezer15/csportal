@@ -7,13 +7,12 @@ from django.http import HttpResponse
 from CSPortal.PostType import model_dict, form_dict
 from itertools import chain
 from GetHired import models, forms
-from django.forms.util import ErrorList
+import logging
+import simplejson
 from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from registration.backends.default.views import RegistrationView
-import logging
-import simplejson
 
 #main page view
 
@@ -169,11 +168,7 @@ def create_post(request, post_type, post_id=None):
         user_form = Form(request.POST)
         location = None
 
-        valid_form = user_form.is_valid() #calling it here so I can access the clean data below
-        valid_company = data['name']
-        valid_location = data['country'] and data['state'] and data['city']
-
-        if valid_form and valid_company and valid_location:
+        if user_form.is_valid() and ('country' in data) and ('state' in data) and ('city' in data) and ('name' in data):
 
             location = models.Location.objects.create(country=data['country'],state=data['state'],city=data['city'])
             company = None
@@ -194,7 +189,7 @@ def create_post(request, post_type, post_id=None):
             post.company = company
             post.save()
 
-            #return render_to_response('GetHired/newpost.html',context_dict, context)
+            #return render_to_response('portal/newpost.html',context_dict, context)
             return HttpResponseRedirect('/gethired/')
         else:
             context_dict['form'] = user_form

@@ -36,7 +36,7 @@ def normcompname(value):
 def rating(value):
     starstring = ""
     for x in range (0, value):
-        starstring = starstring + "<span class=fill>&#9733</span>"
+        starstring = starstring + "<span class=fill>&#9733;</span>"
     for x in range(0, 5-value):
         starstring= starstring +"<span>&#9734;</span>"
     return starstring

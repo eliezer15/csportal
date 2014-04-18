@@ -71,7 +71,7 @@ $(document).ready(function() {
   	});
 	
     $(function () {
-        $("[rel='tooltip']").tooltip();
+        $("[data-rel='tooltip']").tooltip();
     });
 	
     if ($(document).height() == $(window).height()) {
@@ -87,9 +87,9 @@ $(document).ready(function() {
     	var search = uri.search(true);
     	for(key in search){
     		if(key == 'post_type'){
-    			if(search[key] == 'Interview,Offer'){
-    				$('div.filterdiv input[value="Offer"]').prop("checked", true);
-    				$('div.filterdiv input[value="Interview"]').prop("checked", true);
+    			if(search[key] == 'interview,offer'){
+    				$('div.filterdiv input[value="offer"]').prop("checked", true);
+    				$('div.filterdiv input[value="interview"]').prop("checked", true);
     			} else
     			$('div.filterdiv input[value='+search[key]+']').prop("checked", true);
     		} else{
