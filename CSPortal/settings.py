@@ -129,7 +129,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'GetHired',
     'django.contrib.admin',
-    'debug_toolbar',
+   # 'debug_toolbar',
     'django.contrib.humanize',
     'registration',
     # Uncomment the next line to enable admin documentation:

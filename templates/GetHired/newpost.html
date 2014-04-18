@@ -28,28 +28,26 @@
 						<div class="row">
 							<div class="new-company-info col-md-6">
 								<div class="form-group">
-        							<label for="company" class="control-label col-md-12"><span class="required">* </span>Company: </label>
+        							<label for="id_name" class="control-label col-md-12"><span class="required">* </span>Company: </label>
                                     {{company_form.name.errors}}
         							<div class="col-md-12" id="company_field">
     								    {{company_form.name}}
         							</div>
 								</div>
 								<div class="form-group">
-        							<label for="country" class="control-label col-md-12"><span class="required">* </span>Country: </label>
-                                        {{location_form.country.errors}}
+        							<label for="id_country" class="control-label col-md-12"><span class="required">* </span>Country: </label>
         								<div class="col-md-12">
         									{{location_form.country}}
 										</div>
 								</div>
 								<div class="form-group">
-        							<label for="state" class="control-label col-md-12"><span class="required">* </span>State: </label>
-                                        {{location_form.state.errors}}
+        							<label for="id_state" class="control-label col-md-12"><span class="required">* </span>State: </label>
         								<div class="col-md-12">
  											{{location_form.state}}
         								</div>
 								</div>
 								<div class="form-group">
-        							<label for="city" class="control-label col-md-12"><span class="required">* </span>City: </label>
+        							<label for="id_city" class="control-label col-md-12"><span class="required">* </span>City: </label>
         								{{location_form.city.errors}}
         								<div class="col-md-12">
        										{{location_form.city}}
@@ -63,7 +61,7 @@
         							</div>
 								</div>
 								<div class="form-group">
-        							<label for="date_interviewed" class="control-label col-md-12"><span class="required">* </span>Date of Interview: </label>
+        							<label for="id_date_interviewed" class="control-label col-md-12"><span class="required">* </span>Date of Interview: </label>
         							{{form.date_interviewed.errors}}
         							<div class="col-md-12" id="dateinterviewed">
         							{{form.date_interviewed}}
@@ -153,40 +151,40 @@
 						<div class="row">
 							<div class="new-company-info col-md-6">
                                 <div class="form-group">
-                                    <label for="company" class="control-label col-md-12"><span class="required">* </span>Company: </label>
+                                    <label for="id_name" class="control-label col-md-12"><span class="required">* </span>Company: </label>
                                     {{company_form.name.errors}}
                                     <div class="col-md-12" id="company_field">
                                         {{company_form.name}}
                                     </div>
                                 </div>
 								<div class="form-group">
-        							<label for="job_title" class="control-label col-md-12"><span class="required">* </span>Job title: </label>
+        							<label for="id_job_title" class="control-label col-md-12"><span class="required">* </span>Job title: </label>
         							{{ form.job_title.errors }}
         							<div class="col-md-12">
         							{{ form.job_title}}
         							</div>
 								</div>
 								<div class="form-group">
-        							<label class="control-label col-md-12" for="applicant_degree"><span class="required">* </span>Degree type: </label>
+        							<label class="control-label col-md-12" for="id_applicant_degree"><span class="required">* </span>Degree type: </label>
         							{{ form.applicant_degree.errors}}
         							<div class="col-md-12">
         							{{ form.applicant_degree }}
        								</div>
 								</div>
 								<div class="form-group">
-        							<label for="country" class="control-label col-md-12"><span class="required">* </span>Country: </label>
+        							<label for="id_country" class="control-label col-md-12"><span class="required">* </span>Country: </label>
         							<div class="col-md-12">
         								{{location_form.country}}
         							</div>
         						</div>
 								<div class="form-group">
-        							<label for="state" class="control-label col-md-12"><span class="required">* </span>State: </label>
+        							<label for="id_state" class="control-label col-md-12"><span class="required">* </span>State: </label>
         							<div class="col-md-12">
         								{{location_form.state}}
         							</div>
 								</div>
 								<div class="form-group">
-        							<label for="city" class="control-label col-md-12"><span class="required">* </span>City: </label>
+        							<label for="id_city" class="control-label col-md-12"><span class="required">* </span>City: </label>
         							{{location_form.city.errors}}
         							<div class="col-md-12">
         							{{location_form.city}}
@@ -195,21 +193,21 @@
 							</div><!-- End of Company  Div -->
 							<div class="new-pay-info col-md-6">
 								<div class="form-group">
-        							<label for="job_type" class="control-label col-md-12"><span class="required">* </span>Job Type: </label>
+        							<label for="id_job_type" class="control-label col-md-12"><span class="required">* </span>Job Type: </label>
         							{{ form.job_type.errors}}
         							<div class="col-md-12">
         							{{ form.job_type }}
         							</div>
         						</div>
         						<div class="form-group">
-        							<label for="interview_process" class="control-label col-md-12"><span class="required">* </span>Pay Type: </label>
+        							<label for="id_pay_type" class="control-label col-md-12"><span class="required">* </span>Pay Type: </label>
         							{{ form.pay_type.errors }}
         							<div class="col-md-12">
         							{{ form.pay_type }}
         							</div>
         						</div>
         						<div class="form-group">
-        							<label for="questions_asked" class="control-label col-md-12"><span class="required">* </span>Salary: </label>
+        							<label for="id_salary" class="control-label col-md-12"><span class="required">* </span>Salary: </label>
         							{{ form.salary.errors }}
         							<div class="col-md-12 input-group money_field">
 										<span class="input-group-addon">$</span>
@@ -217,7 +215,7 @@
        								</div>
 								</div>
 								<div class="form-group">
-        							<label for="offer_status" class="control-label col-md-12">Signing Bonus: </label>
+        							<label for="id_signing_bonus" class="control-label col-md-12">Signing Bonus: </label>
         							{{ form.signing_bonus.errors }}
         							<div class="col-md-12 input-group money_field">
         							<span class="input-group-addon">$</span>
@@ -225,7 +223,7 @@
         							</div>
 								</div>
 								<div class="form-group">
-        							<label for="SOO" class="control-label col-md-12">Relocation Bonus: </label>
+        							<label for="id_relocation_bonus" class="control-label col-md-12">Relocation Bonus: </label>
         							{{ form.relocation_bonus.errors }}
         							<div class="col-md-12 input-group money_field">
         							<span class="input-group-addon">$</span>
@@ -233,7 +231,7 @@
        								</div>
     							</div>
 								<div class="form-group">
-        							<label for="SOO" class="control-label col-md-12"><span class="required">* </span>Offer Status: </label>
+        							<label for="id_offer_status" class="control-label col-md-12"><span class="required">* </span>Offer Status: </label>
        								 {{ form.offer_status.errors }}
         							<div class="col-md-12">
         							{{ form.offer_status}}
@@ -244,7 +242,7 @@
 					</div><!-- End of New Offer Selector Container Div -->
 					<div class="form-group">
 	 					{{ form.other_details.errors }}
-        				<label for="SOO" class="control-label col-md-12">Other Details: </label>
+        				<label for="id_other_details" class="control-label col-md-12">Other Details: </label>
         				<div class="col-md-12">
         				{{ form.other_details}}
         				</div>
