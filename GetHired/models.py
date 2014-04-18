@@ -34,7 +34,7 @@ class Post(models.Model):
 
 class Company(models.Model):
     name = models.CharField(max_length=30)
-    avg_salary = models.DecimalField(decimal_places=2, max_digits=10, default=999.99, editable=False)
+    avg_salary = models.DecimalField(decimal_places=2, max_digits=10, default=0, editable=False)
     avg_interview_rating = models.DecimalField(decimal_places=1, max_digits=10, default=0, editable=False)
     num_offers = models.IntegerField(default=0, editable=False)
     num_offers_to_calculate_salary = models.IntegerField(default=0, editable=False)

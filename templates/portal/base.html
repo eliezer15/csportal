@@ -56,7 +56,7 @@
 			</div><!-- Info Div Row End -->
 			<div class="row search">
 				<div class="user-bar col-md-12">
-					<span style="float: right;">{% if user.is_authenticated %}Welcome {{user.username}}! <a href="/accounts/logout/">Logout</a>{% else %} Welcome, new user. Please <a href="/accounts/login/">log in.</a> {% endif %}</span>
+					<span style="float: right;">{% if user.is_authenticated %}Welcome {{user.username}}! <a href="/accounts/profile/">Dashboard</a> | <a href="/accounts/logout/">Logout</a>{% else %} Welcome, Guest. Please <a href="/accounts/login/"> login!</a> {% endif %}</span>
 				</div><!-- End of user-bar Div -->
 			</div><!-- End of Search Row -->
 			<div class="container-fluid">

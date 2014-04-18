@@ -12,9 +12,6 @@ class InterviewForm(forms.ModelForm):
         model = Interview
         exclude = ["author"]
 
-        def is_valid(self):
-            return True
-
 class OfferForm(forms.ModelForm):
     class Meta:
         model = Offer

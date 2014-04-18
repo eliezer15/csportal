@@ -3,6 +3,7 @@ from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from registration import views as reg_views
 from GetHired import views, forms
 from django.contrib import admin
+from django.contrib.auth.views import password_reset_confirm
 admin.autodiscover()
 
 urlpatterns = patterns('',
@@ -16,8 +17,9 @@ urlpatterns = patterns('',
     url(r'^gethired/filter/', views.filter_posts,name='filter_posts'),
     url(r'^gethired/post/list/(?P<post_type>\w+)/$', views.get_json_list),
     url(r'^accounts/logout/$', views.logout_view),
+    url(r'^accounts/profile/$', views.userprofile),
     url(r'^accounts/register/$',
-        views.RegistrationViewUniqueEmail.as_view(),
+        views.registrationview.as_view(),
         name='registration_register'),
     url(r'^accounts/', include('registration.backends.default.urls')),
 )

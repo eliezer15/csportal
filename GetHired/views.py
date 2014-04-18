@@ -199,8 +199,7 @@ def create_post(request, post_type, post_id=None):
                 user_form = Form(request.POST, instance=post) 
             
             post = user_form.save(commit=False)
-            post.author = User.objects.get(username=request.user) 
-            print request.user
+            post.author = User.objects.get(username=request.user)
             post.location = location
             post.company = company
             post.save()
@@ -279,8 +278,20 @@ def logout_view(request):
     logout(request)
     return redirect('/accounts/login/')
     
-class RegistrationViewUniqueEmail(RegistrationView):
+class registrationview(RegistrationView):
     form_class = forms.RegistrationFormZ
-    
-def UserProfile(request):
-    return redirect('/accounts/login/')
+
+@login_required
+def userprofile(request):
+    context = RequestContext(request)
+    context_dict = {}
+    poster = models.User.objects.get(username=request.user)
+    interview_posts = models.Interview.objects.filter(author=poster)
+    offer_posts = models.Offer.objects.filter(author=poster)
+    all_posts = sorted(
+                       chain(interview_posts,offer_posts),
+                       key=lambda post: post.date_posted,
+                       reverse = True
+                      )
+    context_dict['posts'] = all_posts
+    return render_to_response('GetHired/profile.html', context_dict, context)
