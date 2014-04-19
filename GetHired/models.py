@@ -467,7 +467,7 @@ class Offer(GetHiredPost):
     offer_status = models.CharField(max_length=2,
                                     choices=offer_choices)
     other_details = models.TextField(blank=True, null=True)
-    
+        
     def save(self, **kwargs):
         super(Offer, self).save()
         self.company.add_offer(self)

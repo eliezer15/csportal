@@ -283,4 +283,4 @@ def userprofile(request):
                        reverse = True
                       )
     context_dict['posts'] = all_posts
-    return render_to_response('GetHired/profile.html', context_dict, context)
+    return render_to_response('portal/profile.html', context_dict, context)

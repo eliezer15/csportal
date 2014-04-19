@@ -2,6 +2,7 @@
 {% load extra_templates %}
 {% load static %}
 {% load humanize %}
+{% block addstyles %}<link rel="stylesheet" href="/static/css/gethired.css">{% endblock%}
 {% block title %} Get Hired {% endblock %}
 {% block header %} Get Hired {% endblock %}
 {% block content %}
@@ -90,9 +91,9 @@
     					<label>Questions Asked:</label>   
     					<p class="questions">{{post.questions_asked}}</p>
     					{% if post.offer_details %} <!--if offer received-->
-    					<p class="offer_details"><a href={{post.offer_details.url_slug}}>Offer</a></p>
-    					{% endif %}
+    					<p class="offer_details"><a href=/gethired{{post.offer_details.url_slug}}>Offer</a></p>
     				</div>
+    				{% endif %}
     				{% else %}
     				<div class="row postview-salary-block-row">
     					<div class="postview-salary-blocks">

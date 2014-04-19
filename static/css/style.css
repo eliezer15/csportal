@@ -192,6 +192,7 @@ ul.navlist li a.current:after{
   position: absolute;
   bottom: 1px;
 }
+
 ul.navlist li a:hover:after {
   content: "";
   margin-left: -15px; /* <-- moves it back half it's own width */
@@ -224,11 +225,6 @@ div.info h1 a:hover{
     color: rgba(222, 218, 218, 1);
 }
 
-div.money_field {
-	margin-left:15px;
-	width:92%;
-}
-
 div.user-bar {
 	border-bottom: thin solid #dbdbdb;
 	padding-bottom: 10px margin-bottom: 15px;
@@ -237,6 +233,7 @@ div.user-bar {
 div.footer {
 	background: url(../images/pw_maze_black.png);
 }
+
 ul.footernav {
 	padding-top: 3px;
 }
@@ -308,12 +305,6 @@ span.post-preview{
 	color: #B2B2B2;
 }
 
-span.lab {
-	color: black;
-	font-size: 14px;
-	font-weight: bold;
-}
-
 div.filterdiv div.contain {
 	margin: 10px;
 }
@@ -364,6 +355,12 @@ div.postview h3.title {
 	line-height: 0px;
 }
 
+div.postview span.lab{
+    color: inherit;
+    font-weight: 600;
+    font-size: inherit;
+}
+
 span.postview-label{
     margin-left: 5px;
     font-size: 12px;
@@ -375,79 +372,9 @@ div.postview span.date{
     padding-top: 10px;
 }
 
-div.postview-jobinfo{
-	margin:2px;
-    padding: 10px 0px;
-	margin-top: 15px;
-    font-size: 14px;
-    border-top: 1px dashed #dbdbdb;
-}
-
-div.postview-jobinfo span.lab{
-    color: inherit;
-    font-weight: 600;
-    font-size: inherit;
-}
-span.stars{
-    cursor: default;
-    font-size: 18px;
-    font-weight: 500;
-    color: #f9df00;
-}
-
 div.postview span.content{
 	color: #4390c6;
     font-weight: 500;
-}
-
-div.postview span.date, span.salary, span.rating{
-	float: right;
-}
-
-div.postview-about-row, span.postview-location a{
-    font-size: 14px;
-    padding: 10px 0px;
-    text-align: center;
-}
-
-span.postview-location, span.postview-offer{
-	padding: 0px 3px;
-}
-
-div.postview-about-row div{
-    padding: 5px;
-    display: inline-block;
-}
-
-div.postview-about-row img{
-	vertical-align: bottom;
-	padding: 0px 2px 0px 9px;
-}
-
-div.postview-salary-block-row{
-    text-align:center;
-    border-bottom: 1px dashed #dbdbdb;
-}
-
-div.postview-salary-blocks{
-    display:inline-block;
-    width: 120px;
-    text-align: center;
-}
-
-div.postview-offer-info-row{
-    padding-top: 15px;
-}
-
-div.postview-interview-info-row{
-   	border-top: 1px dashed #dbdbdb;
-   	padding-top: 10px;
-}
-
-div.postview-report-rate div.content{
-	float: right;
-    font-size: 12px;
-    font-weight: 700;
 }
 
 div.related-post{
@@ -465,11 +392,6 @@ div.related-post:hover{
 	background-color: #ffffff;
 }
 
-div.related-post-location{
-    font-size: 12px;
-    color: #a4a4a4;
-}
-
 /*New Post CSS*/
 div.newform h2 {
 	font-family: 'Roboto Condensed';
@@ -484,12 +406,7 @@ div.newform select{
 	font-size: 12px;
 }
 
-div.new-interview-form label.control-label{
-	text-align: left;
-	font-size: 14px;
-}
-
-div.new-offer-form label.control-label{
+div.newform label.control-label{
 	text-align: left;
 	font-size: 14px;
 }
@@ -508,12 +425,6 @@ ul.errorlist {
 div.post-404{
 	text-align: center;
 	margin-top: 50px;
-}
-	
-div.companyinfo{
-	margin: 1em 0.3em;
-	border: thin solid #DBDBDB;
-	color: #7b7b7b;
 }
 
 div.pagination{
@@ -581,6 +492,7 @@ ul.profile-list{
     background-color: white;
     box-shadow: 0px 4px 4px rgba(0, 0, 0, 0.05);
 }
+
 ul.profile-list li:last-child{
     border-bottom: none;
 }
