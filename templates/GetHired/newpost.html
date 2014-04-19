@@ -1,11 +1,12 @@
 {% extends "portal/base.html" %}
 {% block addstyles %}<link rel="stylesheet" href="/static/css/gethired.css">{% endblock%}
+{% load humanize %}
 {% block title %} Add/Edit Post {% endblock %}
 {% block header %} Get Hired {% endblock %}
 {% block content %}
 <script>
     /* autocomplete for companie on form */
-    $(function() {
+    $(document).ready(function() {
         $.ajax({
             url: 'http://localhost:8000/gethired/post/list/company/',
             success:function(data) {
@@ -15,6 +16,35 @@
                 });            
             }
         });
+        
+        var pre_selected_value = $('select#id_offer_details option:selected').val();
+        $('select.link-offer-select').val(pre_selected_value);
+        
+        $('select.link-offer-select').change(function(){
+        	var selected_value = $('select.link-offer-select option:selected').val();
+        	$('select#id_offer_details').val(selected_value);
+        });
+        
+    	var pre_preselected_value = $('select#id_offer_status option:selected').val();
+    	if(pre_preselected_value == 'RC'){
+    		$('div.select-offer-div').show();
+    	} else{
+    		$('div.select-offer-div').hide();
+    		 $('select.link-offer-select').val("");
+    		 $('select#id_offer_details').val("");
+    	}
+    	
+        $('select#id_offer_status').change(function(){
+        	var selected_value = $('select#id_offer_status option:selected').val();
+        	if(selected_value == 'RC'){
+        		$('div.select-offer-div').show();
+        	} else{
+        		$('div.select-offer-div').hide();
+        		 $('select.link-offer-select').val("");
+        		 $('select#id_offer_details').val("");
+        	}
+        });
+        
     });
 </script>
 <div class="newform col-md-12">
@@ -100,6 +130,22 @@
         							<div class="col-md-12">
         							{{ form.offer_status }}
         							</div>
+								</div>
+								<div class="form-group select-offer-div" style="display: none;")>
+        							<label for="id_link_offer" class="control-label col-md-12">You can select from your posted offers to link this interview to, select which from the list below or leave blank if you have not yet posted or wish not to link an offer: </label>
+        							<label for="id_link_offer" class="control-label col-md-12" style="font-size: 12px; color: #9F9F9F;"><em>You can always link an offer back to an interview by editing the interview post once you've recieved and posted an offer.</em></label>
+      								{{form.offer_details.errors}}
+        							<div class="col-md-12">
+        								<select class="link-offer-select">
+        								<option value="">---------</option>
+        								{% for post in offer_posts %}
+        								<option value="{{post.pk}}">{{post.company.name}} | ${{post.salary|intcomma}} | {{post.date_posted}}</option>
+        								{% endfor %}
+        								</select>
+        							</div>
+        						</div>
+        						<div style="display:none">
+								{{form.offer_details}}
 								</div>
 								<div class="form-group">
         							<label for="id_interview_source" class="control-label col-md-12"><span class="required">* </span>Interview Source: </label>
