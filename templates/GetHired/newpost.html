@@ -242,6 +242,13 @@
         							{{ form.offer_status}}
         							</div>
     							</div>
+    							<div class="form-group">
+        							<label for="id_salary" class="control-label col-md-12"><span class="required">* </span>Permission to display salary in posts: </label>
+        							{{ form.display_salary.errors }}
+        							<div class="col-md-12">
+										<span>Yes:  {{ form.display_salary }}</span>
+       								</div>
+								</div>
 							</div>
 						</div><!-- End of New Offer Selector Row Div -->
 					</div><!-- End of New Offer Selector Container Div -->

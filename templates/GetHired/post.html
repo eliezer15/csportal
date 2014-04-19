@@ -34,14 +34,20 @@
 </div>
 <script>
 		$(document).ready(function(){
-			$(document).scrollTop( $("div.navrow").offset().top );   
+			$(document).scrollTop( $("div.navrow").offset().top );
+			console.log(document.referrer);
+			var refer = new URI(document.referrer);
+			console.log(refer.host());
+			if(refer.host() != "localhost:8000"){
+				$('.btn-go-back').hide();
+			}
 		});
 </script>
 <div class="post_bar col-md-9">
 <div class="postview col-md-12">
 	<div class="container-fluid">
 		<div class="postview-button-row row">
-			<a href="/gethired/" class="btn pull-left btn-info btn-go-back">Go Back</a>
+			<button onclick="window.history.back()" class="btn pull-left btn-info btn-go-back">Go Back</button>
 			{% if user.username == post.author.username %}
 			<a href="{% url 'render_edit_post' post_type=post.post_type post_id=post.pk %}" class="btn pull-right btn-info btn-edit">Edit/Delete Post</a>
 			{% endif %}
@@ -98,16 +104,19 @@
     				<div class="row postview-salary-block-row">
     					<div class="postview-salary-blocks">
     						<label>Salary:</label>
-							<p class="salary"><span class="content">${{post.salary|intcomma}} {{post.get_pay_type_display}}</span></p>
+							{% if post.display_salary %}<p class="salary"><span class="content">${{post.salary|intcomma}} {{post.get_pay_type_display}}</span></p>{% endif %}
 						</div>
 						<div class="postview-salary-blocks">
 							<label>Signing Bonus:</label>
-    						<p class="bonus"><span class="content">${{post.signing_bonus|intcomma}}</span></p>
+    						{% if post.display_salary %}<p class="bonus"><span class="content">${{post.signing_bonus|intcomma}}</span></p>{% endif %}
     					</div>
     					<div class="postview-salary-blocks">
     						<label>Relocation:</label>
-    						<p class="relocation"><span class="content">${{post.relocation_bonus|intcomma}}</span></p>
+    						{% if post.display_salary %}<p class="relocation"><span class="content">${{post.relocation_bonus|intcomma}}</span></p>{% endif %}
     					</div>
+    				{% if not post.display_salary %}
+    				<p><span class="content">The poster has elected to not display their salary information.</span></p>
+    				{% endif %}
     				</div>
     				<div class="row postview-offer-info-row">
     					<label>Status:</label>

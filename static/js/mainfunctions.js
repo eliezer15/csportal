@@ -33,7 +33,7 @@ $(document).ready(function() {
 	$('div.newform').find('textarea').addClass('form-control');
 	$('div.newform').find('textarea').css('width', '100%');
 	//Do all except the checkbox
-	$('div.newform').find('input[type=checkbox]').removeClass('form-control');
+	$('div.newform').find('input[type="checkbox"]').css('width', '0');
 	
 	/* Event for disabling state selection when an international
        country is selected when creating a new post */

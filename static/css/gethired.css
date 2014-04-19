@@ -79,3 +79,9 @@ div.companyinfo{
 #id_name{
     height: 100%;
 }
+
+input#id_display_salary{
+	height: 1px;
+	display: inline;
+	outline: none;
+}

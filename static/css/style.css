@@ -342,7 +342,7 @@ div.postview-button-row{
     margin-bottom: 10px;
 }
 
-a.btn-edit, a.btn-go-back{
+a.btn-edit, button.btn-go-back{
     background-color: #6D92AB;
     border-color: #6D92AB;
 }
