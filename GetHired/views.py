@@ -165,9 +165,14 @@ def create_post(request, post_type, post_id=None):
         Form = form_dict[post_type]
         context = RequestContext(request)
         context_dict = {}
-        user_form = Form(request.POST)
+        if post_id:
+                model = model_dict[post_type]
+                post = model.objects.get(pk=post_id)
+                user_form = Form(request.POST, instance=post) 
+        else:
+            user_form = Form(request.POST)
         location = None
-
+        
         valid_form = user_form.is_valid() #calling it here so I can access the clean data below
         valid_company = data['name']
         valid_location = data['country'] and data['state'] and data['city']
@@ -194,18 +199,17 @@ def create_post(request, post_type, post_id=None):
             post.save()
             
             redirecturl = '/gethired/post/' + post_type + '/' + str(post.pk) +'/'
-            print redirecturl
-            #return render_to_response('portal/newpost.html',context_dict, context)
             return HttpResponseRedirect(redirecturl)
         else:
             context_dict['form'] = user_form
+            context_dict['post_id'] = str(post_id)
             context_dict['location_form'] = forms.LocationForm({'country':data['country'],'state':data['state'],'city':data['city']})
             context_dict['company_form'] = forms.CompanyForm({'name':data['name']})
             context_dict['post_type'] = post_type
             context_dict['companies'] = models.Company.objects.order_by('name')
             logging.debug(user_form)
 
-            return render_to_response('GetHired/newpost.html',context_dict, context)
+            return render_to_response('GetHired/newpost.html',context_dict, context)    
 
 def filter_posts(request):
     if request.method == 'GET':
