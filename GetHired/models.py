@@ -380,7 +380,7 @@ class Location(models.Model):
         if self.country != 'US':
             return self.get_country_display()
         else:
-            return "%s, %s, %s"%(self.city, self.state, self.country)
+            return "%s, %s, %s"%(self.city.title(), self.state, self.country)
     
     class Meta:
         app_label = 'GetHired'
