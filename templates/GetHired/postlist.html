@@ -180,7 +180,7 @@
 		<div class="row">
 			<p class="post-preview-info"><span class="job_title"><a class="norm"  data-rel="tooltip" data-placement="right" title="Posts by Position" href="/gethired/filter/?company=ALL&amp;location=ALL&amp;job_title={{post.job_title}}&amp;job_type=ALL">{{post.get_job_title_display}}</a></span></p>
 			<p class="post-preview-info"><span class="post-preview-info job_type"><a class="norm" data-rel="tooltip" data-placement="right" title="Posts by Job Type" href="/gethired/filter/?company=ALL&amp;location=ALL&amp;job_title=ALL&amp;job_type={{post.job_type}}">{{post.get_job_type_display}}</a></span></p>
-			<p class="post-preview-info"><span class="location"><a class="norm" data-rel="tooltip" data-placement="right" title="Posts by Location" href="/gethired/filter/?company=ALL&amp;location={{post.location.state}}&amp;job_title=ALL&amp;job_type=ALL">{{post.location.city|title}}, {{post.location.state}}, {{post.location.country}}</a></span></p>
+			<p class="post-preview-info"><span class="location"><a class="norm" data-rel="tooltip" data-placement="right" title="Posts by Location" href="/gethired/filter/?company=ALL&amp;location={{post.location.state}}&amp;job_title=ALL&amp;job_type=ALL">{{post.location}}</a></span></p>
 		</div>
 		<div class="row">
 			{% if post.post_type == "interview" %}

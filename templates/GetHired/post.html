@@ -18,7 +18,7 @@
         			<a class="postLinks" href="{% url 'get_post' post_type=post.post_type.lower post_id=post.pk %}">{{post.company}} - {{post.post_type|title}}</a><br>
 				</div>
 				<div class="row related-post-location">
-					{{post.location.city|title}}, {{post.location.state}}, {{post.location.country}}
+					{{post.location}}
 				</div>
 			</div>
 			<div class="hover-test" style="display: none;" data-num="{{forloop.counter}}">
@@ -86,7 +86,7 @@
 							{% endif %}
 						</div>
 						<div class="row postview-about-row">
-							<div><img alt="location" src="{% static "/static/images/gethired/map_location_test.png" %}"><span class="postview-location"><a href="/gethired/filter/?company=ALL&amp;location={{post.location.state}}&amp;job_title=ALL&amp;job_type=ALL">{{post.location.city|title}}, {{post.location.state}}, {{post.location.country}}</a></span></div>
+							<div><img alt="location" src="{% static "/static/images/gethired/map_location_test.png" %}"><span class="postview-location"><a href="/gethired/filter/?company=ALL&amp;location={{post.location.state}}&amp;job_title=ALL&amp;job_type=ALL">{{post.location}}</a></span></div>
 							<div><img alt="graduation cap" src="{% static "/static/images/gethired/grad_cap_test_g.png" %}"><span>{{post.applicant_degree|normdegree}}</span></div>
 							<div><img alt="thumbsup" src="{% static "/static/images/gethired/thumbs_up_test.png" %}"><span class="postview-offer">{{post.get_offer_status_display}}</span></div>
 						</div>
