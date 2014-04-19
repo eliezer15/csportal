@@ -192,9 +192,11 @@ def create_post(request, post_type, post_id=None):
             post.location = location
             post.company = company
             post.save()
-
+            
+            redirecturl = '/gethired/post/' + post_type + '/' + str(post.pk) +'/'
+            print redirecturl
             #return render_to_response('portal/newpost.html',context_dict, context)
-            return HttpResponseRedirect('/gethired/')
+            return HttpResponseRedirect(redirecturl)
         else:
             context_dict['form'] = user_form
             context_dict['location_form'] = forms.LocationForm({'country':data['country'],'state':data['state'],'city':data['city']})

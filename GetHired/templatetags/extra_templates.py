@@ -41,6 +41,18 @@ def rating(value):
         starstring= starstring +"<span>&#9734;</span>"
     return starstring
 
+@register.filter()
+def normsalarytype(value):
+    pay_choices= {
+            'Yearly Salary': '/yr',
+            'Monthly Salary': '/mo',
+            'Weekly Salary': '/wk',
+            'Hourly Salary': '/hr',
+            'Total Salary': '/total',
+            'Other': '/other'
+            }
+    return pay_choices[value];
+
 class AbsoluteURLNode(URLNode):
     def render(self, context):
         path = super(AbsoluteURLNode, self).render(context)

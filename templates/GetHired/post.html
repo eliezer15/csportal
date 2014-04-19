@@ -38,6 +38,15 @@
 			console.log(document.referrer);
 			var refer = new URI(document.referrer);
 			console.log(refer.host());
+			console.log(refer);
+			var edit = refer.path().indexOf("edit");
+			var newind = refer.path().indexOf("new");
+			if(edit > -1){
+				$('.btn-go-back').hide();
+			}
+			if(newind > -1){
+				$('.btn-go-back').hide();
+			}
 			if(refer.host() != "localhost:8000"){
 				$('.btn-go-back').hide();
 			}
@@ -104,7 +113,7 @@
     				<div class="row postview-salary-block-row">
     					<div class="postview-salary-blocks">
     						<label>Salary:</label>
-							{% if post.display_salary %}<p class="salary"><span class="content">${{post.salary|intcomma}} {{post.get_pay_type_display}}</span></p>{% endif %}
+							{% if post.display_salary %}<p class="salary"><span class="content">${{post.salary|intcomma}}{{post.get_pay_type_display|normsalarytype}}</span></p>{% endif %}
 						</div>
 						<div class="postview-salary-blocks">
 							<label>Signing Bonus:</label>
