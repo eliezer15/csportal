@@ -18,7 +18,7 @@
         			<a class="postLinks" href="{% url 'get_post' post_type=post.post_type.lower post_id=post.pk %}">{{post.company}} - {{post.post_type|title}}</a><br>
 				</div>
 				<div class="row related-post-location">
-					{post.location}}
+					{{post.location}}
 				</div>
 			</div>
 			<div class="hover-test" style="display: none;" data-num="{{forloop.counter}}">
@@ -101,7 +101,7 @@
     				<div class="row postview-interview-info-row">
     					{% if post.offer_details %} 
     					<label>Link to Offer:</label>
-    					<p class="offer_details"><a href=/gethired{{post.offer_details.url_slug}}>{{post.offer_details.company.name}}, {{post.offer_details.location.city|title}}, {{post.offer_details.location.state}}</a></p>
+    					<p class="offer_details"><a href=/gethired{{post.offer_details.url_slug}}>{{post.offer_details.company.name}}, {{post.location}}</a></p>
     					{% endif %}
     					<label>Date of Interview:</label>   
     					<p class="date-interviewed">{{post.date_interviewed}}</p>
@@ -131,7 +131,7 @@
     				<div class="row postview-offer-info-row">
     					{% if post.interview %}
     					<label>Link to Interview:</label>
-    					<p><a href="/gethired{{post.interview.url_slug}}">{{post.interview.company.name}}, {{post.interview.location.city|title}}, {{post.interview.location.state}}</a></p>
+    					<p><a href="/gethired{{post.interview.url_slug}}">{{post.interview.company.name}}, {{post.interview.location}}</a></p>
     					{% endif %}
     					<label>Status:</label>
     					<p class="status">{{post.get_offer_status_display}}</p>
