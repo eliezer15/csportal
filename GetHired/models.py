@@ -481,7 +481,6 @@ class Offer(GetHiredPost):
 def validate_date(value):
     if value > date.today():
         raise ValidationError(u'Date cannot be in the future')
-
 class Interview(GetHiredPost):
     type_choices = (
         ('OC', 'On campus'),

@@ -85,3 +85,8 @@ input#id_display_salary{
 	display: inline;
 	outline: none;
 }
+
+div.helpfulhints img{
+    padding: 50px 0px;
+    width: 100%;
+}
