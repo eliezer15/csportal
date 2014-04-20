@@ -469,9 +469,11 @@ class Offer(GetHiredPost):
     other_details = models.TextField(blank=True, null=True)
         
     def save(self, **kwargs):
+        if not self.pk:
+            self.company.add_offer(self)
+            self.company.save()
+
         super(Offer, self).save()
-        self.company.add_offer(self)
-        self.company.save()
     
     class Meta:
         app_label = 'GetHired'
@@ -479,6 +481,7 @@ class Offer(GetHiredPost):
 def validate_date(value):
     if value > date.today():
         raise ValidationError(u'Date cannot be in the future')
+
 class Interview(GetHiredPost):
     type_choices = (
         ('OC', 'On campus'),
@@ -532,9 +535,10 @@ class Interview(GetHiredPost):
     interview_rating = models.IntegerField(choices=rating_choices)
     
     def save(self, **kwargs):
-        super(Interview, self).save()
-        self.company.add_interview(self)
-        self.company.save() 
+        if not self.pk:
+            self.company.add_interview(self)
+            self.company.save()
+        super(Interview, self).save() 
 
     class Meta:
         app_label = 'GetHired'
