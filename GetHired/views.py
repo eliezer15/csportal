@@ -142,19 +142,21 @@ def render_new_post_form(request,post_type,post_id=None):
         if post_id:
             Model = model_dict[post_type]
             post = Model.objects.get(pk=post_id)
-            context_dict['form'] = form(instance=post)
+            modelform =  form(instance=post)
+            if post_type == "interview":
+                modelform.fields['offer_details'].queryset = models.Offer.objects.filter(author=request.user)
+            context_dict['form'] = modelform
             context_dict['location_form'] = forms.LocationForm(instance=post.location)
             context_dict['company_form'] = forms.CompanyForm(instance=post.company)
-            if post_type == "interview":
-                context['offer_posts'] = models.Offer.objects.filter(author=request.user)
             context['author'] = post.author
             
             context_dict['header'] = 'Edit '
             context_dict['post_id'] = post_id
         else:
-            context_dict['form'] = form()
+            modelform = form()
             if post_type == "interview":
-                context['offer_posts'] = models.Offer.objects.filter(author=request.user)
+                modelform.fields['offer_details'].queryset = models.Offer.objects.filter(author=request.user)
+            context_dict['form'] = modelform
             context_dict['location_form'] = forms.LocationForm()
             context_dict['company_form'] = forms.CompanyForm()
             context_dict['header'] = 'Add New '
@@ -205,9 +207,10 @@ def create_post(request, post_type, post_id=None):
             redirecturl = '/gethired/post/' + post_type + '/' + str(post.pk) +'/'
             return HttpResponseRedirect(redirecturl)
         else:
-            context_dict['form'] = user_form
+            modelform = user_form
             if post_type == "interview":
-                context['offer_posts'] = models.Offer.objects.filter(author=request.user)
+                modelform.fields['offer_details'].queryset = models.Offer.objects.filter(author=request.user)
+            context_dict['form'] = modelform
             context_dict['post_id'] = str(post_id)
             context_dict['location_form'] = forms.LocationForm({'country':data['country'],'state':data['state'],'city':data['city']})
             context_dict['company_form'] = forms.CompanyForm({'name':data['name']})

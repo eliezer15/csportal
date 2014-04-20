@@ -10,7 +10,7 @@ from django.utils.translation import ugettext_lazy as _
 class InterviewForm(forms.ModelForm):
     class Meta:
         model = Interview
-        exclude = ["author"]  
+        exclude = ["author"]
 
 class OfferForm(forms.ModelForm):
     class Meta:
