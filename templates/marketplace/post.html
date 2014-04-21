@@ -1,0 +1,102 @@
+{% extends "portal/base.html" %}
+{% load extra_templates %}
+{% load static %}
+{% load humanize %}
+{% block addstyles %}<link rel="stylesheet" href="/static/css/gethired.css">{% endblock%}
+{% block title %} Project Marketplace {% endblock %}
+{% block header %} Project Marketplace {% endblock %}
+{% block content %}
+<div class="filteroptions col-md-3">
+<div class="filterdiv panel panel-default">
+<div class="contain">
+<div class="container-fluid">
+</div>
+</div>
+</div>
+</div>
+<script>
+		$(document).ready(function(){
+			$(document).scrollTop( $("div.navrow").offset().top );
+			console.log(document.referrer);
+			var refer = new URI(document.referrer);
+			console.log(refer.host());
+			console.log(refer);
+			var edit = refer.path().indexOf("edit");
+			var newind = refer.path().indexOf("new");
+			if(edit > -1){
+				$('.btn-go-back').hide();
+			}
+			if(newind > -1){
+				$('.btn-go-back').hide();
+			}
+			if(refer.host() != "localhost:8000"){
+				$('.btn-go-back').hide();
+			}
+		});
+</script>
+<div class="post_bar col-md-9">
+<div class="postview col-md-12">
+	<div class="container-fluid">
+		<div class="postview-button-row row">
+			<button onclick="window.history.back()" class="btn pull-left btn-info btn-go-back">Go Back</button>
+			{% if user.username == post.author.username %}
+			<a href="{% url 'render_edit_post' post_type=post.post_type post_id=post.pk %}" class="btn pull-right btn-info btn-edit">Edit/Delete Post</a>
+			{% endif %}
+		</div> <!-- Button Row -->
+	</div>
+	<div class="container-fluid">
+		<div class="row">
+    		<div class="title col-md-12">
+    			<div class="row">
+    				<h3 class="title">{{post.title|title}}</h3>
+                    <span class="postview-label label label-success">{{post.post_type|title}}</span>
+    				<span class="date">Posted: {{post.date_posted|naturalday|title}}</span>
+				</div>
+				<div class="row postview-upperinfo">
+					<div class="container-fluid">
+						<div class="row">
+							<span class="lab">Client: <span class="content"><a class="norm" href="">{{post.client}}</a></span></span>
+							<span style="float:right;">
+							<span class="lab">Technologies</span>
+							<span class="content">
+    						{% for t in post.technologies.all %}
+    						{{t}}{% if not forloop.last %}, {% endif %}
+    						{% endfor %}
+    						</span>
+    						</span>
+						</div>
+						<div class="row">
+							<div style="padding-top: 10px"><img alt="location" src="{% static "/static/images/gethired/map_location_test.png" %}"><span class="postview-location"><a href="">{{post.location}}</a></span></div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div><!-- Title Row -->
+		<div class="container-fluid">
+			<div class="row">
+				<div class="col-md-12">
+    				<div class="row postview-interview-info-row">
+    					<label>Tentative start date</label>   
+    					<p class="date-interviewed">{{post.start_date}}</p>
+    					{% if post.end_date %}
+    					<label>Tentative end date:</label>   
+    					<p class="date-interviewed">{{post.end_date}}</p>
+    					{% endif %}
+    					<label>Project Description:</label>   
+    					<p class="questions">{{post.description}}</p>
+    					<p><a class="btn default-btn btn-info" href="">Click to Contact</a></p>
+    				</div>
+    			</div>
+    		</div>
+		</div>
+		<div class="postview-report-rate row">
+    		<div class="content">
+    			<p>Report this post</p>
+    		</div>
+    	</div>
+	</div>
+</div>
+</div>
+{% endblock %}
+
+

@@ -17,16 +17,21 @@ import simplejson
 
 #main page view
 
-def main(request):
+def main(request, site):
+
     context = RequestContext(request)
     context_dict = {}
-    interview_posts = models.Interview.objects.all()
-    offer_posts = models.Offer.objects.all()
-    all_posts = sorted(
-                       chain(interview_posts,offer_posts),
-                       key=lambda post: post.date_posted,
-                       reverse = True
-                      )
+
+    if site == "gethired":
+        interview_posts = models.Interview.objects.all()
+        offer_posts = models.Offer.objects.all()
+        all_posts = sorted(
+                           chain(interview_posts,offer_posts),
+                           key=lambda post: post.date_posted,
+                           reverse = True
+                          )
+    elif site == "marketplace":
+        all_posts = models.Project.objects.order_by('date_posted').reverse()
 
     paginator = Paginator(all_posts, 10)
     page = request.GET.get('page')
@@ -40,7 +45,7 @@ def main(request):
     context_dict['posts'] = posts
     context_dict['filters'] = get_filters()
     
-    return render_to_response('GetHired/postlist.html', context_dict, context)
+    return render_to_response(site+'/postlist.html', context_dict, context)
 
 def get_filters():
     interview_posts = models.Interview.objects.all()
@@ -119,19 +124,21 @@ def get_related_posts(post_type, post_id):
     return relevant_posts
 
 @login_required
-def get_post(request, post_type, post_id):
+def get_post(request, site, post_type, post_id):
     if request.method == 'GET':
         context = RequestContext(request)
         context_dict = {}
         model = model_dict[post_type]
         post = get_object_or_404(model, pk=post_id)
         context_dict['post'] = post
-        context_dict['related_posts'] = get_related_posts(post_type, post_id)
 
-        return render_to_response('GetHired/post.html',context_dict, context)
+        if site == 'gethired':
+            context_dict['related_posts'] = get_related_posts(post_type, post_id)
+
+        return render_to_response(site+'/post.html',context_dict, context)
 
 @login_required
-def render_new_post_form(request,post_type,post_id=None):
+def render_new_post_form(request,site,post_type,post_id=None):
     if request.method == 'GET':
         context = RequestContext(request)
         context_dict = {}
@@ -142,10 +149,7 @@ def render_new_post_form(request,post_type,post_id=None):
         if post_id:
             Model = model_dict[post_type]
             post = Model.objects.get(pk=post_id)
-            modelform =  form(instance=post)
-            if post_type == "interview":
-                modelform.fields['offer_details'].queryset = models.Offer.objects.filter(author=request.user)
-            context_dict['form'] = modelform
+            context_dict['form'] = form(instance=post)
             context_dict['location_form'] = forms.LocationForm(instance=post.location)
             context_dict['company_form'] = forms.CompanyForm(instance=post.company)
             context['author'] = post.author
@@ -153,15 +157,14 @@ def render_new_post_form(request,post_type,post_id=None):
             context_dict['header'] = 'Edit '
             context_dict['post_id'] = post_id
         else:
-            modelform = form()
-            if post_type == "interview":
-                modelform.fields['offer_details'].queryset = models.Offer.objects.filter(author=request.user)
-            context_dict['form'] = modelform
+            context_dict['form'] = form()
             context_dict['location_form'] = forms.LocationForm()
             context_dict['company_form'] = forms.CompanyForm()
             context_dict['header'] = 'Add New '
         
         context_dict['post_type'] = post_type
+        if post_type == "project":
+            return render_to_response('marketplace/newpost.html', context_dict, context)
         return render_to_response('GetHired/newpost.html',context_dict,context)
 
 
@@ -207,10 +210,7 @@ def create_post(request, post_type, post_id=None):
             redirecturl = '/gethired/post/' + post_type + '/' + str(post.pk) +'/'
             return HttpResponseRedirect(redirecturl)
         else:
-            modelform = user_form
-            if post_type == "interview":
-                modelform.fields['offer_details'].queryset = models.Offer.objects.filter(author=request.user)
-            context_dict['form'] = modelform
+            context_dict['form'] = user_form
             context_dict['post_id'] = str(post_id)
             context_dict['location_form'] = forms.LocationForm({'country':data['country'],'state':data['state'],'city':data['city']})
             context_dict['company_form'] = forms.CompanyForm({'name':data['name']})
@@ -292,10 +292,62 @@ def userprofile(request):
     poster = models.User.objects.get(username=request.user)
     interview_posts = models.Interview.objects.filter(author=poster)
     offer_posts = models.Offer.objects.filter(author=poster)
-    all_posts = sorted(
+    all_hired_posts = sorted(
                        chain(interview_posts,offer_posts),
                        key=lambda post: post.date_posted,
                        reverse = True
                       )
-    context_dict['posts'] = all_posts
+    all_project_posts = models.Project.objects.filter(author=poster).order_by('date_posted').reverse()
+    context_dict['gethired_posts'] = all_hired_posts
+    context_dict['project_posts'] = all_project_posts
     return render_to_response('portal/profile.html', context_dict, context)
+
+def project_new_post(request):
+    print request.method
+    if request.method == 'POST':
+        context = RequestContext(request)
+        context_dict = {}
+        Form = form_dict["project"]
+        user_form = Form(request.POST)
+        data = request.POST
+        location = None
+        valid_form = user_form.is_valid() #calling it here so I can access the clean data below
+        valid_location = data['country'] and data['state'] and data['city']
+        print valid_form
+        print valid_location
+        print user_form.errors
+        if valid_form and valid_location:
+            post = user_form.save(commit=False)
+            post.author = User.objects.get(username=request.user)
+            
+            location = models.Location.objects.create(country=data['country'],state=data['state'],city=data['city'])
+            post.location = location
+            post.save()
+            user_form.save_m2m()
+            redirecturl = '/marketplace/post/project/' + str(post.pk) +'/'
+            return HttpResponseRedirect(redirecturl)
+        else:
+            context_dict['form'] = user_form
+            context_dict['post_type'] = "project"
+            context_dict['location_form'] = forms.LocationForm({'country':data['country'],'state':data['state'],'city':data['city']})
+            return render_to_response('marketplace/newpost.html',context_dict, context)
+    else:
+        context = RequestContext(request)
+        context_dict = {}
+        form = form_dict["project"]
+        context_dict['form'] = form()
+        context_dict['location_form'] = forms.LocationForm()
+        context_dict['company_form'] = forms.CompanyForm()
+        context_dict['header'] = 'Add New '
+        context_dict['post_type'] = "project"
+        return render_to_response('marketplace/newpost.html', context_dict, context)
+    
+def get_project_post(request, post_id):
+    if request.method == 'GET':
+        context = RequestContext(request)
+        context_dict = {}
+        model = model_dict["project"]
+        post = get_object_or_404(model, pk=post_id)
+        context_dict['post'] = post
+
+        return render_to_response('marketplace/post.html',context_dict, context)

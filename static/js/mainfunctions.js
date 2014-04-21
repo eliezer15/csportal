@@ -3,6 +3,9 @@ $(document).ready(function() {
 	if ($('div.info h1').html() == " Get Hired ") {
 		$('a.hired').addClass('current');
 	}
+	if ($('div.info h1').html() == " Project Marketplace ") {
+		$('a.market').addClass('current');
+	}
 
 	var offset = 420;
 	var offsetbottom = $('div.footer').offset().top - 900;
@@ -67,7 +70,7 @@ $(document).ready(function() {
 
     /* datepicker widget */
     $(function() {
-    	$('div#dateinterviewed input').datepicker();
+    	$('div.date input').datepicker();
   	});
 	
     $(function () {

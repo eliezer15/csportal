@@ -377,6 +377,14 @@ div.postview span.content{
     font-weight: 500;
 }
 
+div.postview-upperinfo{
+	margin:2px;
+    padding: 10px 0px;
+	margin-top: 15px;
+    font-size: 14px;
+    border-top: 1px dashed #dbdbdb;
+}
+
 div.related-post{
     font-size: 14px;
     background-color: #fafafa;
@@ -513,4 +521,8 @@ ul.profile-links{
     margin: 0px;
     padding: 0px;
     list-style: none;
+}
+
+div#id_technologies_chosen input{
+	height: 100%;
 }

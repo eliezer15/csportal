@@ -9,6 +9,9 @@ from django.core.exceptions import ValidationError
 from datetime import date
 import logging
 
+def validate_date(value):
+    if value > date.today():
+        raise ValidationError(u'Date cannot be in the future')
 
 class Post(models.Model):
     #related_name is required for all abstract classes with ForeignKey fields. See Django docs for more info
@@ -31,33 +34,7 @@ class Post(models.Model):
     class Meta:
         abstract = True
         app_label = "GetHired"
-
-class Company(models.Model):
-    name = models.CharField(max_length=30)
-    avg_salary = models.DecimalField(decimal_places=2, max_digits=10, default=0, editable=False)
-    avg_interview_rating = models.DecimalField(decimal_places=1, max_digits=10, default=0, editable=False)
-    num_offers = models.IntegerField(default=0, editable=False)
-    num_offers_to_calculate_salary = models.IntegerField(default=0, editable=False)
-    num_interviews = models.IntegerField(default=0, editable=False)
-    def __unicode__(self):
-        return self.name
-
-    class Meta:
-        verbose_name_plural="companies"
-        app_label = "GetHired"
-
-    def add_offer(self,offer):
-        self.num_offers += 1
-        if (offer.pay_type == 'YS' and offer.job_type == 'FT'):
-            current_avg = self.avg_salary * self.num_offers_to_calculate_salary
-            self.num_offers_to_calculate_salary += 1
-            self.avg_salary = (current_avg + offer.salary) / self.num_offers_to_calculate_salary
-    
-    def add_interview(self, interview):
-        current_rating = self.avg_interview_rating * self.num_interviews
-        self.num_interviews+= 1
-        self.avg_interview_rating = (current_rating + interview.interview_rating) / self.num_interviews
-
+        
 class Location(models.Model):
     city = models.CharField(max_length=40)
 
@@ -310,8 +287,7 @@ class Location(models.Model):
     country = models.CharField(max_length=2, 
                                choices=COUNTRIES, 
                                default='US')
-
-# All 50 states, plus the District of Columbia.
+    # All 50 states, plus the District of Columbia.
     US_STATES = (
         ('AL', 'Alabama'),
         ('AK', 'Alaska'),
@@ -375,7 +351,6 @@ class Location(models.Model):
     state = models.CharField(max_length=2,
                              choices=US_STATES,
                              blank = False, null = False)
-        
     def __unicode__(self):
         if self.country != 'US':
             return self.get_country_display()
@@ -384,6 +359,59 @@ class Location(models.Model):
     
     class Meta:
         app_label = 'GetHired'
+
+# PROJECT MARKETPLACE MODELS
+class Technology(models.Model):
+    name = models.CharField(max_length=30)
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "technologies"
+        app_label = 'GetHired'
+
+class Project(Post):
+    client = models.CharField(max_length=50)
+    email = models.EmailField(max_length=50)
+    title = models.CharField(max_length=30)
+    description=models.TextField()
+    start_date = models.DateField()
+    end_date = models.DateField( blank=True, null=True)
+    location = models.ForeignKey(Location, blank=True, null=True)
+    technologies = models.ManyToManyField(Technology)
+        
+    def __unicode__(self):
+        return self.title.title()
+    class Meta:
+        app_label = "GetHired"
+
+# GETHIRED MODELS
+class Company(models.Model):
+    name = models.CharField(max_length=30)
+    avg_salary = models.DecimalField(decimal_places=2, max_digits=10, default=0, editable=False)
+    avg_interview_rating = models.DecimalField(decimal_places=1, max_digits=10, default=0, editable=False)
+    num_offers = models.IntegerField(default=0, editable=False)
+    num_offers_to_calculate_salary = models.IntegerField(default=0, editable=False)
+    num_interviews = models.IntegerField(default=0, editable=False)
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural="companies"
+        app_label = "GetHired"
+
+    def add_offer(self,offer):
+        self.num_offers += 1
+        if (offer.pay_type == 'YS' and offer.job_type == 'FT'):
+            current_avg = self.avg_salary * self.num_offers_to_calculate_salary
+            self.num_offers_to_calculate_salary += 1
+            self.avg_salary = (current_avg + offer.salary) / self.num_offers_to_calculate_salary
+   
+    def add_interview(self, interview):
+        current_rating = self.avg_interview_rating * self.num_interviews
+        self.num_interviews+= 1
+        self.avg_interview_rating = (current_rating + interview.interview_rating) / self.num_interviews
 
 class GetHiredPost(Post):
     degree_choices = (
@@ -434,7 +462,7 @@ class GetHiredPost(Post):
                                 choices=type_choices)
 
     def __unicode__(self):
-        return "%s, %s"%( self.company, self.location)
+        return "%s, %s, %s"%(self.author, self.company, self.location)
 
     class Meta:
         abstract = True
@@ -472,15 +500,11 @@ class Offer(GetHiredPost):
         if not self.pk:
             self.company.add_offer(self)
             self.company.save()
-
         super(Offer, self).save()
     
     class Meta:
         app_label = 'GetHired'
 
-def validate_date(value):
-    if value > date.today():
-        raise ValidationError(u'Date cannot be in the future')
 class Interview(GetHiredPost):
     type_choices = (
         ('OC', 'On campus'),
@@ -536,8 +560,8 @@ class Interview(GetHiredPost):
     def save(self, **kwargs):
         if not self.pk:
             self.company.add_interview(self)
-            self.company.save()
-        super(Interview, self).save() 
+            self.company.save() 
+        super(Interview, self).save()
 
     class Meta:
         app_label = 'GetHired'

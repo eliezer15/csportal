@@ -11,11 +11,13 @@ model_dict = {
              "interview": models.Interview,
              "offer": models.Offer,
              "company": models.Company,
-             "location": models.Location
+             "location": models.Location,
+             "project": models.Project
 }
 
 form_dict = {
             "interview": forms.InterviewForm,
-            "offer": forms.OfferForm
+            "offer": forms.OfferForm,
+            "project": forms.ProjectForm
 }
 

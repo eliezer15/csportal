@@ -1,13 +1,5 @@
 @CHARSET "ISO-8859-1";
 
-div.postview-jobinfo{
-	margin:2px;
-    padding: 10px 0px;
-	margin-top: 15px;
-    font-size: 14px;
-    border-top: 1px dashed #dbdbdb;
-}
-
 span.stars{
     cursor: default;
     font-size: 18px;
@@ -84,9 +76,4 @@ input#id_display_salary{
 	height: 1px;
 	display: inline;
 	outline: none;
-}
-
-div.helpfulhints img{
-    padding: 50px 0px;
-    width: 100%;
 }

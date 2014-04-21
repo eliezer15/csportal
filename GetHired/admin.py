@@ -1,7 +1,9 @@
 from django.contrib import admin
-from GetHired.models import Offer, Interview, Company, Location
+from GetHired import models
 
-admin.site.register(Offer)
-admin.site.register(Interview)
-admin.site.register(Company)
-admin.site.register(Location)
+admin.site.register(models.Offer)
+admin.site.register(models.Interview)
+admin.site.register(models.Company)
+admin.site.register(models.Location)
+admin.site.register(models.Project)
+admin.site.register(models.Technology)
