@@ -1,11 +1,12 @@
 {% extends "portal/base.html" %}
 {% block addstyles %}<link rel="stylesheet" href="/static/css/gethired.css">{% endblock%}
+{% load humanize %}
 {% block title %} Add/Edit Post {% endblock %}
 {% block header %} Get Hired {% endblock %}
 {% block content %}
 <script>
     /* autocomplete for companie on form */
-    $(function() {
+    $(document).ready(function() {
         $.ajax({
             url: 'http://localhost:8000/gethired/post/list/company/',
             success:function(data) {
@@ -15,9 +16,37 @@
                 });            
             }
         });
+        
+        
+    	var pre_preselected_value = $('select#id_offer_status option:selected').val();
+    	if(pre_preselected_value == 'RC'){
+    		$('div.select-offer-div').show();
+    	} else{
+    		$('div.select-offer-div').hide();
+    		 $('select#id_offer_details').val("");
+    	}
+    	
+        $('select#id_offer_status').change(function(){
+        	var selected_value = $('select#id_offer_status option:selected').val();
+        	if(selected_value == 'RC'){
+        		$('div.select-offer-div').show();
+        	} else{
+        		$('div.select-offer-div').hide();
+        		 $('select#id_offer_details').val("");
+        	}
+        });
+        
     });
 </script>
-<div class="newform col-md-12">
+<div class="col-md-4 helpfulhints">
+	<h2 class="styled">Food for thought:</h2>
+	{% if post_type == "interview" %}
+	<img alt="interview help" src="/static/images/gethired/interviewpost.png" />
+	{% else %}
+	<img alt="offer help" src="/static/images/gethired/offerpost.png" />
+	{% endif %}
+</div>
+<div class="newform col-md-8">
 {% if user.username == author.username or not author %}
 {% if post_type == "interview" %}
 	<div class="row"><a style="margin: 10px;" href="/gethired/" class="btn pull-left btn-info btn-go-back">Cancel</a><h2>{{header}}Interview</h2></div>
@@ -66,7 +95,7 @@
 								<div class="form-group">
         							<label for="id_date_interviewed" class="control-label col-md-12"><span class="required">* </span>Date of Interview: </label>
         							{{form.date_interviewed.errors}}
-        							<div class="date col-md-12"">
+        							<div class="col-md-12 date">
         							{{form.date_interviewed}}
         							</div>
     							</div>
@@ -96,11 +125,21 @@
 								</div>
 								<div class="form-group">
         							<label for="id_offer_status" class="control-label col-md-12"><span class="required">* </span>Offer Status: </label>
+        							<label for="id_link_offer" class="control-label col-md-12" style="font-size: 12px; color: #9F9F9F;"><em>We ask that you come back and update your offer status once notifed to better help prospective interviews, 
+        							you will also have the ability to link to your offer post by selecting the Recieved option.</em></label>
         							{{ form.offer_status.errors }}
         							<div class="col-md-12">
         							{{ form.offer_status }}
         							</div>
 								</div>
+								<div class="form-group select-offer-div" style="display: none;")>
+        							<label for="id_link_offer" class="control-label col-md-12">You can select from your posted offers to link this interview to, select which from the list below or leave blank if you have not yet posted or wish not to link an offer: </label>
+        							<label for="id_link_offer" class="control-label col-md-12" style="font-size: 12px; color: #9F9F9F;"><em>You can always link an offer back to an interview by editing the interview post once you've recieved and posted an offer.</em></label>
+      								{{form.offer_details.errors}}
+        							<div class="col-md-12">
+        								{{form.offer_details}}
+        							</div>
+        						</div>
 								<div class="form-group">
         							<label for="id_interview_source" class="control-label col-md-12"><span class="required">* </span>Interview Source: </label>
         							{{ form.interview_source.errors }}

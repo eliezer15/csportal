@@ -526,3 +526,8 @@ ul.profile-links{
 div#id_technologies_chosen input{
 	height: 100%;
 }
+
+div.helpfulhints img{
+    padding: 50px 0px;
+    width: 100%;
+}

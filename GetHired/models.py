@@ -462,7 +462,7 @@ class GetHiredPost(Post):
                                 choices=type_choices)
 
     def __unicode__(self):
-        return "%s, %s, %s"%(self.author, self.company, self.location)
+        return "%s, %s"%( self.company, self.location)
 
     class Meta:
         abstract = True

@@ -58,7 +58,7 @@
 		<div class="postview-button-row row">
 			<button onclick="window.history.back()" class="btn pull-left btn-info btn-go-back">Go Back</button>
 			{% if user.username == post.author.username %}
-			<a href="{% url 'render_edit_post' post_type=post.post_type post_id=post.pk %}" class="btn pull-right btn-info btn-edit">Edit/Delete Post</a>
+			<a href="{% url 'render_edit_post' site='gethired' post_type=post.post_type post_id=post.pk %}" class="btn pull-right btn-info btn-edit">Edit/Delete Post</a>
 			{% endif %}
 		</div> <!-- Button Row -->
 	</div>
@@ -99,16 +99,17 @@
 				<div class="col-md-12">
     				{% if post.post_type == "interview" %}
     				<div class="row postview-interview-info-row">
+    					{% if post.offer_details %} 
+    					<label>Link to Offer:</label>
+    					<p class="offer_details"><a href=/gethired{{post.offer_details.url_slug}}>{{post.offer_details.company.name}}, {{post.location}}</a></p>
+    					{% endif %}
     					<label>Date of Interview:</label>   
     					<p class="date-interviewed">{{post.date_interviewed}}</p>
     					<label>Details:</label>   
     					<p class="process">{{post.interview_process}}</p>
     					<label>Questions Asked:</label>   
     					<p class="questions">{{post.questions_asked}}</p>
-    					{% if post.offer_details %} <!--if offer received-->
-    					<p class="offer_details"><a href=/gethired{{post.offer_details.url_slug}}>Offer</a></p>
     				</div>
-    				{% endif %}
     				{% else %}
     				<div class="row postview-salary-block-row">
     					<div class="postview-salary-blocks">
@@ -117,17 +118,22 @@
 						</div>
 						<div class="postview-salary-blocks">
 							<label>Signing Bonus:</label>
-    						{% if post.display_salary %}<p class="bonus"><span class="content">${{post.signing_bonus|intcomma}}</span></p>{% endif %}
+    						{% if post.display_salary %}<p class="bonus"><span class="content">{% if not post.signing_bonus %} N/A {% else %}${{post.signing_bonus|intcomma}} {% endif %}</span></p>{% endif %}
     					</div>
     					<div class="postview-salary-blocks">
     						<label>Relocation:</label>
-    						{% if post.display_salary %}<p class="relocation"><span class="content">${{post.relocation_bonus|intcomma}}</span></p>{% endif %}
+    						{% if post.display_salary %}<p class="relocation"><span class="content">{% if not post.signing_bonus %} N/A {% else %}${{post.relocation_bonus|intcomma}}{% endif %}</span></p>{% endif %}
     					</div>
     				{% if not post.display_salary %}
     				<p><span class="content">The poster has elected to not display their salary information.</span></p>
     				{% endif %}
     				</div>
+    				
     				<div class="row postview-offer-info-row">
+    					{% if post.interview %}
+    					<label>Link to Interview:</label>
+    					<p><a href="/gethired{{post.interview.url_slug}}">{{post.interview.company.name}}, {{post.interview.location}}</a></p>
+    					{% endif %}
     					<label>Status:</label>
     					<p class="status">{{post.get_offer_status_display}}</p>
     					{% if post.other_details %}

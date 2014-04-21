@@ -40,7 +40,7 @@
 		<div class="postview-button-row row">
 			<button onclick="window.history.back()" class="btn pull-left btn-info btn-go-back">Go Back</button>
 			{% if user.username == post.author.username %}
-			<a href="{% url 'render_edit_post' post_type=post.post_type post_id=post.pk %}" class="btn pull-right btn-info btn-edit">Edit/Delete Post</a>
+			<a href="{% url 'render_edit_post' site="marketplace" post_type=post.post_type post_id=post.pk %}" class="btn pull-right btn-info btn-edit">Edit/Delete Post</a>
 			{% endif %}
 		</div> <!-- Button Row -->
 	</div>
@@ -56,14 +56,6 @@
 					<div class="container-fluid">
 						<div class="row">
 							<span class="lab">Client: <span class="content"><a class="norm" href="">{{post.client}}</a></span></span>
-							<span style="float:right;">
-							<span class="lab">Technologies</span>
-							<span class="content">
-    						{% for t in post.technologies.all %}
-    						{{t}}{% if not forloop.last %}, {% endif %}
-    						{% endfor %}
-    						</span>
-    						</span>
 						</div>
 						<div class="row">
 							<div style="padding-top: 10px"><img alt="location" src="{% static "/static/images/gethired/map_location_test.png" %}"><span class="postview-location"><a href="">{{post.location}}</a></span></div>
@@ -76,6 +68,12 @@
 			<div class="row">
 				<div class="col-md-12">
     				<div class="row postview-interview-info-row">
+							<label>Technologies</label>
+							<p><span class="content">
+    						{% for t in post.technologies.all %}
+    						{{t}}{% if not forloop.last %}, {% endif %}
+    						{% endfor %}
+    						</span></p>
     					<label>Tentative start date</label>   
     					<p class="date-interviewed">{{post.start_date}}</p>
     					{% if post.end_date %}
