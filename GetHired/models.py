@@ -15,7 +15,7 @@ def validate_date(value):
 
 class Post(models.Model):
     #related_name is required for all abstract classes with ForeignKey fields. See Django docs for more info
-    author = models.ForeignKey(User, editable=False, blank=False, null= False, related_name="%(app_label)s_%(class)s_user")
+    author = models.ForeignKey(User, editable=False, blank=False, null= True, related_name="%(app_label)s_%(class)s_user")
     url_slug = models.CharField(max_length=200, editable=False)
     post_type = models.CharField(max_length=20,editable=False)
     date_posted = models.DateTimeField(auto_now_add=True) #automatically set upon object creation

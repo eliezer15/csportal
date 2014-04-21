@@ -12,6 +12,7 @@ from django.contrib.auth.decorators import login_required
 from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from registration.backends.default.views import RegistrationView
+from django.core.mail import EmailMessage
 import logging
 import simplejson
 
@@ -326,7 +327,10 @@ def project_new_post(request):
         print user_form.errors
         if valid_form and valid_location:
             post = user_form.save(commit=False)
-            post.author = User.objects.get(username=request.user)
+            try:
+                post.author = User.objects.get(username=request.user)
+            except ObjectDoesNotExist:
+                post.author = None
             
             location = models.Location.objects.create(country=data['country'],state=data['state'],city=data['city'])
             post.location = location
@@ -359,3 +363,25 @@ def get_project_post(request, post_id):
         context_dict['post'] = post
 
         return render_to_response('marketplace/post.html',context_dict, context)
+def project_send_email(request, post_id):
+    proj = models.Project.objects.get(pk=post_id)
+    subject = 'Re: ' + proj.title
+    context = RequestContext(request)
+    context_dict = {}
+    if request.method == 'POST':
+        data = request.POST
+        from_email =  data['from_email']
+        body =  data['body']
+        to_email = proj.email
+        print to_email
+        print subject
+        email = EmailMessage(subject, body, from_email, {to_email})
+        email.send()
+        
+        
+        context_dict['success'] = True
+        return HttpResponseRedirect('/marketplace/post/project/'+post_id+'/')
+    else:
+        context_dict['post_id'] = post_id
+        context_dict['header'] = subject
+        return render_to_response('marketplace/contact_project.html', context_dict, context)

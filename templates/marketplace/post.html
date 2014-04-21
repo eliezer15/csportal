@@ -82,7 +82,7 @@
     					{% endif %}
     					<label>Project Description:</label>   
     					<p class="questions">{{post.description}}</p>
-    					<p><a class="btn default-btn btn-info" href="">Click to Contact</a></p>
+    					<p><a class="btn default-btn btn-info" href="{% url 'contact_project' post_id=post.pk %}">Click to Contact</a></p>
     				</div>
     			</div>
     		</div>

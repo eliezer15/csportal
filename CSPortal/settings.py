@@ -104,9 +104,14 @@ MIDDLEWARE_CLASSES = (
 ROOT_URLCONF = 'CSPortal.urls'
 
 LOGIN_URL = '/accounts/login/'
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_FILE_PATH = os.path.join(BASE_DIR, "tmp")
 ACCOUNT_ACTIVATION_DAYS = 7
+EMAIL_USE_TLS = True
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = 'cswebportal@gmail.com'
+EMAIL_HOST_PASSWORD = 'unc123456'
 
 # Python dotted path to the WSGI application used by Django's runserver.
 WSGI_APPLICATION = 'CSPortal.wsgi.application'
