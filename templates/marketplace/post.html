@@ -76,12 +76,20 @@
     						{{t}}{% if not forloop.last %}, {% endif %}
     						{% endfor %}
     						</span></p>
-    					<label>Tentative start date</label>   
-    					<p class="date-start">{{post.start_date}}</p>
-    					{% if post.end_date %}
-    					<label>Tentative end date:</label>   
-    					<p class="date-end">{{post.end_date}}</p>
-    					{% endif %}
+    					<div class=col-md-12>
+    						<div class="col-md-4 col-md-offset-2" style="text-align:center;">
+    							<label>Tentative start date</label>   
+    							<p class="date-start">{{post.start_date}}</p>
+    						</div>
+    						<div class="col-md-4" style="text-align:center;">
+    							<label>Tentative end date:</label>
+    							{% if post.end_date %}   
+    							<p class="date-end">{{post.end_date}}</p>
+    							{% else %}
+    							<p class="date-end">N/A</p>
+    							{% endif %}
+    						</div>
+    					</div>
     					<label>Project Description:</label>   
     					<div class="well"><p class="description">{{post.description|safe}}</p></div>
     					<p><a class="btn default-btn btn-info" href="{% url 'contact_project' post_id=post.pk %}">Click to Contact</a></p>

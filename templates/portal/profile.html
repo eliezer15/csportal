@@ -41,7 +41,7 @@
 				<li>You have no posts in this section.</li>
 				{% endif %}
 				{% for post in project_posts %}
-				<li><a href="{% url 'get_project_post' post_id=post.pk %}"><span>{{post.post_type|title}} - {{post.title}} </span><span class="date" style="float:right;">{{post.date_posted|naturaltime}}</span></a></li>
+				<li><a href="{% url 'get_post_project' post_id=post.pk %}"><span>{{post.post_type|title}} - {{post.title}} </span><span class="date" style="float:right;">{{post.date_posted|naturaltime}}</span></a></li>
 				{% endfor %}
 			</ul>
 		</div>
