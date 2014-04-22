@@ -452,7 +452,11 @@ def project_send_email(request, post_id):
             request.session['email_error'] = True
             return redirect('contact_project', post_id=post_id)
         else:
-            body =  'From: '+ from_email + '\n' +'has responded to your website post at http://studentportal.cs.unc.edu/marketplace/post/project/'+post_id+ '\n'+ 'Message: ' + data['body']
+            body = 'Hello,\n \n'
+            body = body + 'You have received the following response to your post from '
+            body = body + from_email + ':\n' + 'Message: \n \n' + data['body'] +'\n'
+            body = body +'\n This email was sent from your post at http://studentportal.cs.unc.edu/marketplace/post/project/'
+            body = body + post_id + '\n \n'
             to_email = proj.email
             email = EmailMessage(subject, body, from_email, {to_email})
             email.send()
