@@ -1,4 +1,3 @@
-Activation email text
 {{activation_key}}
 
 {{expiration_days}}

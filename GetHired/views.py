@@ -14,6 +14,7 @@ from django.contrib.auth.models import User
 from registration.backends.default.views import RegistrationView
 from django.core.mail import EmailMessage
 from bs4 import BeautifulSoup
+from django.contrib import messages
 import random
 import logging
 import simplejson
@@ -447,14 +448,17 @@ def project_send_email(request, post_id):
     if request.method == 'POST':
         data = request.POST
         from_email =  data['from_email']
-        body =  'From: '+ from_email + '\n' + data['body']
-        to_email = proj.email
-        email = EmailMessage(subject, body, from_email, {to_email})
-        email.send()
-        
-        
-        context_dict['success'] = True
-        return HttpResponseRedirect('/marketplace/post/project/'+post_id+'/')
+        if data['from_email'].strip() == "" or data['body'].strip() == "":
+            request.session['email_error'] = True
+            return redirect('contact_project', post_id=post_id)
+        else:
+            body =  'From: '+ from_email + '\n' +'has responded to your website post at http://studentportal.cs.unc.edu/marketplace/post/project/'+post_id+ '\n'+ 'Message: ' + data['body']
+            to_email = proj.email
+            email = EmailMessage(subject, body, from_email, {to_email})
+            email.send()
+            request.session['email_error'] = False
+            context_dict['success'] = True
+            return HttpResponseRedirect('/marketplace/post/project/'+post_id+'/')
     else:
         context_dict['post_id'] = post_id
         context_dict['header'] = subject

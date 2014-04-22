@@ -531,3 +531,7 @@ div.helpfulhints img{
     padding: 50px 0px;
     width: 100%;
 }
+
+div#id_description_container{
+	margin: auto;
+}
