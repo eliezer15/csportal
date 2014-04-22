@@ -9,13 +9,17 @@ from django.core.exceptions import ValidationError
 from datetime import date
 import logging
 
-def validate_date(value):
+def validate_future_date(value):
     if value > date.today():
         raise ValidationError(u'Date cannot be in the future')
 
+def validate_past_date(value):
+    if value < date.today():
+        raise ValidationError(u'Date cannot be in the past')
+
 class Post(models.Model):
     #related_name is required for all abstract classes with ForeignKey fields. See Django docs for more info
-    author = models.ForeignKey(User, editable=False, blank=False, null= True, related_name="%(app_label)s_%(class)s_user")
+    author = models.ForeignKey(User, editable=False, blank=True, null= True, related_name="%(app_label)s_%(class)s_user")
     url_slug = models.CharField(max_length=200, editable=False)
     post_type = models.CharField(max_length=20,editable=False)
     date_posted = models.DateTimeField(auto_now_add=True) #automatically set upon object creation
@@ -374,10 +378,11 @@ class Technology(models.Model):
 class Project(Post):
     client = models.CharField(max_length=50)
     email = models.EmailField(max_length=50)
-    title = models.CharField(max_length=30)
+    title = models.CharField(max_length=100)
     description=models.TextField()
-    start_date = models.DateField()
-    end_date = models.DateField( blank=True, null=True)
+    start_date = models.DateField(validators = [validate_past_date])
+    is_start_date_flexible = models.BooleanField()
+    end_date = models.DateField( blank=True, null=True, validators = [validate_past_date])
     location = models.ForeignKey(Location, blank=True, null=True)
     technologies = models.ManyToManyField(Technology)
     password = models.CharField(max_length=350, blank=False, null=False)
@@ -531,7 +536,7 @@ class Interview(GetHiredPost):
     interview_source = models.CharField(max_length=2,
                                     choices=source_choices)
     
-    date_interviewed = models.DateField(validators=[validate_date])
+    date_interviewed = models.DateField(validators=[validate_future_date])
 
     offer_choices = (
             ('RC','Received'),
@@ -541,7 +546,7 @@ class Interview(GetHiredPost):
     offer_status = models.CharField(max_length=2,
                                     choices=offer_choices)
     offer_details = models.OneToOneField(Offer, null=True, blank=True)
-
+    related_interview = models.ForeignKey("Interview", blank=True, null=True)
     #this looks dumb, but it's necessary, Django won't accept int literals in the tuple
     ONE=1
     TWO=2

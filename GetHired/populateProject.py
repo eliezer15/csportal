@@ -13,7 +13,7 @@ def populate():
     Technology.objects.create(name='Python')
     Technology.objects.create(name='Android')
     Technology.objects.create(name='IOS')
-
+    """
     Location.objects.create(city='Denver',state='CO')
     Location.objects.create(city='Madison',state='WI')
     Location.objects.create(city='Baltimore',state='MD')
@@ -22,7 +22,7 @@ def populate():
     Location.objects.create(city='Boston',state='MA')
     Location.objects.create(city='Raleigh',state='NC')
     Location.objects.create(city='San Francisco',state='CA')
-
+    """
     technologies = Technology.objects.all()
     locations = Location.objects.all()
     user = User.objects.get(username='root')
@@ -57,6 +57,7 @@ def add_Project(user, client, email, title, description, start_date, location, t
                                 title = title,
                                 description = description,
                                 start_date = start_date,
+                                is_start_date_flexible = choice([True,False]),
                                 location = location, password="123")
     p.technologies.add(choice(technologies))
     p.technologies.add(choice(technologies))
