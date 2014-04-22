@@ -57,7 +57,7 @@ def add_Project(user, client, email, title, description, start_date, location, t
                                 title = title,
                                 description = description,
                                 start_date = start_date,
-                                location = location)
+                                location = location, password="123")
     p.technologies.add(choice(technologies))
     p.technologies.add(choice(technologies))
 

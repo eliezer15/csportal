@@ -380,6 +380,7 @@ class Project(Post):
     end_date = models.DateField( blank=True, null=True)
     location = models.ForeignKey(Location, blank=True, null=True)
     technologies = models.ManyToManyField(Technology)
+    password = models.CharField(max_length=350, blank=False, null=False)
         
     def __unicode__(self):
         return self.title.title()

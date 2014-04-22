@@ -13,8 +13,11 @@ from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from registration.backends.default.views import RegistrationView
 from django.core.mail import EmailMessage
+from bs4 import BeautifulSoup
+import random
 import logging
 import simplejson
+import hashlib
 
 #main page view
 
@@ -226,8 +229,7 @@ def create_post(request, post_type, post_id=None):
             context_dict['post_type'] = post_type
             context_dict['companies'] = models.Company.objects.order_by('name')
             logging.debug(user_form)
-
-            return render_to_response('GetHired/newpost.html',context_dict, context)    
+            return render_to_response('GetHired/newpost.html',context_dict, context)
 
 def filter_posts(request):
     if request.method == 'GET':
@@ -311,50 +313,123 @@ def userprofile(request):
     context_dict['project_posts'] = all_project_posts
     return render_to_response('portal/profile.html', context_dict, context)
 
-def project_new_post(request):
-    print request.method
+def create_post_project(request):
+    Form = forms.ProjectForm
+    context = RequestContext(request)
+    context_dict = {}
     if request.method == 'POST':
-        context = RequestContext(request)
-        context_dict = {}
-        Form = form_dict["project"]
-        user_form = Form(request.POST)
         data = request.POST
+        user_form = Form(request.POST)
         location = None
+        
         valid_form = user_form.is_valid() #calling it here so I can access the clean data below
         valid_location = data['country'] and data['state'] and data['city']
-        print valid_form
-        print valid_location
-        print user_form.errors
+
         if valid_form and valid_location:
-            post = user_form.save(commit=False)
-            try:
-                post.author = User.objects.get(username=request.user)
-            except ObjectDoesNotExist:
-                post.author = None
-            
             location = models.Location.objects.create(country=data['country'],state=data['state'],city=data['city'])
+            post = user_form.save(commit=False)
+            m = hashlib.md5()
+            m.update(post.password)
+            if request.user.is_authenticated():
+                post.password = request.user.username + "#*$%*$#(%$#%&(" + request.user.email
+            else:
+                post.password = m.hexdigest()
+            if request.user.is_authenticated():
+                post.author = User.objects.get(username=request.user)
+            else:
+                post.author = None
             post.location = location
             post.save()
-            user_form.save_m2m()
+            
             redirecturl = '/marketplace/post/project/' + str(post.pk) +'/'
             return HttpResponseRedirect(redirecturl)
         else:
             context_dict['form'] = user_form
-            context_dict['post_type'] = "project"
             context_dict['location_form'] = forms.LocationForm({'country':data['country'],'state':data['state'],'city':data['city']})
             return render_to_response('marketplace/newpost.html',context_dict, context)
     else:
-        context = RequestContext(request)
-        context_dict = {}
-        form = form_dict["project"]
-        context_dict['form'] = form()
+        context_dict['form'] = Form()
         context_dict['location_form'] = forms.LocationForm()
-        context_dict['company_form'] = forms.CompanyForm()
-        context_dict['header'] = 'Add New '
-        context_dict['post_type'] = "project"
-        return render_to_response('marketplace/newpost.html', context_dict, context)
+        return render_to_response('marketplace/newpost.html',context_dict, context)
+
+def edit_post_password_project(request, post_id):
+    context = RequestContext(request)
+    context_dict = {}
+    if request.method == 'GET':
+        context_dict["post"] = post_id
+        return render_to_response('marketplace/marketplace_post_password.html', context_dict, context)
+    if request.method == 'POST':
+        project = models.Project.objects.get(pk=post_id)
+        data = request.POST
+        m = hashlib.md5()
+        m.update(data['password'])
+        if m.hexdigest() == project.password:
+            request.session['access' + post_id] = True
+            return redirect('edit_post_project', post_id=post_id)
+        else:
+            context_dict["post"] = post_id
+            context_dict["errors"] = "Wrong Password"
+            return render_to_response('marketplace/marketplace_post_password.html', context_dict, context)
+
+def edit_post_project(request, post_id):
+    context = RequestContext(request)
+    context_dict = {}
+    if request.method == 'GET':
+        project = models.Project.objects.get(pk=post_id)
+        if request.user == project.author or request.session['access' + post_id] == True:
+            form = forms.ProjectForm
+            context_dict['form'] = form(instance=project)
+            context_dict['location_form'] = forms.LocationForm(instance=project.location)
+            context_dict['update'] = True
+            context_dict['post_id'] = post_id
+            context_dict['header'] = 'Add New '
+            context_dict['post_type'] = "project"
+            return render_to_response('marketplace/newpost.html', context_dict, context)
+        else:
+            return redirect('get_post_project', post_id=post_id)
+    if request.method == 'POST':
+        project = models.Project.objects.get(pk=post_id)
+        if request.user == project.author or request.session['access' + post_id] == True:
+            project = models.Project.objects.get(pk=post_id)
+            form = forms.ProjectForm
+            user_form = form(request.POST, instance=project)
+            data = request.POST
+            cleaned_desc = BeautifulSoup(data['description'])
+            user_form.description = cleaned_desc.prettify()
+            location = None
+            if request.user.is_authenticated():
+                user_form.password = request.user.username + "#*$%*$#(%$#%&(" + request.user.email
+            valid_form = user_form.is_valid() #calling it here so I can access the clean data below
+            valid_location = data['country'] and data['state'] and data['city']
+            if valid_form and valid_location:
+                post = user_form.save(commit=False)
+                try:
+                    post.author = User.objects.get(username=request.user)
+                except ObjectDoesNotExist:
+                   post.author = None
+                location = models.Location.objects.create(country=data['country'],state=data['state'],city=data['city'])
+                post.location = location
+                m = hashlib.md5()
+                m.update(data['password'])
+                post.password = m.hexdigest()
+                post.save()
+                user_form.save_m2m()
+                try:
+                    del request.session['access' + post_id]
+                except:
+                   print "session error"
+                return redirect('get_post_project', post_id=post_id)
+            else:
+                context_dict['form'] = user_form
+                context_dict['post_type'] = "project"
+                context_dict['update'] = True
+                context_dict['post_id'] = post_id
+                context_dict['header'] = 'Add New '
+                context_dict['post_type'] = "project"
+                context_dict['location_form'] = forms.LocationForm({'country':data['country'],'state':data['state'],'city':data['city']})
+                return render_to_response('marketplace/newpost.html',context_dict, context)
     
-def get_project_post(request, post_id):
+def get_post_project(request, post_id):
     if request.method == 'GET':
         context = RequestContext(request)
         context_dict = {}
@@ -363,6 +438,7 @@ def get_project_post(request, post_id):
         context_dict['post'] = post
 
         return render_to_response('marketplace/post.html',context_dict, context)
+    
 def project_send_email(request, post_id):
     proj = models.Project.objects.get(pk=post_id)
     subject = 'Re: ' + proj.title
@@ -371,10 +447,8 @@ def project_send_email(request, post_id):
     if request.method == 'POST':
         data = request.POST
         from_email =  data['from_email']
-        body =  data['body']
+        body =  'From: '+ from_email + '\n' + data['body']
         to_email = proj.email
-        print to_email
-        print subject
         email = EmailMessage(subject, body, from_email, {to_email})
         email.send()
         

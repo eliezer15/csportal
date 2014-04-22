@@ -2,6 +2,7 @@ import urlparse
 from django import template
 from django.template.defaulttags import URLNode, url
 from django.contrib.sites.models import Site
+from bs4 import BeautifulSoup
 
 register = template.Library()
 
@@ -26,7 +27,9 @@ def normdegree(value):
 
 @register.filter
 def tagline(value):
-    return value[:140] + '...'
+    soup = BeautifulSoup(value)
+    text = soup.get_text()
+    return text[:140] + '...'
 
 @register.filter
 def normcompname(value):

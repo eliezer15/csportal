@@ -137,6 +137,7 @@ INSTALLED_APPS = (
    # 'debug_toolbar',
     'django.contrib.humanize',
     'registration',
+    'django_wysiwyg',    
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )

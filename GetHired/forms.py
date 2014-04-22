@@ -26,6 +26,7 @@ class CompanyForm(forms.ModelForm):
         model = Company
         
 class ProjectForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)
     class Meta:
         model = Project
 

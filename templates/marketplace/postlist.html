@@ -28,7 +28,7 @@
 {% for post in posts %}
 	<div class="posts panel">
     	<div class="row">
-    		<p><span class="label label-success">{{post.post_type|title}}</span></p>
+    		<p><span class="label label-danger">{{post.post_type|title}}</span></p>
     	</div>
     	<div class="row">
  			<span class="Title" ><a class="norm" data-rel="tooltip" data-placement="right" href="">{{post.title}}</a></span> 
@@ -42,7 +42,7 @@
 		<div class="row">
 			<p><span class="post-preview">{{post.description|tagline}}</span></p>
 		</div>
-		<a class="post-panel-link" href="{% url 'get_project_post' post_id=post.pk %}"><span class="post-link"></span></a>
+		<a class="post-panel-link" href="{% url 'get_post_project' post_id=post.pk %}"><span class="post-link"></span></a>
     </div>
     </div>
 {% endfor %}
