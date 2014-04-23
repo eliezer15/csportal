@@ -68,6 +68,8 @@ $(document).ready(function() {
     	});
     });
 
+    /* Event for disabling salary information when submitting unpaid internship */
+    
     /* datepicker widget */
     $(function() {
     	$('div.date input').datepicker();

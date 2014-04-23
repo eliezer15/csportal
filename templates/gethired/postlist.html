@@ -9,7 +9,7 @@
 <div class="filterdiv panel panel-default">
 <div class="contain">
 <h5><span class='labs'>Filter Posts:</span></h5>
-<form method="GET" action="{% url 'filter_posts' %}">
+<form method="GET" action="{% url 'filter_posts_gethired' %}">
 <span class='labs'> Post Type: </span>
     <div class="checkbox">
         <label>
@@ -139,9 +139,9 @@
 			<div class="btn-group" style="padding-top: 5px;">
 				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">New Post <span class="caret"></span></button>
 				<ul class="dropdown-menu" role="menu">
-					<li><a href="{% url 'render_new_post' site='gethired' post_type='interview' %}">Interview</a></li>
+					<li><a href="{% url 'render_new_post' post_type='interview' %}">Interview</a></li>
 						<li class="divider"></li>
-						<li><a href="{% url 'render_new_post' site='gethired' post_type='offer' %}">Offer</a></li>
+						<li><a href="{% url 'render_new_post' post_type='offer' %}">Offer</a></li>
 				</ul>
 			</div>
 		</div>
@@ -190,7 +190,7 @@
 			{% endif %}
 			
 		</div>
-		<a class="post-panel-link" href="{% url 'get_post' site='gethired' post_type=post.post_type.lower post_id=post.pk %}"><span class="post-link"></span></a>
+		<a class="post-panel-link" href="{% url 'get_post' post_type=post.post_type.lower post_id=post.pk %}"><span class="post-link"></span></a>
     </div>
     </div>
 {% endfor %}

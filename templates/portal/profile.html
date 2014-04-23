@@ -30,7 +30,7 @@
 				<li>You have no posts in this section.</li>
 				{% endif %}
 				{% for post in gethired_posts %}
-				<li><a href="{% url 'get_post' site='gethired' post_type=post.post_type.lower post_id=post.pk %}"><span>{{post.post_type|title}} - {{post.company.name}} </span><span class="date" style="float:right;">{{post.date_posted|naturaltime}}</span></a></li>
+				<li><a href="{% url 'get_post' post_type=post.post_type.lower post_id=post.pk %}"><span>{{post.post_type|title}} - {{post.company.name}} </span><span class="date" style="float:right;">{{post.date_posted|naturaltime}}</span></a></li>
 				{% endfor %}
 			</ul>
 		</div>

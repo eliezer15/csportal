@@ -48,36 +48,38 @@ def main(request, site):
         posts = paginator.page(paginator.num_pages)
 
     context_dict['posts'] = posts
-    context_dict['filters'] = get_filters()
+    
+    if (site == 'gethired'):
+        context_dict['filters'] = get_filters_gethired()
+    if (site == 'marketplace'):
+        context_dict['filters'] = get_filters_marketplace()
+    if (site == 'gethired'):
+        context_dict['filters'] = get_filters_gethired()
     
     return render_to_response(site+'/postlist.html', context_dict, context)
 
-def get_filters():
-    interview_posts = models.Interview.objects.all()
-    offer_posts = models.Offer.objects.all()
-    all_posts = sorted(
-                       chain(interview_posts,offer_posts),
-                       key=lambda post: post.date_posted,
-                       reverse = True
-                      )
+def get_filters_gethired():
     filters = {}
 
     filters['companies']= models.Company.objects.order_by('name')
     return filters
 
+def get_filters_marketplace():
+    filters = {}
+
+    filters['technologies']= models.Technology.objects.order_by('name')
+    return filters
+
 @login_required
-def get_field_posts(request, field_name, field_value):
+def get_company(request, name):
     if request.method == 'GET':
         context = RequestContext(request)
         context_dict = {}
-        #name__iexact is a case-insensitvie match
-
-        if (field_name == "company"):
-            field_value = field_value.replace('-', ' ')
-            company = get_object_or_404(models.Company, name__iexact=field_value)
-            interview_posts = models.Interview.objects.filter(company=company)
-            offer_posts = models.Offer.objects.filter(company=company)
-            context_dict['company'] = company
+        name = name.replace('-', ' ')
+        company = get_object_or_404(models.Company, name__iexact=name)
+        interview_posts = models.Interview.objects.filter(company=company)
+        offer_posts = models.Offer.objects.filter(company=company)
+        context_dict['company'] = company
         
         all_posts = sorted(
                        chain(interview_posts,offer_posts),
@@ -95,11 +97,11 @@ def get_field_posts(request, field_name, field_value):
             posts = paginator.page(paginator.num_pages)                  
         
         context_dict['posts'] = posts
-        context_dict['filters'] = get_filters()
+        context_dict['filters'] = get_filters_gethired()
 
-    return render_to_response('GetHired/postlist.html', context_dict, context)
+        return render_to_response('gethired/postlist.html', context_dict, context)
 
-def get_related_posts(post_type, post_id):
+def get_related_posts_gethired(post_type, post_id):
     Model = model_dict[post_type]
     post = Model.objects.get(pk=post_id)
     #See if there are any posts that match all relevant criteria
@@ -129,21 +131,19 @@ def get_related_posts(post_type, post_id):
     return relevant_posts
 
 @login_required
-def get_post(request, site, post_type, post_id):
+def get_post_gethired(request, post_type, post_id):
     if request.method == 'GET':
         context = RequestContext(request)
         context_dict = {}
         model = model_dict[post_type]
         post = get_object_or_404(model, pk=post_id)
         context_dict['post'] = post
+        context_dict['related_posts'] = get_related_posts_gethired(post_type, post_id)
 
-        if site == 'gethired':
-            context_dict['related_posts'] = get_related_posts(post_type, post_id)
-
-        return render_to_response(site+'/post.html',context_dict, context)
+        return render_to_response('gethired/post.html',context_dict, context)
 
 @login_required
-def render_new_post_form(request,site,post_type,post_id=None):
+def render_new_post_form(request, post_type,post_id=None):
     if request.method == 'GET':
         context = RequestContext(request)
         context_dict = {}
@@ -176,10 +176,10 @@ def render_new_post_form(request,site,post_type,post_id=None):
         context_dict['post_type'] = post_type
         if post_type == "project":
             return render_to_response('marketplace/newpost.html', context_dict, context)
-        return render_to_response('GetHired/newpost.html',context_dict,context)
+        return render_to_response('gethired/newpost.html',context_dict,context)
 
 
-def create_post(request, post_type, post_id=None):
+def create_post_gethired(request, post_type, post_id=None):
     if request.method == 'POST':
         data = request.POST
         Form = form_dict[post_type]
@@ -230,9 +230,9 @@ def create_post(request, post_type, post_id=None):
             context_dict['post_type'] = post_type
             context_dict['companies'] = models.Company.objects.order_by('name')
             logging.debug(user_form)
-            return render_to_response('GetHired/newpost.html',context_dict, context)
+            return render_to_response('gethired/newpost.html',context_dict, context)
 
-def filter_posts(request):
+def filter_posts_gethired(request):
     if request.method == 'GET':
         context = RequestContext(request)
         context_dict = {}
@@ -275,13 +275,42 @@ def filter_posts(request):
             posts = paginator.page(paginator.num_pages)
 
         context_dict['posts'] = posts
-        context_dict['filters'] = get_filters()
-        return render_to_response('GetHired/postlist.html',context_dict,context)
-     
-def get_json_list(request, post_type):
+        context_dict['filters'] = get_filters_gethired()
+        return render_to_response('gethired/postlist.html',context_dict,context)
+
+def filter_posts_marketplace(request):
     if request.method == 'GET':
-        Model = model_dict[post_type]
-        all_posts = Model.objects.values_list('name', flat= True).order_by('name') 
+        context = RequestContext(request)
+        context_dict = {}
+        data = request.GET
+        
+        filters = {}
+
+        if 'location' in data and data['location'] != 'ALL':
+            filters['location__state'] = data['location']
+
+        if 'technology' in data and data['technology'] != 'ALL':
+            filters['technologies__name'] = data['technology']
+        all_posts = []
+        all_posts.extend(models.Project.objects.filter(**filters))
+        all_posts.sort(key=lambda post: post.date_posted,reverse=True)
+
+        paginator = Paginator(all_posts, 10)
+        page = request.GET.get('page')
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
+
+        context_dict['posts'] = posts
+        context_dict['filters'] = get_filters_marketplace()
+        return render_to_response('marketplace/postlist.html',context_dict,context)
+     
+def get_company_json_list(request):
+    if request.method == 'GET':
+        all_posts = models.Company.objects.values_list('name', flat= True).order_by('name') 
         #convert unicode to string
         string_list = []
         for p in all_posts:

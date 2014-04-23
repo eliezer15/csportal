@@ -15,18 +15,19 @@ urlpatterns = patterns('',
     url(r'^marketplace/post/new/project/$',views.create_post_project, name='create_post_project'),
     url(r'^marketplace/post/edit/project/(?P<post_id>\d+)/password/$',views.edit_post_password_project, name='edit_post_password_project'),
     url(r'^marketplace/post/edit/project/(?P<post_id>\d+)/$',views.edit_post_project, name='edit_post_project'),
+    url(r'^gethired/filter/', views.filter_posts_marketplace, name='filter_posts_marketplace'),
     url(r'^marketplace/post/project/(?P<post_id>\d+)/contact/$',views.project_send_email, name='contact_project'),
     
    
     
     #gethired
-    url(r'^(?P<site>\w+)/post/(?P<post_type>\w+)/(?P<post_id>\d+)/$',views.get_post,name='get_post'),
-    url(r'^(?P<site>\w+)/post/new/(?P<post_type>\w+)/$',views.render_new_post_form, name='render_new_post'),
-    url(r'^(?P<site>\w+)/post/edit/(?P<post_type>\w+)/(?P<post_id>\d+)/$',views.render_new_post_form, name='render_edit_post'),
-    url(r'^gethired/post/new/(?P<post_type>\w+)/(?P<post_id>\d*)/$',views.create_post,name='create_post'),
-    url(r'^gethired/(?P<field_name>\w+)/(?P<field_value>[0-9A-Za-z\-]+)/$', views.get_field_posts, name='get_field_posts'),
-    url(r'^gethired/filter/', views.filter_posts,name='filter_posts'),
-    url(r'^gethired/post/list/(?P<post_type>\w+)/$', views.get_json_list),
+    url(r'^gethired/post/(?P<post_type>\w+)/(?P<post_id>\d+)/$',views.get_post_gethired,name='get_post'),
+    url(r'^gethired/post/new/(?P<post_type>\w+)/$',views.render_new_post_form, name='render_new_post'),
+    url(r'^gethired/post/edit/(?P<post_type>\w+)/(?P<post_id>\d+)/$',views.render_new_post_form, name='render_edit_post'),
+    url(r'^gethired/post/new/(?P<post_type>\w+)/(?P<post_id>\d*)/$',views.create_post_gethired,name='create_post'),
+    url(r'^gethired/company/(?P<name>[0-9A-Za-z\-]+)/$', views.get_company, name='get_company'),
+    url(r'^gethired/filter/', views.filter_posts_gethired, name='filter_posts_gethired'),
+    url(r'^gethired/post/list/company/$', views.get_company_json_list),
 
     
     
