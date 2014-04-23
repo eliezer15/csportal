@@ -37,11 +37,34 @@ $(document).ready(function() {
 	$('div.newform').find('textarea').css('width', '100%');
 	//Do all except the checkbox
 	$('div.newform').find('input[type="checkbox"]').css('width', '0');
+
+    $('#offer_job_type select').change(function() {
+        
+        var val = $('#offer_job_type select option:selected').val();
+        if (val === "UI" || val === "VW") {
+            $('div.newform select[name="pay_type"] option').prop("disabled",true);
+            $('div.newform select[name="pay_type"] option[value="OT"').removeAttr("disabled");
+            $('div.newform input[name="salary"]').val('0');
+            $('div.newform input[name="signing_bonus"]').val('');
+            $('div.newform input[name="relocation_bonus"]').val('');
+            $('div.newform input[name="salary"]').prop("readonly",true);
+            $('div.newform input[name="signing_bonus"]').prop("disabled",true);
+            $('div.newform input[name="relocation_bonus"]').prop("disabled",true);
+        }
+
+        else {
+            $('div.newform select[name="pay_type"] option').removeAttr('disabled');
+            $('div.newform input[name="salary"]').removeAttr('readonly');
+            $('div.newform input[name="signing_bonus"]').removeAttr('disabled');
+            $('div.newform input[name="relocation_bonus"]').removeAttr('disabled');
+        }
+    });
 	
 	/* Event for disabling state selection when an international
        country is selected when creating a new post */
 
     $('div.newform select[name="country"]').change(function() {
+
 
     	if ($('div.newform select[name="country"] option:selected').val() !== "US") {
     		$('div.newform select[name="state"] option').prop("disabled", true);
@@ -68,8 +91,8 @@ $(document).ready(function() {
     	});
     });
 
-    /* Event for disabling salary information when submitting unpaid internship */
     
+
     /* datepicker widget */
     $(function() {
     	$('div.date input').datepicker();

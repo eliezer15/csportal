@@ -237,9 +237,9 @@
 							</div><!-- End of Company  Div -->
 							<div class="new-pay-info col-md-6">
 								<div class="form-group">
-        							<label for="id_job_type" class="control-label col-md-12"><span class="required">* </span>Job Type: </label>
+        							<label for="id_job_type"  class="control-label col-md-12"><span class="required">* </span>Job Type: </label>
         							{{ form.job_type.errors}}
-        							<div class="col-md-12">
+        							<div class="col-md-12" id="offer_job_type">
         							{{ form.job_type }}
         							</div>
         						</div>
@@ -285,7 +285,7 @@
         							<label for="id_salary" class="control-label col-md-12"><span class="required">* </span>Permission to display salary in posts: </label>
         							{{ form.display_salary.errors }}
         							<div class="col-md-12">
-										<span>Yes:  {{ form.display_salary }}</span>
+										<span>Yes:  {{form.display_salary}}</span>
        								</div>
 								</div>
 							</div>
