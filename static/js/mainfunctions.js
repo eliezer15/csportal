@@ -1,5 +1,8 @@
 $(document).ready(function() {
-
+	
+	if ($('div.info h1').html() == " UNC CS Student Portal ") {
+		$('a.home').addClass('current');
+	}
 	if ($('div.info h1').html() == " Get Hired ") {
 		$('a.hired').addClass('current');
 	}
@@ -43,7 +46,7 @@ $(document).ready(function() {
         var val = $('#offer_job_type select option:selected').val();
         if (val === "UI" || val === "VW") {
             $('div.newform select[name="pay_type"] option').prop("disabled",true);
-            $('div.newform select[name="pay_type"] option[value="OT"').removeAttr("disabled");
+            $('div.newform select[name="pay_type"] option[value="OT"]').removeAttr("disabled");
             $('div.newform input[name="salary"]').val('0');
             $('div.newform input[name="signing_bonus"]').val('');
             $('div.newform input[name="relocation_bonus"]').val('');
@@ -130,6 +133,17 @@ $(document).ready(function() {
     			$('div.filterdiv select[name="company"] option[value="'+name.toProperCase()+'"]').prop('selected', true);
     		}
     }
+    
+    if(uri.hasSearch("technology")){
+    	var search = uri.search(true);
+    	for(key in search){
+    		console.log(key);
+    		if(key == 'technology'){
+    			$('div.filterdiv select[name="'+key+'"] option[value="'+search[key]+'"]').prop('selected', true);
+    			}
+    	
+    		}
+    	}
     
     
     

@@ -8,7 +8,8 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
-    url(r'^(?P<site>\w+)/$', views.main),
+    url(r'^(?P<site>\w+)/$', views.main, name='main_view'),
+    url(r'^$', views.index, name='index_view'),
     
     #marketplace
     url(r'^marketplace/post/project/(?P<post_id>\d+)/$',views.get_post_project, name='get_post_project'),

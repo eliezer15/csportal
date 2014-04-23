@@ -20,6 +20,15 @@ import logging
 import simplejson
 import hashlib
 
+
+
+
+def index(request):
+    context = RequestContext(request)
+    context_dict = {}
+    return render_to_response('portal/index.html', context_dict, context)
+
+
 #main page view
 
 def main(request, site):
