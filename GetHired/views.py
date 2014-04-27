@@ -29,9 +29,6 @@ def index(request):
     context_dict = {}
     return render_to_response('portal/index.html', context_dict, context)
 
-
-#main page view
-
 def main(request, site):
 
     context = RequestContext(request)
@@ -537,8 +534,40 @@ def get_post_project(request, post_id):
             raise Http404
 
         context_dict['post'] = post
+        context_dict['related_posts'] = get_related_posts_project(post_id)
 
         return render_to_response('marketplace/post.html',context_dict, context)
+
+def get_related_posts_project(post_id):
+    post = models.Project.objects.get(pk=post_id)
+
+    candidates_posts = models.Project.objects.exclude(pk=post_id, deleted=True)
+    relevance = []
+
+    for i in range(len(candidates_posts)):
+        p = candidates_posts[i]
+        points = 0
+
+        if p.location == post.location: points+=1 
+        t1 = set(p.technologies.all())
+        t2 = set(post.technologies.all())
+        intersection = t1 & t2
+
+        points += len(intersection)
+
+        relevance.append((i,points))
+
+    #find more relevant ones and put them up front    
+    relevance.sort(key=lambda tup: tup[1], reverse=True)
+    #get the indexes of the top posts and retrieve them
+    logging.debug(relevance)
+    relevant_posts = []
+    for r in relevance[:5]:
+        index = r[0]
+        if r[1] > 0:
+            relevant_posts.append(candidates_posts[index])
+
+    return relevant_posts
     
 def project_send_email(request, post_id):
     proj = models.Project.objects.get(pk=post_id)

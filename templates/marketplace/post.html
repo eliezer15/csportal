@@ -10,6 +10,27 @@
 <div class="filterdiv panel panel-default">
 <div class="contain">
 <div class="container-fluid">
+	<div class="row">
+		<h5><span class='labs'>Related Posts:</span></h5>
+		{% for post in related_posts %}
+			<div class="col-md-12 related-post" data-num="{{forloop.counter}}">
+				<div class="row">
+        			<a class="postLinks" href="{% url 'get_post_project' post_id=post.pk %}">{{post.title}}</a><br>
+				</div>
+				<div class="row related-post-location">
+					{{post.location}}
+				</div>
+			</div>
+			<div class="hover-test" style="display: none;" data-num="{{forloop.counter}}">
+				<p>Date posted: <span class="data">{{post.date_posted|naturalday|title}}</span></p>
+				<p>Technologies:</p>
+				<ul>
+					{% for t in post.technologies.all %}
+					<li></span class="data">{{t}}</span>
+					{% endfor %}
+			</div>
+		{% endfor %}
+	</div>
 </div>
 </div>
 </div>
