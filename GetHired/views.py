@@ -382,8 +382,12 @@ def create_post_project(request):
         
         valid_form = user_form.is_valid() #calling it here so I can access the clean data below
         valid_location = data['country'] and data['state'] and data['city']
+        valid_date = True
 
-        if valid_form and valid_location:
+        if data['end_date']:
+            valid_date = data['start_date'] <= data['end_date']
+
+        if valid_form and valid_location and valid_date:
             location = models.Location.objects.create(country=data['country'],state=data['state'],city=data['city'])
             post = user_form.save(commit=False)
             m = hashlib.md5()
@@ -402,18 +406,23 @@ def create_post_project(request):
             redirecturl = '/marketplace/post/project/' + str(post.pk) +'/'
             return HttpResponseRedirect(redirecturl)
         else:
+            if not valid_date:
+                errors = user_form._errors.setdefault("end_date",ErrorList())
+                errors.append(u"End date cannot be before start date")
             context_dict['form'] = user_form
             context_dict['location_form'] = forms.LocationForm({'country':data['country'],'state':data['state'],'city':data['city']})
             return render_to_response('marketplace/newpost.html',context_dict, context)
     else:
         context_dict['form'] = Form()
         context_dict['location_form'] = forms.LocationForm()
+
         return render_to_response('marketplace/newpost.html',context_dict, context)
 
 def edit_post_password_project(request, post_id, edit_or_delete):
     context = RequestContext(request)
     context_dict = {}
     if request.method == 'GET':
+        context_dict['header'] = 'Edit '
         context_dict["post"] = post_id
         context_dict["edit_or_delete"] = edit_or_delete
         return render_to_response('marketplace/marketplace_post_password.html', context_dict, context)
@@ -448,6 +457,7 @@ def delete_password_project(request,post_id):
             context_dict["post"] = post_id
             context_dict["errors"] = "Wrong Password"
             return render_to_response('marketplace/marketplace_post_password.html', context_dict, context)
+
 def edit_post_project(request, post_id):
     context = RequestContext(request)
     context_dict = {}
@@ -459,7 +469,7 @@ def edit_post_project(request, post_id):
             context_dict['location_form'] = forms.LocationForm(instance=project.location)
             context_dict['update'] = True
             context_dict['post_id'] = post_id
-            context_dict['header'] = 'Add New '
+            context_dict['header'] = 'Edit '
             context_dict['post_type'] = "project"
             return render_to_response('marketplace/newpost.html', context_dict, context)
         else:
@@ -474,11 +484,18 @@ def edit_post_project(request, post_id):
             cleaned_desc = BeautifulSoup(data['description'])
             user_form.description = cleaned_desc.prettify()
             location = None
+
             if request.user.is_authenticated():
                 user_form.password = request.user.username + "#*$%*$#(%$#%&(" + request.user.email
+
             valid_form = user_form.is_valid() #calling it here so I can access the clean data below
             valid_location = data['country'] and data['state'] and data['city']
-            if valid_form and valid_location:
+            valid_date = True
+
+            if data['end_date']:
+                valid_date = data['start_date'] <= data['end_date']
+
+            if valid_form and valid_location and valid_date:
                 post = user_form.save(commit=False)
                 try:
                     post.author = User.objects.get(username=request.user)
@@ -497,11 +514,15 @@ def edit_post_project(request, post_id):
                    print "session error"
                 return redirect('get_post_project', post_id=post_id)
             else:
+                if not valid_date:
+                    errors = user_form._errors.setdefault("end_date",ErrorList())
+                    errors.append(u"End date cannot be before start date")
+                
                 context_dict['form'] = user_form
                 context_dict['post_type'] = "project"
                 context_dict['update'] = True
                 context_dict['post_id'] = post_id
-                context_dict['header'] = 'Add New '
+                context_dict['header'] = 'Edit '
                 context_dict['post_type'] = "project"
                 context_dict['location_form'] = forms.LocationForm({'country':data['country'],'state':data['state'],'city':data['city']})
                 return render_to_response('marketplace/newpost.html',context_dict, context)

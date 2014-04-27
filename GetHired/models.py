@@ -17,6 +17,7 @@ def validate_past_date(value):
     if value < date.today():
         raise ValidationError(u'Date cannot be in the past')
 
+
 class Post(models.Model):
     #related_name is required for all abstract classes with ForeignKey fields. See Django docs for more info
     author = models.ForeignKey(User, editable=False, blank=True, null= True, related_name="%(app_label)s_%(class)s_user")
