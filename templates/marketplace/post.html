@@ -39,10 +39,29 @@
 	<div class="container-fluid">
 		<div class="postview-button-row row">
 			<button onclick="window.history.back()" class="btn pull-left btn-info btn-go-back">Go Back</button>
-			{% if user.username == post.author.username %}
-			<a href="{% url 'edit_post_project' post_id=post.pk %}" class="btn pull-right btn-info btn-edit">Edit/Delete Post</a>
+
+			{% if user.username == post.author.username %}	
+				<form id="delete" method="post" action = "{% url 'delete_post' post_type=post.post_type post_id=post.pk %}">
+				 {% csrf_token %}
+
+				<div class="btn-group pull-right" style="padding-top: 5px;">
+					<button type="button" class="btn btn-info pull-right dropdown-toggle" data-toggle="dropdown">Edit/Delete Post<span class="caret"></span></button>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="{% url 'edit_post_project' post_id=post.pk %}">Edit Post</a></li>
+					<li class="divider"></li>
+					<li><a href="javascript:void()" id="submit_link">Delete Post</a></li>
+				</ul>
+				</form>
+			</div>
 			{% else %}
-			<a href="{% url 'edit_post_password_project' post_id=post.pk %}" class="btn pull-right btn-info btn-edit">Edit/Delete Post</a>
+				<div class="btn-group pull-right" style="padding-top: 5px;">
+					<button type="button" class="btn btn-info pull-right dropdown-toggle" data-toggle="dropdown">Edit/Delete Post<span class="caret"></span></button>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="{% url 'edit_post_password_project' post_id=post.pk edit_or_delete='edit'%}">Edit Post</a></li>
+					<li class="divider"></li>
+					<li><a href="{% url 'edit_post_password_project' post_id=post.pk edit_or_delete='delete' %}">Delete Post</a></li>
+				</ul>
+			</div>
 			{% endif %}
 		</div> <!-- Button Row -->
 	</div>

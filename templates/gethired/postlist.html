@@ -140,8 +140,8 @@
 				<button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">New Post <span class="caret"></span></button>
 				<ul class="dropdown-menu" role="menu">
 					<li><a href="{% url 'render_new_post' post_type='interview' %}">Interview</a></li>
-						<li class="divider"></li>
-						<li><a href="{% url 'render_new_post' post_type='offer' %}">Offer</a></li>
+					<li class="divider"></li>
+					<li><a href="{% url 'render_new_post' post_type='offer' %}">Offer</a></li>
 				</ul>
 			</div>
 		</div>
@@ -164,6 +164,7 @@
 	</div>
 {% endif %}
 {% for post in posts %}
+{% if not post.deleted %}
 	<div class="posts panel">
     	<div class="row">
     		{% if post.post_type == "interview" %}
@@ -193,6 +194,8 @@
 		<a class="post-panel-link" href="{% url 'get_post' post_type=post.post_type.lower post_id=post.pk %}"><span class="post-link"></span></a>
     </div>
     </div>
+
+{% endif %}
 {% endfor %}
 
 	{% if posts.has_other_pages %}

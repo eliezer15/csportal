@@ -58,7 +58,17 @@
 		<div class="postview-button-row row">
 			<button onclick="window.history.back()" class="btn pull-left btn-info btn-go-back">Go Back</button>
 			{% if user.username == post.author.username %}
-			<a href="{% url 'render_edit_post' post_type=post.post_type post_id=post.pk %}" class="btn pull-right btn-info btn-edit">Edit/Delete Post</a>
+				<form id="delete" method="post" action="{% url 'delete_post' post_type=post.post_type post_id=post.pk %}">
+					 {% csrf_token %}
+				<div class="btn-group pull-right " style="padding-top: 5px;">
+					<button type="button" class="btn btn-info btn-edit  dropdown-toggle" data-toggle="dropdown">Edit/Delete Post<span class="caret"></span></button>
+				<ul class="dropdown-menu" role="menu">
+					<li><a href="{% url 'render_edit_post' post_type=post.post_type post_id=post.pk %}">Edit Post</a></li>
+					<li class="divider"></li>
+					<li><a href="javascript:void()" id="submit_link">Delete Post</a></li>
+				</ul>
+				</div>
+				</form>
 			{% endif %}
 		</div> <!-- Button Row -->
 	</div>

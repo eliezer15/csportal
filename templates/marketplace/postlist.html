@@ -30,7 +30,7 @@
 	<div class="row">
 		<div class="col-md-12">
 			<div class="btn-group" style="padding-top: 5px;">
-				<a href="{% url 'render_new_post' post_type='project' %}" class="btn btn-default">New Post</a>
+				<a href="{% url 'create_post_project' %}" class="btn btn-default">New Post</a>
 			</div>
 		</div>
 	</div>
@@ -40,6 +40,8 @@
 	</div>
 {% endif %}
 {% for post in posts %}
+{% if not post.deleted %}
+
 	<div class="posts panel">
     	<div class="row">
     		<p><span class="label label-danger">{{post.post_type|title}}</span></p>
@@ -59,6 +61,7 @@
 		<a class="post-panel-link" href="{% url 'get_post_project' post_id=post.pk %}"><span class="post-link"></span></a>
     </div>
     </div>
+{% endif %}
 {% endfor %}
 
 	{% if posts.has_other_pages %}

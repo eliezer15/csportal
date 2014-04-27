@@ -13,6 +13,7 @@ from django.contrib.auth import logout
 from django.contrib.auth.models import User
 from registration.backends.default.views import RegistrationView
 from django.core.mail import EmailMessage
+from django.http import Http404
 from bs4 import BeautifulSoup
 from django.contrib import messages
 import random
@@ -114,7 +115,7 @@ def get_related_posts_gethired(post_type, post_id):
     Model = model_dict[post_type]
     post = Model.objects.get(pk=post_id)
     #See if there are any posts that match all relevant criteria
-    candidates_posts = Model.objects.exclude(id=post_id)
+    candidates_posts = Model.objects.exclude(id=post_id, deleted=True)
     relevance = []
 
     for i in range(len(candidates_posts)):
@@ -146,6 +147,9 @@ def get_post_gethired(request, post_type, post_id):
         context_dict = {}
         model = model_dict[post_type]
         post = get_object_or_404(model, pk=post_id)
+        if post.deleted:
+            raise Http404
+
         context_dict['post'] = post
         context_dict['related_posts'] = get_related_posts_gethired(post_type, post_id)
 
@@ -162,7 +166,7 @@ def render_new_post_form(request, post_type,post_id=None):
 
         if post_id:
             Model = model_dict[post_type]
-            post = Model.objects.get(pk=post_id)
+            post = get_object_or_404(Model, pk=post_id)
             modelform = form(instance=post)
             if post_type == "interview":
                 modelform.fields['offer_details'].queryset = models.Offer.objects.filter(author = request.user)
@@ -218,7 +222,7 @@ def create_post_gethired(request, post_type, post_id=None):
 
             if post_id:
                 model = model_dict[post_type]
-                post = model.objects.get(pk=post_id)
+                post = get_object_or_404(model, pk=post_id)
                 user_form = Form(request.POST, instance=post) 
             
             post = user_form.save(commit=False)
@@ -240,6 +244,21 @@ def create_post_gethired(request, post_type, post_id=None):
             context_dict['companies'] = models.Company.objects.order_by('name')
             logging.debug(user_form)
             return render_to_response('gethired/newpost.html',context_dict, context)
+
+def delete_post(request, post_type, post_id):
+    if request.method == 'POST':
+        Model = model_dict[post_type]
+        post = get_object_or_404(Model, pk=post_id)
+        post.deleted = True
+        post.save()
+
+        redirect = "/index/"
+        if post_type == "interview" or post_type == "offer":
+            redirect = "/gethired/"
+        elif post_type == "project":
+            redirect = "/marketplace/"
+
+        return HttpResponseRedirect(redirect)
 
 def filter_posts_gethired(request):
     if request.method == 'GET':
@@ -391,11 +410,12 @@ def create_post_project(request):
         context_dict['location_form'] = forms.LocationForm()
         return render_to_response('marketplace/newpost.html',context_dict, context)
 
-def edit_post_password_project(request, post_id):
+def edit_post_password_project(request, post_id, edit_or_delete):
     context = RequestContext(request)
     context_dict = {}
     if request.method == 'GET':
         context_dict["post"] = post_id
+        context_dict["edit_or_delete"] = edit_or_delete
         return render_to_response('marketplace/marketplace_post_password.html', context_dict, context)
     if request.method == 'POST':
         project = models.Project.objects.get(pk=post_id)
@@ -410,6 +430,24 @@ def edit_post_password_project(request, post_id):
             context_dict["errors"] = "Wrong Password"
             return render_to_response('marketplace/marketplace_post_password.html', context_dict, context)
 
+def delete_password_project(request,post_id):
+    context = RequestContext(request)
+    context_dict = {}
+    if request.method == 'POST':
+        project = models.Project.objects.get(pk=post_id)
+        data = request.POST
+        m = hashlib.md5()
+        m.update(data['password'])
+        if m.hexdigest() == project.password:
+            request.session['access' + post_id] = True
+            project.deleted = True
+            project.save()
+
+            return HttpResponseRedirect("/marketplace/")
+        else:
+            context_dict["post"] = post_id
+            context_dict["errors"] = "Wrong Password"
+            return render_to_response('marketplace/marketplace_post_password.html', context_dict, context)
 def edit_post_project(request, post_id):
     context = RequestContext(request)
     context_dict = {}
@@ -474,6 +512,9 @@ def get_post_project(request, post_id):
         context_dict = {}
         model = model_dict["project"]
         post = get_object_or_404(model, pk=post_id)
+        if post.deleted:
+            raise Http404
+
         context_dict['post'] = post
 
         return render_to_response('marketplace/post.html',context_dict, context)

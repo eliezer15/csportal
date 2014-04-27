@@ -87,6 +87,13 @@ $(document).ready(function() {
     	}
     });
 
+    /* Confirm before deletion */
+    $('#submit_link').click(function() {
+        if (confirm('Do you really want to delete this post?')) {
+            $('form#delete').submit();
+        }
+    })
+
     /* Parse number with commas on submit */
     $('div.new-offer-form form').submit(function() {
     	$(this).find('.money_field input').each(function() {

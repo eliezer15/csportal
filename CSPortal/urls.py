@@ -11,10 +11,13 @@ urlpatterns = patterns('',
     url(r'^(?P<site>\w+)/$', views.main, name='main_view'),
     url(r'^$', views.index, name='index_view'),
     
+
+    url(r'^post/delete/(?P<post_type>\w+)/(?P<post_id>\d+)/$',views.delete_post,name='delete_post'),
     #marketplace
     url(r'^marketplace/post/project/(?P<post_id>\d+)/$',views.get_post_project, name='get_post_project'),
     url(r'^marketplace/post/new/project/$',views.create_post_project, name='create_post_project'),
-    url(r'^marketplace/post/edit/project/(?P<post_id>\d+)/password/$',views.edit_post_password_project, name='edit_post_password_project'),
+    url(r'^marketplace/post/edit/project/(?P<post_id>\d+)/password/(?P<edit_or_delete>\w+)/$',views.edit_post_password_project, name='edit_post_password_project'),
+    url(r'^marketplace/post/delete/project/(?P<post_id>\d+)/password/$',views.delete_password_project, name='delete_password_project'),
     url(r'^marketplace/post/edit/project/(?P<post_id>\d+)/$',views.edit_post_project, name='edit_post_project'),
     url(r'^gethired/filter/', views.filter_posts_marketplace, name='filter_posts_marketplace'),
     url(r'^marketplace/post/project/(?P<post_id>\d+)/contact/$',views.project_send_email, name='contact_project'),
