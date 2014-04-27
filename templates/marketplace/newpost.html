@@ -85,8 +85,7 @@ $(document).ready(function(){
 			</div>
 			<div class="form-group">
 				<label for="id_description" class="control-label col-md-12" style="text-align: center;"><span
-					class="required">* </span>Description: </label> 
-					
+					class="required">* </span>Description: </label>					
 				<div class="col-md-12">{{form.description.errors}}{{form.description}}</div>
 			</div>
 			{% if not user.is_authenticated  %}
@@ -101,10 +100,15 @@ $(document).ready(function(){
 					class="required">* </span>Password(Enables you to come back and edit the post): </label> 
 				<div class="col-md-12">{{form.password.errors}}{{form.password}}</div>
 			</div>
+			<div class="form-group" style="display: none;">
+				<label for="id_description" class="control-label col-md-12"><span
+					class="required">* </span> Confirm Password: </label> 
+				<div class="col-md-12"><span id="confirm_password_errors"></span><input type="password" id="confirm_password"></div>
+			</div>
 			<script>
 			$(document).ready(function(){
 				$('input#id_password').val("hiddenthiswillchangewhenyoupostlol");
-				console.log($('#id_password'));
+				//console.log($('#id_password'));
 			});
 			</script>
 			{% endif %}
