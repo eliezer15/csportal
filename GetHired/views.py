@@ -171,21 +171,18 @@ def get_post_job(request, post_id):
 
 def get_related_posts_job(post_id):
     post = models.Job.objects.get(pk=post_id)
-    candidates_posts = models.Job.objects.exclude(pk=post_id, deleted=True)
+    candidates_posts = models.Interview.objects.exclude(deleted=True)
     relevance = []
 
     for i in range(len(candidates_posts)):
         p = candidates_posts[i]
         points = 0
 
-        if p.company == post.company: points+=1
+        if p.company == post.company: points+=3
+        if p.job_title == post.job_title: points+=2
         if p.location == post.location: points+=1 
-        if p.job_type == post.job_type: points+=1 
-        t1 = set(p.technologies.all())
-        t2 = set(post.technologies.all())
-        intersection = t1 & t2
+        if p.job_type == post.job_type: points+=1
 
-        points += len(intersection)
 
         relevance.append((i,points))
 

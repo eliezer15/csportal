@@ -480,7 +480,8 @@ class GetHiredPost(Post):
 class Job(GetHiredPost):
     description = models.TextField()
     technologies = models.ManyToManyField(Technology)
-    application_deadline = models.DateField(blank=True, null=True)
+    application_deadline = models.DateField(blank=True, null=True, validators=[validate_past_date])
+    
 
     class Meta:
         app_label = 'GetHired'
@@ -550,8 +551,8 @@ class Interview(GetHiredPost):
     date_interviewed = models.DateField(validators=[validate_future_date])
 
     offer_choices = (
-            ('RC','Received'),
-            ('NR','Not Received'),
+            ('RC','Offer Received'),
+            ('NR','Offer Not Received'),
             ('WA','Waiting for Offer'),
             )
     offer_status = models.CharField(max_length=2,

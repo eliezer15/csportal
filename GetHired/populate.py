@@ -1,9 +1,9 @@
 import os
 from random import choice, randint
-from models import Offer, Interview, Location, Company
+from models import Offer, Interview, Location, Company, Project, Job, Technology
 from django.contrib.auth.models import User
 from datetime import datetime
-def populate():
+def populateGetHired():
 
     #companies and locations
     Company.objects.create(name='Microsoft')
@@ -30,8 +30,8 @@ def populate():
     title = ['SE','WD','ST','DE','BA','CO']
     job_type = ['FT','PT','PI','CO']
     
-    pay_type = ['YS','MS', 'WS']
-    salaries = [50000, 60000, 70000, 80000]
+    pay_type = ['YS']
+    salaries = [50000, 60000, 70000, 80000, 10000]
     bonus = [3000, 10000, 5000]
     offer_status = ['AC','NA','NE','WA']
     details = "Liked the offer, benefits are great"
@@ -106,20 +106,110 @@ def add_Offer(user, degree, company, location, title, type, pay_type, salary, bo
                                  job_title = title,
                                  job_type = type,
                                  salary = salary,
+                                 display_salary = choice([True,False]),
                                  pay_type = pay_type,
                                  signing_bonus=bonus,
                                  relocation_bonus=relocation,
                                  offer_status=status,
                                  other_details=details)
+def populateProject():
 
-    print("Added offer for company %s"%o.company)
-    print("The offer salary was %i"%(o.salary))
-    print("The number of offers for company %s is now %i"%(o.company, o.company.num_offers))
-    print("The average salary is %.2f"%(o.company.avg_salary))
-    print("END")
+    #technologies
+    Technology.objects.create(name='Java')
+    Technology.objects.create(name='C++')
+    Technology.objects.create(name='DirectX')
+    Technology.objects.create(name='JavaScript')
+    Technology.objects.create(name='Python')
+    Technology.objects.create(name='Android')
+    Technology.objects.create(name='IOS')
+
+    technologies = Technology.objects.all()
+    locations = Location.objects.all()
+    user = User.objects.get(username='root')
+    
+    emails = ['encarnae@cs.unc.edu','foo@bar.com', 'leroy@jenkins.org']
+    names = ['Eliezer Encarnacion', 'Danyal Fiza', 'Sasha Karpinski', 'Andrew Park']
+    titles = ['New UNC Mobile app', 'Let\'s build a robot!', 'Anyone wanna learn IOS?', 'Need help building a personal site', 'Need programmer for a new startup']
+    description = '''This is a project that could extremely benefitial
+                      for your future employability. If you can learn to 
+                      do the stuff we will be doing here, you will acquire a 
+                      very useful set of skills that will help you get a job
+                      once you graduate.'''
+
+    #PROJECTS
+    start_date = datetime.now()
+
+    for i in range(0,20):
+        add_Project(user,
+                  choice(names),
+                  choice(emails),
+                  choice(titles),
+                  description,
+                  start_date,
+                  choice(locations),
+                  technologies)
+
+
+def add_Project(user, client, email, title, description, start_date, location, technologies):
+    p = Project.objects.create(author= user,
+                                client = client,
+                                email = email,
+                                title = title,
+                                description = description,
+                                start_date = start_date,
+                                is_start_date_flexible = choice([True,False]),
+                                location = location, password="123")
+    p.technologies.add(choice(technologies))
+    p.technologies.add(choice(technologies))
+
+def populateJobs():
+    companies = Company.objects.all()
+    locations = Location.objects.all()
+    technologies = Technology.objects.all()
+
+    user = User.objects.get(username='root')
+    degree = ['MI','BA','BS']
+    title = ['SE','WD','ST','DE','BA','CO']
+    job_type = ['FT','PT','PI','CO']
+    deadline = datetime(2014,5,15)
+
+    offer_status = ['AC','NA','NE','WA']
+    description = """<h4> Responsibilities </h4> <ul>
+                  <li>Determines operational feasibility by evaluating analysis, problem definition, requirements, solution development, and proposed solutions.</li>
+                  <li>Documents and demonstrates solutions by developing documentation, flowcharts, layouts, diagrams, charts, code comments and clear code.</li>
+                  <li>Prepares and installs solutions by determining and designing system specifications, standards, and programming.</li>
+                  <li>Improves operations by conducting systems analysis; recommending changes in policies and procedures.</li>
+                  <li>Obtains and licenses software by obtaining required information from vendors; recommending purchases; testing and approving products.</li>
+                  <li>Updates job knowledge by studying state-of-the-art development tools, programming techniques, and computing equipment; participating in educational opportunities; reading professional publications; maintaining personal networks; participating in professional organizations.</li>
+                  <li>Protects operations by keeping information confidential.</li>
+                  <li>Provides information by collecting, analyzing, and summarizing development and service issues.</li>
+                  <li>Accomplishes engineering and organization mission by completing related results as needed.</li>
+                  <li>Develops software solutions by studying information needs; conferring with users; studying systems flow, data usage, and work processes; investigating problem areas; following the software development lifecycle.</li>
+                  </ul>"""
+    for i in range(20):
+      add_job(user, choice(degree), choice(companies), choice(locations),choice(title), choice(job_type), description, deadline, technologies)
+
+def add_job(user, degree, company, location, title, type, description, deadline, technologies):
+    p = Job.objects.create(author= user, 
+                 applicant_degree = degree, 
+                                 company = company,
+                                 location = location,
+                                 job_title = title,
+                                 job_type = type,
+                                 description = description,
+                                 application_deadline = deadline,
+                                 )
+
+    p.technologies.add(choice(technologies))
+    p.technologies.add(choice(technologies))
+
+def populate():
+    populateGetHired()
+    populateProject()
+    populateJobs()
+
 
 # Start execution here!
 if __name__ == '__main__':
     print "Starting population script..."
-    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "CSPortal.settings")
-    populate()  
+    os.environ.setdefault("DJANGO_SETTINGS_MODULE", "CSPortal.settings") 

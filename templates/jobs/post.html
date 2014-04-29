@@ -11,7 +11,7 @@
 <div class="contain">
 <div class="container-fluid">
 	<div class="row">
-		<h5><span class='labs'>Related Posts:</span></h5>
+		<h4><span class='labs'>Prepare for an Interview:</span></h4>
 		{% for post in related_posts %}
 			<div class="col-md-12 related-post" data-num="{{forloop.counter}}">
 				<div class="row">
@@ -111,7 +111,7 @@
     						{% endfor %}
     						</span></p>    						
     					<label>Details:</label>   
-    					<p class="description well">{{post.description}}</p>
+    					<p class="description well">{{post.description|safe}}</p>
     				</div>
     			</div>
     		</div>

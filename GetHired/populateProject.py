@@ -1,11 +1,12 @@
 import os
-from random import choice, randint
+from random import choice
 from models import Technology, Project, Location
 from django.contrib.auth.models import User
 from datetime import datetime
-def populate():
+from GetHired import populate
+def populateP():
 
-    #technologies and locations
+    #technologies
     Technology.objects.create(name='Java')
     Technology.objects.create(name='C++')
     Technology.objects.create(name='DirectX')
@@ -13,23 +14,14 @@ def populate():
     Technology.objects.create(name='Python')
     Technology.objects.create(name='Android')
     Technology.objects.create(name='IOS')
-    """
-    Location.objects.create(city='Denver',state='CO')
-    Location.objects.create(city='Madison',state='WI')
-    Location.objects.create(city='Baltimore',state='MD')
-    Location.objects.create(city='San Jose',state='CA')
-    Location.objects.create(city='New York',state='NY')
-    Location.objects.create(city='Boston',state='MA')
-    Location.objects.create(city='Raleigh',state='NC')
-    Location.objects.create(city='San Francisco',state='CA')
-    """
+
     technologies = Technology.objects.all()
     locations = Location.objects.all()
     user = User.objects.get(username='root')
     
     emails = ['encarnae@cs.unc.edu','foo@bar.com', 'leroy@jenkins.org']
     names = ['Eliezer Encarnacion', 'Danyal Fiza', 'Sasha Karpinski', 'Andrew Park']
-    titles = ['New UNC Mobile app', 'Let\'s build a robot!', 'Anyone wanna learn IOS?', 'Need help building a personal site']
+    titles = ['New UNC Mobile app', 'Let\'s build a robot!', 'Anyone wanna learn IOS?', 'Need help building a personal site', 'Need programmer for a new startup']
     description = '''This is a project that could extremely benefitial
                       for your future employability. If you can learn to 
                       do the stuff we will be doing here, you will acquire a 
