@@ -120,6 +120,10 @@ def get_related_posts_gethired(post_type, post_id):
 
     for i in range(len(candidates_posts)):
         p = candidates_posts[i]
+
+        if p.pk == post.pk:
+            del[i]
+            continue
         points = 0
 
         if p.company == post.company: points+=1
@@ -587,11 +591,16 @@ def get_post_project(request, post_id):
 def get_related_posts_project(post_id):
     post = models.Project.objects.get(pk=post_id)
 
-    candidates_posts = models.Project.objects.exclude(pk=post_id, deleted=True)
+    candidates_posts = models.Project.objects.exclude(deleted=True)
     relevance = []
 
     for i in range(len(candidates_posts)):
         p = candidates_posts[i]
+
+        if p.pk == post.pk:
+            del[i]
+            continue
+
         points = 0
 
         if p.location == post.location: points+=1 
