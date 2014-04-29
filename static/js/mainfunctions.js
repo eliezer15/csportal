@@ -101,8 +101,6 @@ $(document).ready(function() {
     	});
     });
 
-    
-
     /* datepicker widget */
     $(function() {
     	$('div.date input').datepicker({ dateFormat: "yy-mm-dd"});

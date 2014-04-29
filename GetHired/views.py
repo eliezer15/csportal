@@ -45,6 +45,9 @@ def main(request, site):
     elif site == "marketplace":
         all_posts = models.Project.objects.order_by('date_posted').reverse()
 
+    elif site == "jobs":
+        all_posts = models.Job.objects.order_by('date_posted').reverse()
+
     paginator = Paginator(all_posts, 10)
     page = request.GET.get('page')
     try:
@@ -151,6 +154,52 @@ def get_post_gethired(request, post_type, post_id):
         context_dict['related_posts'] = get_related_posts_gethired(post_type, post_id)
 
         return render_to_response('gethired/post.html',context_dict, context)
+
+def get_post_job(request, post_id):
+    if request.method == 'GET':
+        context = RequestContext(request)
+        context_dict = {}
+        post = get_object_or_404(models.Job, pk=post_id)
+        if post.deleted:
+            raise Http404
+
+        context_dict['post'] = post
+        context_dict['related_posts'] = get_related_posts_job(post_id)
+
+        return render_to_response('jobs/post.html',context_dict, context)
+
+
+def get_related_posts_job(post_id):
+    post = models.Job.objects.get(pk=post_id)
+    candidates_posts = models.Job.objects.exclude(pk=post_id, deleted=True)
+    relevance = []
+
+    for i in range(len(candidates_posts)):
+        p = candidates_posts[i]
+        points = 0
+
+        if p.company == post.company: points+=1
+        if p.location == post.location: points+=1 
+        if p.job_type == post.job_type: points+=1 
+        t1 = set(p.technologies.all())
+        t2 = set(post.technologies.all())
+        intersection = t1 & t2
+
+        points += len(intersection)
+
+        relevance.append((i,points))
+
+    #find more relevant ones and put them up front    
+    relevance.sort(key=lambda tup: tup[1], reverse=True)
+    #get the indexes of the top posts and retrieve them
+    logging.debug(relevance)
+    relevant_posts = []
+    for r in relevance[:5]:
+        index = r[0]
+        if r[1] > 0:
+            relevant_posts.append(candidates_posts[index])
+
+    return relevant_posts
 
 @login_required
 def render_new_post_form(request, post_type,post_id=None):

@@ -18,6 +18,7 @@ def validate_past_date(value):
         raise ValidationError(u'Date cannot be in the past')
 
 
+
 class Post(models.Model):
     #related_name is required for all abstract classes with ForeignKey fields. See Django docs for more info
     author = models.ForeignKey(User, editable=False, blank=True, null= True, related_name="%(app_label)s_%(class)s_user")
@@ -393,7 +394,7 @@ class Project(Post):
     class Meta:
         app_label = "GetHired"
 
-# GETHIRED MODELS
+# GETHIRED PARENT MODELS
 class Company(models.Model):
     name = models.CharField(max_length=30)
     avg_salary = models.DecimalField(decimal_places=2, max_digits=10, default=0, editable=False)
@@ -475,6 +476,15 @@ class GetHiredPost(Post):
         abstract = True
         app_label = 'GetHired'
 
+#JOB BOARD MODELS
+class Job(GetHiredPost):
+    description = models.TextField()
+    technologies = models.ManyToManyField(Technology)
+    application_deadline = models.DateField(blank=True, null=True)
+
+    class Meta:
+        app_label = 'GetHired'
+# GETHIRED CHILD MODELS
 class Offer(GetHiredPost):
     pay_choices = (
             ('YS','Yearly Salary'),

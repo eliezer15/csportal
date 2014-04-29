@@ -22,7 +22,8 @@ urlpatterns = patterns('',
     url(r'^marketplace/filter/', views.filter_posts_marketplace, name='filter_posts_marketplace'),
     url(r'^marketplace/post/project/(?P<post_id>\d+)/contact/$',views.project_send_email, name='contact_project'),
     
-   
+   #jobboard
+    url(r'^jobs/post/(?P<post_id>\d+)/$',views.get_post_job, name='get_post_job'),
     
     #gethired
     url(r'^gethired/post/(?P<post_type>\w+)/(?P<post_id>\d+)/$',views.get_post_gethired,name='get_post'),
