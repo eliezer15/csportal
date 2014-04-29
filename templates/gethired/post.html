@@ -111,10 +111,17 @@
     				<div class="row postview-interview-info-row">
     					{% if post.offer_details %} 
     					<label>Link to Offer:</label>
-    					<p class="offer_details"><a href=/gethired{{post.offer_details.url_slug}}>{{post.offer_details.company.name}}, {{post.location}}</a></p>
+    					<p class="offer_details"><a "href=/gethired{{post.offer_details.url_slug}}">{{post.offer_details.company.name}}, {{post.location}}</a></p>
     					{% endif %}
+    					{% if post.related_interview %} 
+    					<label>Related Interview at this company:</label>
+    					<p class="related_interview"><a href="/gethired{{post.related_interview.url_slug}}">{{post.related_interview.get_interview_type_display}}</a></p>
+    					{% endif %}
+
     					<label>Date of Interview:</label>   
     					<p class="date-interviewed">{{post.date_interviewed}}</p>
+    					<label>Type of Interview:</label>   
+    					<p class="date-interviewed">{{post.get_interview_type_display}}</p>
     					<label>Details:</label>   
     					<p class="process well">{{post.interview_process}}</p>
     					<label>Questions Asked:</label>   
