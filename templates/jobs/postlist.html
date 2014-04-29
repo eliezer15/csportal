@@ -122,7 +122,6 @@
 </div> <!-- Filter Options div -->
 <div class="post_bar col-md-9">
 <div class="container-fluid">
-{% if user.is_authenticated %}
 	<div class="row">
 
         <div class="col-md-12">
@@ -178,14 +177,6 @@
         </span>
     </div>
     {% endif %}
-{% else %}
-<div class ="row">
-	<div class="col-md-12 post-404 alert alert-info">
-		<p>We are sorry, access is restricted to UNC CS Students for this part of the website.</p>
-		<p><a href="/accounts/login/?next=/jobs/">Click here to login!</a></p>
-	</div>
-</div>
-{% endif %}
 </div>
 </div>
 {% endblock %}
