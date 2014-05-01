@@ -22,8 +22,9 @@ urlpatterns = patterns('',
     url(r'^marketplace/filter/', views.filter_posts_project, name='filter_posts_project'),
     url(r'^marketplace/post/project/(?P<post_id>\d+)/contact/$',views.contact_client, name='contact_project'),
     
-   #jobboard
+   #jobs
     url(r'^jobs/post/(?P<post_id>\d+)/$',views.get_post_job, name='get_post_job'),
+    url(r'^jobs/post/new/$',views.create_post_job, name='create_post_job'),
     
     #gethired
     url(r'^gethired/post/(?P<post_type>\w+)/(?P<post_id>\d+)/$',views.get_post_gethired,name='get_post'),

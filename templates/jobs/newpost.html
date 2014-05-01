@@ -1,5 +1,9 @@
 {% extends "portal/base.html" %}
-{% block addstyles %}<link rel="stylesheet" href="/static/css/gethired.css">{% endblock%}
+{% block addstyles %} 
+<script src= "/static/js/chosen.jquery.js"></script>
+<link rel="stylesheet" href="/static/css/gethired.css">
+<link rel="stylesheet" href="/static/css/chosen.css">
+{% endblock %}
 {% load humanize %}
 {% block title %} Add/Edit Post {% endblock %}
 {% block header %} Get Hired {% endblock %}
@@ -40,10 +44,10 @@
 </script>
 <div class="newform col-md-8 col-md-offset-2">
 {% if user.username == author.username or not author %}
-	<div class="row"><a style="margin: 10px;" href="/gethired/" class="btn pull-left btn-info btn-go-back">Cancel</a><h2>{{header}}Interview</h2></div>
+	<div class="row"><a style="margin: 10px;" href="/gethired/" class="btn pull-left btn-info btn-go-back">Cancel</a><h2>{{header}} Job</h2></div>
 	<p class="required"><span class="required">* </span>Required Fields</p>
-		<div class="new-interview-form">
-			<form class="form-horizontal" id="post_form" method="post" action="/gethired/post/new/{{post_type}}/{{post_id}}/">	
+		<div class="new-job-form">
+			<form class="form-horizontal" id="post_form" method="post" action="{% url 'create_post_job' %}">	
 				{% csrf_token %}
 					<div class="container-fluid">
 						<div class="row">
@@ -52,7 +56,7 @@
         							<label for="id_name" class="control-label col-md-12"><span class="required">* </span>Company: </label>
                                     {{company_form.name.errors}}
         							<div class="col-md-12" id="company_field">
-    								    {{company_form.name}}
+    								{{company_form.name}}
         							</div>
 								</div>
 								<div class="form-group">
@@ -76,16 +80,16 @@
        										{{location_form.city}}
         								</div>
 								</div>
-								<div class="form-group">
-        							<label for="id_job_title" class="control-label col-md-12"><span class="required">* </span>Job Title: </label>
-        							{{ form.job_title.errors }}
-        							<div class="col-md-12">
-       								{{ form.job_title}}
-        							</div>
-								</div>
 							</div><!-- New Company Info Div End -->
 							<div class="new-interview-other-info col-md-6">
 
+                                <div class="form-group">
+                                    <label for="id_job_title" class="control-label col-md-12"><span class="required">* </span>Job Title: </label>
+                                    {{ form.job_title.errors }}
+                                    <div class="col-md-12">
+                                    {{ form.job_title}}
+                                    </div>
+                                </div>
 								<div class="form-group">
        								<label for="id_job_type" class="control-label col-md-12"><span class="required">* </span>Job Type: </label>
        								{{form.job_type.errors}}
@@ -100,6 +104,12 @@
         							{{ form.applicant_degree }}
         							</div>
 								</div>
+                                <div class="form-group">
+                                    <label for="id_technologies" class="control-label col-md-12">
+                                        <span class="required">* </span>Preferred Technologies: </label> 
+                                    {{form.technologies.errors}}
+                                    <div class="col-md-12">{{form.technologies}}</div>
+                                 </div>
 							</div><!-- Other Div End -->
 						</div> <!-- Company Info Row End -->
 					</div><!-- End of Company Info Container -->
@@ -108,9 +118,9 @@
 						<div class="col-md-12 new-interview-input">
 							<div class="form-group col-md-12">
         						<label for="id_interview_process" class="control-label col-md-12"><span class="required">* </span>Job Description: </label>
-        						{{form.job_description.errors}}
+        						{{form.description.errors}}
         						<div class="col-md-12">
-        						{{form.job_description}}
+        						{{form.description}}
         						</div>
 							</div>
 							<div class="form-group col-md-12">
@@ -120,6 +130,44 @@
         						{{ form.application_instructions}}
         						</div>
 							</div>
+                            <div class="form-group col-md-12">
+                                <label for="id_questions_asked" class="control-label col-md-12"><span class="required">* </span>Application Deadline: </label>
+                                {{ form.applicaton_deadline.errors }}
+                                <div class="col-md-12 date">
+                                {{ form.application_deadline}}
+                                </div>
+                            </div>
+
+                            {% if not user.is_authenticated  %}
+                            <br>
+                            <div class="top-form-left col-md-12">   
+                                <div class="form-group">
+                                    <label for="id_description" class="control-label col-md-7 col-md-offset-2"><span
+                                        class="required">* </span>Password(Enables you to come back and edit the post): </label> 
+                                    <div class="col-md-7 col-md-offset-2">{{form.password.errors}}{{form.password}}</div>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="id_description" class="control-label col-md-7 col-md-offset-2"><span
+                                        class="required">* </span> Confirm Password: </label> 
+                                    <div class="col-md-7 col-md-offset-2"><ul class='errorlist' id='password_error'></ul><input type="password" id="confirm_password"></div>
+                                </div>
+                            </div>
+                            {% else %}
+                            <div class="form-group" style="display: none;">
+                                <label for="id_description" class="control-label col-md-12"><span
+                                    class="required">* </span>Password(Enables you to come back and edit the post): </label> 
+                                <div class="col-md-12">{{form.password.errors}}{{form.password}}</div>
+                            </div>
+                            <script>
+                                $(document).ready(function(){
+                                    //this is just a random password for authenticated users
+                                    $('input#id_password').val("user_is_authenticated_no_need_for_password");
+                                    //console.log($('#id_password'));
+                                });
+                            </script>
+                            {% endif %}
+                            
 						</div><!-- Interview Input Div End -->
 					</div><!-- Input Row End -->
 				</div><!-- Input Row Container -->

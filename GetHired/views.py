@@ -424,6 +424,53 @@ def get_related_posts_job(post_id):
 
     return relevant_posts
 
+def create_post_job(request):
+    
+    """ If request is GET, render a form to create or edit a project. If request is POST,
+        retrieve the POST data and use it to create or edit a project"""
+
+    Form = forms.JobForm
+    context = RequestContext(request)
+    context_dict = {}
+    if request.method == 'POST':
+        data = request.POST
+        user_form = Form(request.POST)
+        location = None
+        
+        valid_form = user_form.is_valid() 
+        valid_location = data['country'] and data['state'] and data['city']
+
+        if valid_form and valid_location:
+            location = models.Location.objects.create(country=data['country'],state=data['state'],city=data['city'])
+            post = user_form.save(commit=False)
+            m = hashlib.md5()
+            m.update(post.password)
+
+            if request.user.is_authenticated():
+                post.password = request.user.username + "#*$%*$#(%$#%&(" + request.user.email
+            else:
+                post.password = m.hexdigest()
+            if request.user.is_authenticated():
+                post.author = User.objects.get(username=request.user)
+            else:
+                post.author = None
+            post.location = location
+            post.save()
+            
+            redirecturl = '/jobs/post/' + str(post.pk) +'/'
+            return HttpResponseRedirect(redirecturl)
+        else:
+            context_dict['form'] = user_form
+            context_dict['location_form'] = forms.LocationForm({'country':data['country'],'state':data['state'],'city':data['city']})
+            context_dict['company_form'] = forms.CompanyForm({'name':data['name']})
+            
+            return render_to_response('jobs/newpost.html',context_dict, context)
+    else:
+        context_dict['form'] = Form()
+        context_dict['company_form'] = forms.CompanyForm()
+        context_dict['location_form'] = forms.LocationForm()
+
+        return render_to_response('jobs/newpost.html',context_dict, context)
 #PROJECT views
 def filter_posts_project(request):
     """ Retrieve GET data from the filter form and filter project posts using

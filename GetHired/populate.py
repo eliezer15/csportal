@@ -172,7 +172,6 @@ def populateJobs():
     job_type = ['FT','PT','PI','CO']
     deadline = datetime(2014,5,15)
 
-    offer_status = ['AC','NA','NE','WA']
     description = """Responsibilities:
                   Determines operational feasibility by evaluating analysis, problem definition, requirements, solution development, and proposed solutions.
                   Documents and demonstrates solutions by developing documentation, flowcharts, layouts, diagrams, charts, code comments and clear code.

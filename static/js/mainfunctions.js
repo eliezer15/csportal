@@ -120,6 +120,10 @@ $(document).ready(function() {
   	});
 	
     $(function () {
+        $("select#id_technologies").chosen();
+    });
+
+    $(function () {
         $("[data-rel='tooltip']").tooltip();
     });
 	

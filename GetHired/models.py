@@ -481,6 +481,8 @@ class Job(GetHiredPost):
     technologies = models.ManyToManyField(Technology)
     application_deadline = models.DateField(blank=True, null=True, validators=[validate_past_date])
     application_instructions = models.TextField()
+    password = models.CharField(max_length=350, blank=False, null=False)
+    
 
     class Meta:
         app_label = 'GetHired'
