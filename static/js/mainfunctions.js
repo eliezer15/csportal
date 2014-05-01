@@ -86,13 +86,26 @@ $(document).ready(function() {
     		}
     	}
     });
+    $('#project_form_submit').click(function(e) {
+        var password = $('input[name="password"]').val();
+        var confirmation = $('#confirm_password').val();
 
+        if (password === confirmation) {
+            $('#project_form').submit();
+        }
+
+        else {
+            e.preventDefault();
+            $('#password_error').empty();
+            $('#password_error').append('<li>Passwords do not match</li>');
+        }
+    });
     /* Confirm before deletion */
     $('#submit_link').click(function() {
         if (confirm('Do you really want to delete this post?')) {
             $('form#delete').submit();
         }
-    })
+    });
 
     /* Parse number with commas on submit */
     $('div.new-offer-form form').submit(function() {

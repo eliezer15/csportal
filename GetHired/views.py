@@ -21,16 +21,15 @@ import logging
 import simplejson
 import hashlib
 
-
-
-
+#General Views
 def index(request):
+    """ Renders the home page of the site """
     context = RequestContext(request)
     context_dict = {}
     return render_to_response('portal/index.html', context_dict, context)
 
 def main(request, site):
-
+    """ Renders the home page of each site section """
     context = RequestContext(request)
     context_dict = {}
 
@@ -60,28 +59,80 @@ def main(request, site):
     context_dict['posts'] = posts
     
     if (site == 'gethired'):
-        context_dict['filters'] = get_filters_gethired()
+        context_dict['filters'] = get_filters('gethired')
     if (site == 'marketplace'):
-        context_dict['filters'] = get_filters_marketplace()
-    if (site == 'gethired'):
-        context_dict['filters'] = get_filters_gethired()
+        context_dict['filters'] = get_filters('marketplace')
+    if (site == 'jobs'):
+        context_dict['filters'] = get_filters('jobs')
     
     return render_to_response(site+'/postlist.html', context_dict, context)
 
-def get_filters_gethired():
+def get_filters(site):
+    """ Return the rows of data that need to be autocompleted on the filter forms"""
     filters = {}
 
-    filters['companies']= models.Company.objects.order_by('name')
+    if site == 'gethired' or site == 'jobs':
+        filters['companies']= models.Company.objects.order_by('name')
+    elif site == 'marketplace':
+        filters['technologies']= models.Technology.objects.order_by('name')
+
     return filters
 
-def get_filters_marketplace():
-    filters = {}
+def delete_post(request, post_type, post_id):
+    """ Delete the post of the given type with the given id.
+        Note that posts are never deleted, just archived """
+    if request.method == 'POST':
+        Model = model_dict[post_type]
+        post = get_object_or_404(Model, pk=post_id)
+        post.deleted = True
+        post.save()
 
-    filters['technologies']= models.Technology.objects.order_by('name')
-    return filters
+        redirect = "/index/"
+        if post_type == "interview" or post_type == "offer":
+            redirect = "/gethired/"
+        elif post_type == "project":
+            redirect = "/marketplace/"
+
+        return HttpResponseRedirect(redirect)
+#END General Views
+
+#User authentication Views
+def logout_view(request):
+
+    """ End the current session """
+    logout(request)
+    return redirect('/accounts/login/')
+    
+class registrationview(RegistrationView):
+    form_class = forms.RegistrationFormZ
 
 @login_required
+def userprofile(request):
+
+    """Access a simple dashboard where user can view and edit all
+    post she has authored """
+
+    context = RequestContext(request)
+    context_dict = {}
+    poster = models.User.objects.get(username=request.user)
+    interview_posts = models.Interview.objects.filter(author=poster)
+    offer_posts = models.Offer.objects.filter(author=poster)
+    all_hired_posts = sorted(
+                       chain(interview_posts,offer_posts),
+                       key=lambda post: post.date_posted,
+                       reverse = True
+                      )
+    all_project_posts = models.Project.objects.filter(author=poster).order_by('date_posted').reverse()
+    context_dict['gethired_posts'] = all_hired_posts
+    context_dict['project_posts'] = all_project_posts
+    return render_to_response('portal/profile.html', context_dict, context)
+#END User authentication Views
+
+#GETHIRED Views
+@login_required
 def get_company(request, name):
+
+    """ Return all posts and data related to a single company """
     if request.method == 'GET':
         context = RequestContext(request)
         context_dict = {}
@@ -111,10 +162,26 @@ def get_company(request, name):
 
         return render_to_response('gethired/postlist.html', context_dict, context)
 
+def get_company_json_list(request):
+
+    """ Return a list of the names of all Companies stored in json format """
+    if request.method == 'GET':
+        all_posts = models.Company.objects.values_list('name', flat= True).order_by('name') 
+        #convert unicode to string
+        string_list = []
+        for p in all_posts:
+            string_list.append(p.encode('ascii','ignore'))
+
+        return HttpResponse(simplejson.dumps(string_list),
+                            content_type="application/json")
+
 def get_related_posts_gethired(post_type, post_id):
+
+    """ Given a main post, return a list of at most 5 other posts that are related to it.
+        Relevancy is calculated with a simple point-based system, where posts receive
+        relevancy points for having certain fields in common with the main post """
     Model = model_dict[post_type]
     post = Model.objects.get(pk=post_id)
-    #See if there are any posts that match all relevant criteria
     candidates_posts = Model.objects.exclude(id=post_id, deleted=True)
     relevance = []
 
@@ -146,6 +213,8 @@ def get_related_posts_gethired(post_type, post_id):
 
 @login_required
 def get_post_gethired(request, post_type, post_id):
+
+    """ Return a gethired post of the given type with the given id """
     if request.method == 'GET':
         context = RequestContext(request)
         context_dict = {}
@@ -159,87 +228,11 @@ def get_post_gethired(request, post_type, post_id):
 
         return render_to_response('gethired/post.html',context_dict, context)
 
-def get_post_job(request, post_id):
-    if request.method == 'GET':
-        context = RequestContext(request)
-        context_dict = {}
-        post = get_object_or_404(models.Job, pk=post_id)
-        if post.deleted:
-            raise Http404
-
-        context_dict['post'] = post
-        context_dict['related_posts'] = get_related_posts_job(post_id)
-
-        return render_to_response('jobs/post.html',context_dict, context)
-
-
-def get_related_posts_job(post_id):
-    post = models.Job.objects.get(pk=post_id)
-    candidates_posts = models.Interview.objects.exclude(deleted=True)
-    relevance = []
-
-    for i in range(len(candidates_posts)):
-        p = candidates_posts[i]
-        points = 0
-
-        if p.company == post.company: points+=3
-        if p.job_title == post.job_title: points+=2
-        if p.location == post.location: points+=1 
-        if p.job_type == post.job_type: points+=1
-
-
-        relevance.append((i,points))
-
-    #find more relevant ones and put them up front    
-    relevance.sort(key=lambda tup: tup[1], reverse=True)
-    #get the indexes of the top posts and retrieve them
-    logging.debug(relevance)
-    relevant_posts = []
-    for r in relevance[:5]:
-        index = r[0]
-        if r[1] > 0:
-            relevant_posts.append(candidates_posts[index])
-
-    return relevant_posts
-
-@login_required
-def render_new_post_form(request, post_type,post_id=None):
-    if request.method == 'GET':
-        context = RequestContext(request)
-        context_dict = {}
-        form = form_dict[post_type]
-
-        context_dict['companies'] = models.Company.objects.order_by('name');
-
-        if post_id:
-            Model = model_dict[post_type]
-            post = get_object_or_404(Model, pk=post_id)
-            modelform = form(instance=post)
-            if post_type == "interview":
-                modelform.fields['offer_details'].queryset = models.Offer.objects.filter(author = request.user)
-            context_dict['form'] = modelform
-            context_dict['location_form'] = forms.LocationForm(instance=post.location)
-            context_dict['company_form'] = forms.CompanyForm(instance=post.company)
-            context['author'] = post.author
-            
-            context_dict['header'] = 'Edit '
-            context_dict['post_id'] = post_id
-        else:
-            modelform = form()
-            if post_type == "interview":
-                modelform.fields['offer_details'].queryset = models.Offer.objects.filter(author = request.user)
-            context_dict['form'] = modelform
-            context_dict['location_form'] = forms.LocationForm()
-            context_dict['company_form'] = forms.CompanyForm()
-            context_dict['header'] = 'Add New '
-        
-        context_dict['post_type'] = post_type
-        if post_type == "project":
-            return render_to_response('marketplace/newpost.html', context_dict, context)
-        return render_to_response('gethired/newpost.html',context_dict,context)
-
-
 def create_post_gethired(request, post_type, post_id=None):
+
+    """ Retrieve the POST provided and create a new gethired post.
+        If the data does not validate, return to the form page and display
+        errors"""
     if request.method == 'POST':
         data = request.POST
         Form = form_dict[post_type]
@@ -292,22 +285,51 @@ def create_post_gethired(request, post_type, post_id=None):
             logging.debug(user_form)
             return render_to_response('gethired/newpost.html',context_dict, context)
 
-def delete_post(request, post_type, post_id):
-    if request.method == 'POST':
-        Model = model_dict[post_type]
-        post = get_object_or_404(Model, pk=post_id)
-        post.deleted = True
-        post.save()
+@login_required
+def render_new_post_form(request, post_type,post_id=None):
 
-        redirect = "/index/"
-        if post_type == "interview" or post_type == "offer":
-            redirect = "/gethired/"
-        elif post_type == "project":
-            redirect = "/marketplace/"
+    """ Generate a form to create a new gethired post, an offer or interview.
+        If the user is editing an existing post, render the form with the already
+        existing values """
 
-        return HttpResponseRedirect(redirect)
+    if request.method == 'GET':
+        context = RequestContext(request)
+        context_dict = {}
+        form = form_dict[post_type]
+
+        context_dict['companies'] = models.Company.objects.order_by('name');
+
+        if post_id:
+            Model = model_dict[post_type]
+            post = get_object_or_404(Model, pk=post_id)
+            modelform = form(instance=post)
+            if post_type == "interview":
+                modelform.fields['offer_details'].queryset = models.Offer.objects.filter(author = request.user)
+            context_dict['form'] = modelform
+            context_dict['location_form'] = forms.LocationForm(instance=post.location)
+            context_dict['company_form'] = forms.CompanyForm(instance=post.company)
+            context['author'] = post.author
+            
+            context_dict['header'] = 'Edit '
+            context_dict['post_id'] = post_id
+        else:
+            modelform = form()
+            if post_type == "interview":
+                modelform.fields['offer_details'].queryset = models.Offer.objects.filter(author = request.user)
+            context_dict['form'] = modelform
+            context_dict['location_form'] = forms.LocationForm()
+            context_dict['company_form'] = forms.CompanyForm()
+            context_dict['header'] = 'Add New '
+        
+        context_dict['post_type'] = post_type
+        if post_type == "project":
+            return render_to_response('marketplace/newpost.html', context_dict, context)
+        return render_to_response('gethired/newpost.html',context_dict,context)
 
 def filter_posts_gethired(request):
+
+    """ Retrieve GET data from the filter form and filter gethired posts using
+    the selected criteria"""
     if request.method == 'GET':
         context = RequestContext(request)
         context_dict = {}
@@ -352,8 +374,60 @@ def filter_posts_gethired(request):
         context_dict['posts'] = posts
         context_dict['filters'] = get_filters_gethired()
         return render_to_response('gethired/postlist.html',context_dict,context)
+#END GetHired views
 
-def filter_posts_marketplace(request):
+#JOBS views
+def get_post_job(request, post_id):
+
+    """ Return the post with the given id """
+    if request.method == 'GET':
+        context = RequestContext(request)
+        context_dict = {}
+        post = get_object_or_404(models.Job, pk=post_id)
+        if post.deleted:
+            raise Http404
+
+        context_dict['post'] = post
+        context_dict['related_posts'] = get_related_posts_job(post_id)
+
+        return render_to_response('jobs/post.html',context_dict, context)
+
+def get_related_posts_job(post_id):
+    """ Given a main post, return a list of at most 5 other posts that are related to it.
+         Relevancy is calculated with a simple point-based system, where posts receive
+        relevancy points for having certain fields in common with the main post """
+
+    post = models.Job.objects.get(pk=post_id)
+    candidates_posts = models.Interview.objects.exclude(deleted=True)
+    relevance = []
+
+    for i in range(len(candidates_posts)):
+        p = candidates_posts[i]
+        points = 0
+
+        if p.company == post.company: points+=3
+        if p.job_title == post.job_title: points+=2
+        if p.location == post.location: points+=1 
+
+
+        relevance.append((i,points))
+
+    #find more relevant ones and put them up front    
+    relevance.sort(key=lambda tup: tup[1], reverse=True)
+    #get the indexes of the top posts and retrieve them
+    logging.debug(relevance)
+    relevant_posts = []
+    for r in relevance[:5]:
+        index = r[0]
+        if r[1] > 0:
+            relevant_posts.append(candidates_posts[index])
+
+    return relevant_posts
+
+#PROJECT views
+def filter_posts_project(request):
+    """ Retrieve GET data from the filter form and filter project posts using
+    the selected criteria"""
     if request.method == 'GET':
         context = RequestContext(request)
         context_dict = {}
@@ -380,45 +454,14 @@ def filter_posts_marketplace(request):
             posts = paginator.page(paginator.num_pages)
 
         context_dict['posts'] = posts
-        context_dict['filters'] = get_filters_marketplace()
+        context_dict['filters'] = get_filters_project()
         return render_to_response('marketplace/postlist.html',context_dict,context)
-     
-def get_company_json_list(request):
-    if request.method == 'GET':
-        all_posts = models.Company.objects.values_list('name', flat= True).order_by('name') 
-        #convert unicode to string
-        string_list = []
-        for p in all_posts:
-            string_list.append(p.encode('ascii','ignore'))
-
-        return HttpResponse(simplejson.dumps(string_list),
-                            content_type="application/json")
-
-def logout_view(request):
-    logout(request)
-    return redirect('/accounts/login/')
-    
-class registrationview(RegistrationView):
-    form_class = forms.RegistrationFormZ
-
-@login_required
-def userprofile(request):
-    context = RequestContext(request)
-    context_dict = {}
-    poster = models.User.objects.get(username=request.user)
-    interview_posts = models.Interview.objects.filter(author=poster)
-    offer_posts = models.Offer.objects.filter(author=poster)
-    all_hired_posts = sorted(
-                       chain(interview_posts,offer_posts),
-                       key=lambda post: post.date_posted,
-                       reverse = True
-                      )
-    all_project_posts = models.Project.objects.filter(author=poster).order_by('date_posted').reverse()
-    context_dict['gethired_posts'] = all_hired_posts
-    context_dict['project_posts'] = all_project_posts
-    return render_to_response('portal/profile.html', context_dict, context)
 
 def create_post_project(request):
+    
+    """ If request is GET, render a form to create or edit a project. If request is POST,
+        retrieve the POST data and use it to create or edit a project"""
+
     Form = forms.ProjectForm
     context = RequestContext(request)
     context_dict = {}
@@ -466,6 +509,10 @@ def create_post_project(request):
         return render_to_response('marketplace/newpost.html',context_dict, context)
 
 def edit_post_password_project(request, post_id, edit_or_delete):
+    """ If request is GET, render a form for the user to enter a password in order to 
+        edit a post. If request is POST, verify the password entered is correct
+        and allow the user to modify the post"""
+
     context = RequestContext(request)
     context_dict = {}
     if request.method == 'GET':
@@ -487,6 +534,9 @@ def edit_post_password_project(request, post_id, edit_or_delete):
             return render_to_response('marketplace/marketplace_post_password.html', context_dict, context)
 
 def delete_password_project(request,post_id):
+    """ If request is GET, render a form for the user to enter a password in order to 
+    delete a post. If request is POST, verify the password entered is correct
+    and allow the user to delete the post"""
     context = RequestContext(request)
     context_dict = {}
     if request.method == 'POST':
@@ -506,6 +556,9 @@ def delete_password_project(request,post_id):
             return render_to_response('marketplace/marketplace_post_password.html', context_dict, context)
 
 def edit_post_project(request, post_id):
+    """ If request is GET, render a form for editing a post. The fields will
+    be pre-filled with existing values. If request is POST, use data to edit 
+    the post and save it """
     context = RequestContext(request)
     context_dict = {}
     if request.method == 'GET':
@@ -575,6 +628,7 @@ def edit_post_project(request, post_id):
                 return render_to_response('marketplace/newpost.html',context_dict, context)
     
 def get_post_project(request, post_id):
+    """ Return the project that matches the given id """
     if request.method == 'GET':
         context = RequestContext(request)
         context_dict = {}
@@ -589,6 +643,10 @@ def get_post_project(request, post_id):
         return render_to_response('marketplace/post.html',context_dict, context)
 
 def get_related_posts_project(post_id):
+
+    """ Given a main post, return a list of at most 5 other posts that are related to it.
+    Relevancy is calculated with a simple point-based system, where posts receive
+    relevancy points for having certain fields in common with the main post """
     post = models.Project.objects.get(pk=post_id)
 
     candidates_posts = models.Project.objects.exclude(deleted=True)
@@ -624,7 +682,10 @@ def get_related_posts_project(post_id):
 
     return relevant_posts
     
-def project_send_email(request, post_id):
+def contact_client(request, post_id):
+
+    """ If request is GET, render a form where user can write a message to the project client.
+        If request is POST, get the data and use it to send an email to the client"""
     proj = models.Project.objects.get(pk=post_id)
     subject = 'Re: ' + proj.title
     context = RequestContext(request)
@@ -651,3 +712,4 @@ def project_send_email(request, post_id):
         context_dict['post_id'] = post_id
         context_dict['header'] = subject
         return render_to_response('marketplace/contact_project.html', context_dict, context)
+#END Project views

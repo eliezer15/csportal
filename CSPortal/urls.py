@@ -19,8 +19,8 @@ urlpatterns = patterns('',
     url(r'^marketplace/post/edit/project/(?P<post_id>\d+)/password/(?P<edit_or_delete>\w+)/$',views.edit_post_password_project, name='edit_post_password_project'),
     url(r'^marketplace/post/delete/project/(?P<post_id>\d+)/password/$',views.delete_password_project, name='delete_password_project'),
     url(r'^marketplace/post/edit/project/(?P<post_id>\d+)/$',views.edit_post_project, name='edit_post_project'),
-    url(r'^marketplace/filter/', views.filter_posts_marketplace, name='filter_posts_marketplace'),
-    url(r'^marketplace/post/project/(?P<post_id>\d+)/contact/$',views.project_send_email, name='contact_project'),
+    url(r'^marketplace/filter/', views.filter_posts_project, name='filter_posts_project'),
+    url(r'^marketplace/post/project/(?P<post_id>\d+)/contact/$',views.contact_client, name='contact_project'),
     
    #jobboard
     url(r'^jobs/post/(?P<post_id>\d+)/$',views.get_post_job, name='get_post_job'),

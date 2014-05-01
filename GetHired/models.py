@@ -382,8 +382,7 @@ class Project(Post):
     email = models.EmailField(max_length=50)
     title = models.CharField(max_length=100)
     description=models.TextField()
-    start_date = models.DateField(validators = [validate_past_date])
-    is_start_date_flexible = models.BooleanField()
+    start_date = models.DateField(blank=True, null=True, validators = [validate_past_date])
     end_date = models.DateField( blank=True, null=True, validators = [validate_past_date])
     location = models.ForeignKey(Location, blank=True, null=True)
     technologies = models.ManyToManyField(Technology)
@@ -481,7 +480,7 @@ class Job(GetHiredPost):
     description = models.TextField()
     technologies = models.ManyToManyField(Technology)
     application_deadline = models.DateField(blank=True, null=True, validators=[validate_past_date])
-    
+    application_instructions = models.TextField()
 
     class Meta:
         app_label = 'GetHired'

@@ -157,7 +157,6 @@ def add_Project(user, client, email, title, description, start_date, location, t
                                 title = title,
                                 description = description,
                                 start_date = start_date,
-                                is_start_date_flexible = choice([True,False]),
                                 location = location, password="123")
     p.technologies.add(choice(technologies))
     p.technologies.add(choice(technologies))
@@ -174,22 +173,23 @@ def populateJobs():
     deadline = datetime(2014,5,15)
 
     offer_status = ['AC','NA','NE','WA']
-    description = """<h4> Responsibilities </h4> <ul>
-                  <li>Determines operational feasibility by evaluating analysis, problem definition, requirements, solution development, and proposed solutions.</li>
-                  <li>Documents and demonstrates solutions by developing documentation, flowcharts, layouts, diagrams, charts, code comments and clear code.</li>
-                  <li>Prepares and installs solutions by determining and designing system specifications, standards, and programming.</li>
-                  <li>Improves operations by conducting systems analysis; recommending changes in policies and procedures.</li>
-                  <li>Obtains and licenses software by obtaining required information from vendors; recommending purchases; testing and approving products.</li>
-                  <li>Updates job knowledge by studying state-of-the-art development tools, programming techniques, and computing equipment; participating in educational opportunities; reading professional publications; maintaining personal networks; participating in professional organizations.</li>
-                  <li>Protects operations by keeping information confidential.</li>
-                  <li>Provides information by collecting, analyzing, and summarizing development and service issues.</li>
-                  <li>Accomplishes engineering and organization mission by completing related results as needed.</li>
-                  <li>Develops software solutions by studying information needs; conferring with users; studying systems flow, data usage, and work processes; investigating problem areas; following the software development lifecycle.</li>
-                  </ul>"""
+    description = """Responsibilities:
+                  Determines operational feasibility by evaluating analysis, problem definition, requirements, solution development, and proposed solutions.
+                  Documents and demonstrates solutions by developing documentation, flowcharts, layouts, diagrams, charts, code comments and clear code.
+                  Prepares and installs solutions by determining and designing system specifications, standards, and programming.
+                  Improves operations by conducting systems analysis; recommending changes in policies and procedures.
+                  Obtains and licenses software by obtaining required information from vendors; recommending purchases; testing and approving products.
+                  Updates job knowledge by studying state-of-the-art development tools, programming techniques, and computing equipment;
+                  Protects operations by keeping information confidential.
+                  Provides information by collecting, analyzing, and summarizing development and service issues.
+                  Accomplishes engineering and organization mission by completing related results as needed.
+                  Develops software solutions by studying information needs; conferring with users; 
+                  """
+    instructions = "Send me your resume at john@example.com"
     for i in range(20):
-      add_job(user, choice(degree), choice(companies), choice(locations),choice(title), choice(job_type), description, deadline, technologies)
+      add_job(user, choice(degree), choice(companies), choice(locations),choice(title), choice(job_type), description, instructions, deadline, technologies)
 
-def add_job(user, degree, company, location, title, type, description, deadline, technologies):
+def add_job(user, degree, company, location, title, type, description, instructions,deadline, technologies):
     p = Job.objects.create(author= user, 
                  applicant_degree = degree, 
                                  company = company,
@@ -197,6 +197,7 @@ def add_job(user, degree, company, location, title, type, description, deadline,
                                  job_title = title,
                                  job_type = type,
                                  description = description,
+                                 application_instructions = instructions,
                                  application_deadline = deadline,
                                  )
 

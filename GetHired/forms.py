@@ -1,6 +1,6 @@
 from django import forms
 from django.forms.extras.widgets import SelectDateWidget
-from GetHired.models import Interview, Offer, GetHiredPost, Location, Company, Project
+from GetHired.models import Interview, Offer, GetHiredPost, Location, Company, Project, Job
 from django.contrib.auth.models import User
 from registration.forms import RegistrationForm
 from registration.models import RegistrationProfile
@@ -29,6 +29,10 @@ class ProjectForm(forms.ModelForm):
     password = forms.CharField(widget=forms.PasswordInput)
     class Meta:
         model = Project
+
+class JobForm(forms.ModelForm):
+    class Meta:
+        model = Job
 
 class RegistrationFormZ(forms.Form):
     """
