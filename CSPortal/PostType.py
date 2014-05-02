@@ -5,7 +5,7 @@ Created on Mar 18, 2014
 A simple dict which will be useful
 to define which type of post is being requested by the client '''
 
-from GetHired import models, forms
+from Portal import models, forms
 
 model_dict = {
              "interview": models.Interview,

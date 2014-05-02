@@ -1,7 +1,7 @@
 from django.conf.urls import patterns, include, url
 from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from registration import views as reg_views
-from GetHired import views, forms
+from Portal import views, forms
 from django.contrib import admin
 from django.contrib.auth.views import password_reset_confirm
 admin.autodiscover()

@@ -132,7 +132,7 @@ INSTALLED_APPS = (
     'django.contrib.sites',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'GetHired',
+    'Portal',
     'django.contrib.admin',
    # 'debug_toolbar',
     'django.contrib.humanize',
