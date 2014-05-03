@@ -28,6 +28,12 @@ def index(request):
     context_dict = {}
     return render_to_response('portal/index.html', context_dict, context)
 
+def faq(request):
+    """ Renders the FAQ page of the site """
+    context = RequestContext(request)
+    context_dict = {}
+    return render_to_response('portal/faq.html', context_dict, context)
+
 def main(request, site):
     """ Renders the home page of each site section """
     context = RequestContext(request)

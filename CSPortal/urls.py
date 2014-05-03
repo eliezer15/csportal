@@ -8,8 +8,10 @@ admin.autodiscover()
 
 urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
+    url(r'^main/faq/$', views.faq, name='faq_view'),
     url(r'^(?P<site>\w+)/$', views.main, name='main_view'),
     url(r'^$', views.index, name='index_view'),
+    
     
 
     url(r'^post/delete/(?P<post_type>\w+)/(?P<post_id>\d+)/$',views.delete_post,name='delete_post'),
