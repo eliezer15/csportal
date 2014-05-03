@@ -123,8 +123,10 @@ def userprofile(request):
                        reverse = True
                       )
     all_project_posts = models.Project.objects.filter(author=poster).order_by('date_posted').reverse()
+    all_job_posts = models.Job.objects.filter(author=poster).order_by('date_posted').reverse()
     context_dict['gethired_posts'] = all_hired_posts
     context_dict['project_posts'] = all_project_posts
+    context_dict['job_posts'] = all_job_posts
     return render_to_response('portal/profile.html', context_dict, context)
 #END User authentication Views
 

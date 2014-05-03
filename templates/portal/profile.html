@@ -45,6 +45,17 @@
 				{% endfor %}
 			</ul>
 		</div>
+		<div class="row">
+			<h4 class="profile-header">Your posts on Job Board:</h4>
+			<ul class="profile-list">
+				{% if not job_posts %}
+				<li>You have no posts in this section.</li>
+				{% endif %}
+				{% for post in job_posts %}
+				<li><a href="{% url 'get_post_job' post_id=post.pk %}"><span>{{post.post_type|title}} - {{post.company.name}} </span><span class="date" style="float:right;">{{post.date_posted|naturaltime}}</span></a></li>
+				{% endfor %}
+			</ul>
+		</div>
 	</div>
 </div>
 {% endblock %}

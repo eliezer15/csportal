@@ -9,6 +9,9 @@ $(document).ready(function() {
 	if ($('div.info h1').html() == " Project Marketplace ") {
 		$('a.market').addClass('current');
 	}
+	if ($('div.info h1').html() == " Job Board ") {
+		$('a.jobs').addClass('current');
+	}
 
 	var offset = 420;
 	var offsetbottom = $('div.footer').offset().top - 900;
