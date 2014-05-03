@@ -71,10 +71,10 @@
 		<div class="footer col-md-12">
 			<div class="row">
 				<ul class="footernav">
-					<li><a href="#">HOME<span class="glyphicon glyphicon-home"></span></a></li>
-					<li><a href="#">PROJECT MARKETPLACE <span class="glyphicon glyphicon-folder-open"></span></a></li>
-					<li><a class="hired" href="/gethired/">GET HIRED <span class="glyphicon glyphicon-briefcase"></span></a></li>
-					<li><a href="/tutor/">STUDY BUDDY <span class="glyphicon glyphicon-user"></span></a></li>
+					<li><a class="home" href="{% url 'index_view' %}">Home<span class="glyphicon glyphicon-home"></span></a></li>
+					<li><a class="market" href="{% url 'main_view' site='marketplace' %}">Project Market <span class="glyphicon glyphicon-folder-open"></span></a></li>
+					<li><a class="hired" href="{% url 'main_view' site='gethired' %}">Get Hired<span class="glyphicon glyphicon-briefcase"></span></a></li>
+					<li><a class="jobs" href="{% url 'main_view' site='jobs' %}">Job Board<span class="glyphicon glyphicon-user"></span></a></li>
 				</ul>
 			</div><!-- End of MiniNav -->
 		</div><!-- Footer Div End -->
