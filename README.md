@@ -14,6 +14,7 @@ python get-pip.py
 pip install beautifulsoup
 pip install simplejson
 pip install django-wysiwyg
+pip install django-registration
 ```
 3) To run the local development server, navigate to the folder ```csportal``` where the code resides and do:
 
