@@ -5,18 +5,19 @@ The CS Portal is a website where Carolina CS students can collaborate in project
 
 To download the site simply clone this repository and install the third party dependencies. 
 
-1) First, install pip for python, a tool for installing python packages
-'''
+1. First, install pip for python, a tool for installing python packages
+```
 python get-pip.py
-'''
-2) Then install the external libraries used in this project
-'''
+```
+2. Then install the external libraries used in this project
+```
 pip install beautifulsoup
 pip install simplejson
 pip install django-wysiwyg
-'''
-3) To run the local development server, navigate to the folder '''csportal''' where the code resides and do:
-'''
+```
+3. To run the local development server, navigate to the folder '''csportal''' where the code resides and do:
+```
 python manage.py runserver
-'''
-4) The site should be running on localhost
+```
+
+4. The site should be running on localhost
