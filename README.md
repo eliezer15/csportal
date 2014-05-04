@@ -15,7 +15,7 @@ pip install beautifulsoup
 pip install simplejson
 pip install django-wysiwyg
 ```
-3) To run the local development server, navigate to the folder '''csportal''' where the code resides and do:
+3) To run the local development server, navigate to the folder ```csportal``` where the code resides and do:
 
 ```
 python manage.py runserver
