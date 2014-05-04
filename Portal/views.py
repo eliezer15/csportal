@@ -166,7 +166,7 @@ def get_company(request, name):
             posts = paginator.page(paginator.num_pages)                  
         
         context_dict['posts'] = posts
-        context_dict['filters'] = get_filters_gethired()
+        context_dict['filters'] = get_filters("gethired")
 
         return render_to_response('gethired/postlist.html', context_dict, context)
 
@@ -380,7 +380,7 @@ def filter_posts_gethired(request):
             posts = paginator.page(paginator.num_pages)
 
         context_dict['posts'] = posts
-        context_dict['filters'] = get_filters_gethired()
+        context_dict['filters'] = get_filters("gethired")
         return render_to_response('gethired/postlist.html',context_dict,context)
 #END GetHired views
 
@@ -509,7 +509,7 @@ def filter_posts_project(request):
             posts = paginator.page(paginator.num_pages)
 
         context_dict['posts'] = posts
-        context_dict['filters'] = get_filters_project()
+        context_dict['filters'] = get_filters("marketplace")
         return render_to_response('marketplace/postlist.html',context_dict,context)
 
 def create_post_project(request):
