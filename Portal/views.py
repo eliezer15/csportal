@@ -626,7 +626,8 @@ def filter_posts_job(request):
             filters['job_title']= data['job_title']
 
         if 'company' in data and data['company'] != 'ALL': 
-            filters['company__name']= data['company']
+            company = data['company'].replace('-', ' ')
+            filters['company__name__iexact']= company
 
         all_posts = models.Job.objects.filter(**filters)
         all_posts = sorted(all_posts, key=lambda post: post.date_posted,reverse=True)

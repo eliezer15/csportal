@@ -142,7 +142,7 @@
     		<p><span class="label label-info">{{post.post_type|title}}</span></p>
     	</div>
     	<div class="row">
- 			<span class="Title" ><a class="norm" data-rel="tooltip" data-placement="right" title="Visit Company Data" href="/gethired/company/{{post.company.name|slugify}}">{{post.company.name}}</a></span> 
+ 			<span class="Title"><a class="norm" data-rel="tooltip" data-placement="right" title="Visit Company Data"  href="/jobs/filter/?company={{post.company.name|slugify}}&amp;location=ALL&amp;job_title=ALL&amp;job_type=ALL">{{post.company.name}}</a></span> 
 			<span class="Date"> {{post.date_posted|naturaltime|title}}</span>
 		</div>
 		<div class="container-fluid">

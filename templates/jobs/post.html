@@ -85,21 +85,20 @@
 		<div class="row">
     		<div class="title col-md-12">
     			<div class="row">
-    				<h3 class="title"><a href="/gethired/company/{{post.company|slugify}}">{{post.company}}</a></h3>
-    				
+    				<h3 class="title"><a href="/jobs/filter/?company={{post.company.name|slugify}}">{{post.company}}</a></h3>
                     <span class="postview-label label label-info">{{post.post_type|title}}</span>
     				<span class="date">Posted: {{post.date_posted|naturalday|title}}</span>
 				</div>
 				<div class="row postview-upperinfo">
 					<div class="container-fluid">
 						<div class="row">
-							<span class="job_title lab">Job Title: <span class="content"><a class="norm" href="/gethired/filter/?company=ALL&amp;location=ALL&amp;job_title={{post.job_title}}&amp;job_type=ALL">{{post.get_job_title_display}}</a></span></span>
+							<span class="job_title lab">Job Title: <span class="content"><a class="norm" href="/jobs/filter/?company=ALL&amp;location=ALL&amp;job_title={{post.job_title}}&amp;job_type=ALL">{{post.get_job_title_display}}</a></span></span>
 						</div>
 						<div class="row">
-							<span class="job_type lab">Job Type: <span class="content"><a class="norm" href="/gethired/filter/?company=ALL&amp;location=ALL&amp;job_title=ALL&amp;job_type={{post.job_type}}">{{post.get_job_type_display}}</a></span></span>
+							<span class="job_type lab">Job Type: <span class="content"><a class="norm" href="/jobs/filter/?company=ALL&amp;location=ALL&amp;job_title=ALL&amp;job_type={{post.job_type}}">{{post.get_job_type_display}}</a></span></span>
 						</div>
 						<div class="row postview-about-row">
-							<div><img alt="location" src="{% static "/static/images/gethired/map_location_test.png" %}"><span class="postview-location"><a href="/gethired/filter/?company=ALL&amp;location={{post.location.state}}&amp;job_title=ALL&amp;job_type=ALL">{{post.location}}</a></span></div>
+							<div><img alt="location" src="{% static "/static/images/gethired/map_location_test.png" %}"><span class="postview-location"><a href="/jobs/filter/?company=ALL&amp;location={{post.location.state}}&amp;job_title=ALL&amp;job_type=ALL">{{post.location}}</a></span></div>
 							<div><img alt="graduation cap" src="{% static "/static/images/gethired/grad_cap_test_g.png" %}"><span>{{post.applicant_degree|normdegree}}</span></div>
 						</div>
 					</div>
