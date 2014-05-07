@@ -30,6 +30,7 @@ class ProjectForm(forms.ModelForm):
         model = Project
 
 class JobForm(forms.ModelForm):
+    password = forms.CharField(widget=forms.PasswordInput)
     class Meta:
         model = Job
 

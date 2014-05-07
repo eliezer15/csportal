@@ -9,7 +9,7 @@
 <div class="filterdiv panel panel-default">
 <div class="contain">
 <h5><span class='labs'>Filter Posts:</span></h5>
-<form method="GET" action="">
+<form method="GET" action="{% url 'filter_posts_job' %}">
     <span class='labs'> Company:</span>
 	<select class="form-control combobox" name="company">
 	<option value="ALL"></option>

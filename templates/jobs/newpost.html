@@ -3,6 +3,8 @@
 <script src= "/static/js/chosen.jquery.js"></script>
 <link rel="stylesheet" href="/static/css/gethired.css">
 <link rel="stylesheet" href="/static/css/chosen.css">
+{% load wysiwyg %}
+{% wysiwyg_setup %}
 {% endblock %}
 {% load humanize %}
 {% block title %} Add/Edit Post {% endblock %}
@@ -47,7 +49,13 @@
 	<div class="row"><a style="margin: 10px;" href="/gethired/" class="btn pull-left btn-info btn-go-back">Cancel</a><h2>{{header}} Job</h2></div>
 	<p class="required"><span class="required">* </span>Required Fields</p>
 		<div class="new-job-form">
-			<form class="form-horizontal" id="post_form" method="post" action="{% url 'create_post_job' %}">	
+			<form class="form-horizontal" method="post"
+                {% if update %}
+                action="{% url 'edit_post_job' post_id=post_id %}"
+                {% else %}
+                action="{% url 'create_post_job' %}"
+                {% endif %}
+                >	
 				{% csrf_token %}
 					<div class="container-fluid">
 						<div class="row">
@@ -117,21 +125,22 @@
 					<div class="row">
 						<div class="col-md-12 new-interview-input">
 							<div class="form-group col-md-12">
-        						<label for="id_interview_process" class="control-label col-md-12"><span class="required">* </span>Job Description: </label>
+        						<label for="job_description" class="control-label col-md-12"><span class="required">* </span>Job Description: </label>
         						{{form.description.errors}}
         						<div class="col-md-12">
         						{{form.description}}
         						</div>
 							</div>
 							<div class="form-group col-md-12">
-        						<label for="id_questions_asked" class="control-label col-md-12"><span class="required">* </span>Application Instructions: </label>
+        						<label for="application_instructions" class="control-label col-md-12"><span class="required">* </span>Application Instructions: </label>
         						{{ form.applicaton_instructions.errors }}
         						<div class="col-md-12">
         						{{ form.application_instructions}}
         						</div>
+                                {% wysiwyg_editor "id_description" %}
 							</div>
                             <div class="form-group col-md-12">
-                                <label for="id_questions_asked" class="control-label col-md-12"><span class="required">* </span>Application Deadline: </label>
+                                <label for="id_deadline" class="control-label col-md-12"><span class="required">* </span>Application Deadline: </label>
                                 {{ form.applicaton_deadline.errors }}
                                 <div class="col-md-12 date">
                                 {{ form.application_deadline}}
@@ -148,14 +157,14 @@
                                 </div>
 
                                 <div class="form-group">
-                                    <label for="id_description" class="control-label col-md-7 col-md-offset-2"><span
+                                    <label for="confirm_password" class="control-label col-md-7 col-md-offset-2"><span
                                         class="required">* </span> Confirm Password: </label> 
                                     <div class="col-md-7 col-md-offset-2"><ul class='errorlist' id='password_error'></ul><input type="password" id="confirm_password"></div>
                                 </div>
                             </div>
                             {% else %}
                             <div class="form-group" style="display: none;">
-                                <label for="id_description" class="control-label col-md-12"><span
+                                <label for="password" class="control-label col-md-12"><span
                                     class="required">* </span>Password(Enables you to come back and edit the post): </label> 
                                 <div class="col-md-12">{{form.password.errors}}{{form.password}}</div>
                             </div>
@@ -163,17 +172,15 @@
                                 $(document).ready(function(){
                                     //this is just a random password for authenticated users
                                     $('input#id_password').val("user_is_authenticated_no_need_for_password");
-                                    //console.log($('#id_password'));
                                 });
                             </script>
                             {% endif %}
-                            
 						</div><!-- Interview Input Div End -->
 					</div><!-- Input Row End -->
 				</div><!-- Input Row Container -->
     			<div class="form-group col-md-12" style="text-align: center;">
-        			<button type="submit" class="btn btn-default">Submit</button>
-        			<a style="margin: 10px;" href="/gethired/" class="btn btn-default">Cancel</a>
+        			<button type="submit" class="btn btn-default form_with_password">Submit</button>
+        			<a style="margin: 10px;" href="/jobs/" class="btn btn-default">Cancel</a>
     			</div>
 			</form>
 		</div>

@@ -304,7 +304,6 @@ def render_new_post_form(request, post_type,post_id=None):
         context = RequestContext(request)
         context_dict = {}
         form = form_dict[post_type]
-
         context_dict['companies'] = models.Company.objects.order_by('name');
 
         if post_id:
@@ -444,7 +443,11 @@ def create_post_job(request):
         data = request.POST
         user_form = Form(request.POST)
         location = None
-        
+        try:
+            company = models.Company.objects.get(name__iexact=data['name'])
+        except ObjectDoesNotExist:
+            company = models.Company.objects.create(name=data['name'])
+
         valid_form = user_form.is_valid() 
         valid_location = data['country'] and data['state'] and data['city']
 
@@ -455,6 +458,7 @@ def create_post_job(request):
             m.update(post.password)
 
             if request.user.is_authenticated():
+                #This is just a randomly generated password 
                 post.password = request.user.username + "#*$%*$#(%$#%&(" + request.user.email
             else:
                 post.password = m.hexdigest()
@@ -463,6 +467,7 @@ def create_post_job(request):
             else:
                 post.author = None
             post.location = location
+            post.company = company
             post.save()
             
             redirecturl = '/jobs/post/' + str(post.pk) +'/'
@@ -477,8 +482,167 @@ def create_post_job(request):
         context_dict['form'] = Form()
         context_dict['company_form'] = forms.CompanyForm()
         context_dict['location_form'] = forms.LocationForm()
+        context_dict['header'] = 'New'
 
         return render_to_response('jobs/newpost.html',context_dict, context)
+
+def edit_post_job(request, post_id):
+    """ If request is GET, render a form for editing a post. The fields will
+    be pre-filled with existing values. If request is POST, use data to edit 
+    the post and save it """
+    context = RequestContext(request)
+    context_dict = {}
+    if request.method == 'GET':
+        job = models.Job.objects.get(pk=post_id)
+        if request.user == job.author or request.session['access' + post_id] == True:
+            form = forms.JobForm
+            context_dict['form'] = form(instance=job)
+            context_dict['company_form'] = forms.CompanyForm(instance=job.company)
+            context_dict['location_form'] = forms.LocationForm(instance=job.location)
+            context_dict['update'] = True
+            context_dict['post_id'] = post_id
+            context_dict['header'] = 'Edit '
+            context_dict['post_type'] = "job"
+            return render_to_response('jobs/newpost.html', context_dict, context)
+        else:
+            return redirect('get_post_job', post_id=post_id)
+    if request.method == 'POST':
+        job = models.Job.objects.get(pk=post_id)
+        if request.user == job.author or request.session['access' + post_id] == True:
+            job = models.Job.objects.get(pk=post_id)
+            form = forms.JobForm
+            user_form = form(request.POST, instance=job)
+            data = request.POST
+            cleaned_desc = BeautifulSoup(data['description'])
+            user_form.description = cleaned_desc.prettify()
+            location = None
+
+            if request.user.is_authenticated():
+                user_form.password = request.user.username + "#*$%*$#(%$#%&(" + request.user.email
+
+            valid_form = user_form.is_valid() #calling it here so I can access the clean data below
+            valid_location = data['country'] and data['state'] and data['city']
+
+            if valid_form and valid_location:
+                post = user_form.save(commit=False)
+                try:
+                    post.author = User.objects.get(username=request.user)
+                except ObjectDoesNotExist:
+                   post.author = None
+
+                try:
+                    company = models.Company.objects.get(name__iexact=data['name'])
+                except ObjectDoesNotExist:
+                    company = models.Company.objects.create(name=data['name'])
+
+                location = models.Location.objects.create(country=data['country'],state=data['state'],city=data['city'])
+                post.location = location
+                post.company = company
+                m = hashlib.md5()
+                m.update(data['password'])
+                post.password = m.hexdigest()
+                post.save()
+                user_form.save_m2m()
+                try:
+                    del request.session['access' + post_id]
+                except:
+                   print "session error"
+                return redirect('get_post_job', post_id=post_id)
+            else:
+                
+                context_dict['form'] = user_form
+                context_dict['post_type'] = "job"
+                context_dict['update'] = True
+                context_dict['post_id'] = post_id
+                context_dict['header'] = 'Edit '
+                context_dict['company_form'] = forms.CompanyForm(instance=job.company)
+                context_dict['location_form'] = forms.LocationForm({'country':data['country'],'state':data['state'],'city':data['city']})
+                return render_to_response('jobs/newpost.html',context_dict, context)
+
+def edit_post_password_job(request, post_id, edit_or_delete):
+    """ If request is GET, render a form for the user to enter a password in order to 
+        edit a post. If request is POST, verify the password entered is correct
+        and allow the user to modify the post"""
+
+    context = RequestContext(request)
+    context_dict = {}
+    if request.method == 'GET':
+        context_dict['header'] = 'Edit '
+        context_dict["post"] = post_id
+        context_dict["edit_or_delete"] = edit_or_delete
+        return render_to_response('jobs/job_post_password.html', context_dict, context)
+    if request.method == 'POST':
+        job = models.Job.objects.get(pk=post_id)
+        data = request.POST
+        m = hashlib.md5()
+        m.update(data['password'])
+        if m.hexdigest() == job.password:
+            request.session['access' + post_id] = True
+            return redirect('edit_post_job', post_id=post_id)
+        else:
+            context_dict["post"] = post_id
+            context_dict["errors"] = "Wrong Password"
+            return render_to_response('jobs/job_post_password.html', context_dict, context)
+
+def delete_password_job(request,post_id):
+    """ If request is GET, render a form for the user to enter a password in order to 
+    delete a post. If request is POST, verify the password entered is correct
+    and allow the user to delete the post"""
+    context = RequestContext(request)
+    context_dict = {}
+    if request.method == 'POST':
+        job = models.Job.objects.get(pk=post_id)
+        data = request.POST
+        m = hashlib.md5()
+        m.update(data['password'])
+        if m.hexdigest() == job.password:
+            request.session['access' + post_id] = True
+            job.deleted = True
+            job.save()
+
+            return HttpResponseRedirect("/jobs/")
+        else:
+            context_dict["post"] = post_id
+            context_dict["errors"] = "Wrong Password"
+            return render_to_response('jobs/job_post_password.html', context_dict, context)
+
+def filter_posts_job(request):
+    """ Retrieve GET data from the filter form and filter gethired posts using
+    the selected criteria"""
+    if request.method == 'GET':
+        context = RequestContext(request)
+        context_dict = {}
+        data = request.GET
+        
+        filters = {}
+
+        if 'location' in data and data['location'] != 'ALL':
+            filters['location__state'] = data['location']
+
+        if 'job_type' in data and data['job_type'] != 'ALL':
+            filters['job_type'] = data['job_type']
+        
+        if 'job_title' in data and data['job_title'] != 'ALL': 
+            filters['job_title']= data['job_title']
+
+        if 'company' in data and data['company'] != 'ALL': 
+            filters['company__name']= data['company']
+
+        all_posts = models.Job.objects.filter(**filters)
+        all_posts = sorted(all_posts, key=lambda post: post.date_posted,reverse=True)
+
+        paginator = Paginator(all_posts, 10)
+        page = request.GET.get('page')
+        try:
+            posts = paginator.page(page)
+        except PageNotAnInteger:
+            posts = paginator.page(1)
+        except EmptyPage:
+            posts = paginator.page(paginator.num_pages)
+
+        context_dict['posts'] = posts
+        context_dict['filters'] = get_filters("jobs")
+        return render_to_response('jobs/postlist.html',context_dict,context)
 #PROJECT views
 def filter_posts_project(request):
     """ Retrieve GET data from the filter form and filter project posts using
@@ -555,6 +719,7 @@ def create_post_project(request):
                 errors = user_form._errors.setdefault("end_date",ErrorList())
                 errors.append(u"End date cannot be before start date")
             context_dict['form'] = user_form
+            context_dict['header'] = 'New'
             context_dict['location_form'] = forms.LocationForm({'country':data['country'],'state':data['state'],'city':data['city']})
             return render_to_response('marketplace/newpost.html',context_dict, context)
     else:

@@ -11,10 +11,8 @@ urlpatterns = patterns('',
     url(r'^main/faq/$', views.faq, name='faq_view'),
     url(r'^(?P<site>\w+)/$', views.main, name='main_view'),
     url(r'^$', views.index, name='index_view'),
-    
-    
-
     url(r'^post/delete/(?P<post_type>\w+)/(?P<post_id>\d+)/$',views.delete_post,name='delete_post'),
+    
     #marketplace
     url(r'^marketplace/post/project/(?P<post_id>\d+)/$',views.get_post_project, name='get_post_project'),
     url(r'^marketplace/post/new/project/$',views.create_post_project, name='create_post_project'),
@@ -24,9 +22,13 @@ urlpatterns = patterns('',
     url(r'^marketplace/filter/', views.filter_posts_project, name='filter_posts_project'),
     url(r'^marketplace/post/project/(?P<post_id>\d+)/contact/$',views.contact_client, name='contact_project'),
     
-   #jobs
+    #jobs
     url(r'^jobs/post/(?P<post_id>\d+)/$',views.get_post_job, name='get_post_job'),
+    url(r'^jobs/post/edit/job/(?P<post_id>\d+)/$',views.edit_post_job, name='edit_post_job'),
     url(r'^jobs/post/new/$',views.create_post_job, name='create_post_job'),
+    url(r'^jobs/filter/', views.filter_posts_job, name='filter_posts_job'),
+    url(r'^jobs/post/edit/(?P<post_id>\d+)/password/(?P<edit_or_delete>\w+)/$',views.edit_post_password_job, name='edit_post_password_job'),
+    url(r'^jobs/post/delete/(?P<post_id>\d+)/password/$',views.delete_password_job, name='delete_password_job'),
     
     #gethired
     url(r'^gethired/post/(?P<post_type>\w+)/(?P<post_id>\d+)/$',views.get_post_gethired,name='get_post'),
@@ -36,11 +38,7 @@ urlpatterns = patterns('',
     url(r'^gethired/company/(?P<name>[0-9A-Za-z\-]+)/$', views.get_company, name='get_company'),
     url(r'^gethired/filter/', views.filter_posts_gethired, name='filter_posts_gethired'),
     url(r'^gethired/post/list/company/$', views.get_company_json_list),
-
-    
-    
-    
-    
+   
     #Registration 
     url(r'^accounts/logout/$', views.logout_view),
     url(r'^accounts/profile/$', views.userprofile),

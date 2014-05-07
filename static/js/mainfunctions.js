@@ -13,6 +13,7 @@ $(document).ready(function() {
 		$('a.jobs').addClass('current');
 	}
 
+    
 	var offset = 420;
 	var offsetbottom = $('div.footer').offset().top - 900;
 	var duration = 200;
@@ -89,12 +90,20 @@ $(document).ready(function() {
     		}
     	}
     });
-    $('#project_form_submit').click(function(e) {
+    $('button.form_with_password').click(function(e) {
+        if ($('#confirm_password').length == 0) {
+            console.log('worked');
+            $('form').submit();
+        }
+
+        else {
+            console.log('didnt');
+        }
         var password = $('input[name="password"]').val();
         var confirmation = $('#confirm_password').val();
 
         if (password === confirmation) {
-            $('#project_form').submit();
+            $('form').submit();
         }
 
         else {
