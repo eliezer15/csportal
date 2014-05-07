@@ -17,6 +17,13 @@
     	<option value="{{c.name}}">{{c.name}}</option>
     {% endfor %}
 	</select>
+    <span class='labs'> Technology:</span>
+    <select class="form-control combobox" name="technology">
+    <option value="ALL"></option>
+    {% for t in filters.technologies %}
+        <option value="{{t.name}}">{{t.name}}</option>
+    {% endfor %}
+    </select>
     <span class='labs'>State: </span>
         <select class="form-control combobox" name="location">
 		<option value="ALL"></option>
@@ -112,6 +119,7 @@
         <option value="CW">Contract Work</option>
         <option value="OT">Other</option>
     </select>
+
     <div style="padding-top: 5px;text-align: center;">
         <input type="submit" class="updatebtn btn btn-default" value="Update" />
         <a class="resetbtn btn btn-default" href="/jobs/" style="width: 75px;">Reset</a>

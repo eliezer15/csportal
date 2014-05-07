@@ -92,13 +92,13 @@
 				<div class="row postview-upperinfo">
 					<div class="container-fluid">
 						<div class="row">
-							<span class="job_title lab">Job Title: <span class="content"><a class="norm" href="/jobs/filter/?company=ALL&amp;location=ALL&amp;job_title={{post.job_title}}&amp;job_type=ALL">{{post.get_job_title_display}}</a></span></span>
+							<span class="job_title lab">Job Title: <span class="content"><a class="norm" href="/jobs/filter/?company=ALL&amp;location=ALL&amp;job_title={{post.job_title}}&amp;job_type=ALL&amp;technology=ALL">{{post.get_job_title_display}}</a></span></span>
 						</div>
 						<div class="row">
 							<span class="job_type lab">Job Type: <span class="content"><a class="norm" href="/jobs/filter/?company=ALL&amp;location=ALL&amp;job_title=ALL&amp;job_type={{post.job_type}}">{{post.get_job_type_display}}</a></span></span>
 						</div>
 						<div class="row postview-about-row">
-							<div><img alt="location" src="{% static "/static/images/gethired/map_location_test.png" %}"><span class="postview-location"><a href="/jobs/filter/?company=ALL&amp;location={{post.location.state}}&amp;job_title=ALL&amp;job_type=ALL">{{post.location}}</a></span></div>
+							<div><img alt="location" src="{% static "/static/images/gethired/map_location_test.png" %}"><span class="postview-location"><a href="/jobs/filter/?company=ALL&amp;location={{post.location.state}}&amp;job_title=ALL&amp;job_type=ALL&amp;technology=ALL">{{post.location}}</a></span></div>
 							<div><img alt="graduation cap" src="{% static "/static/images/gethired/grad_cap_test_g.png" %}"><span>{{post.applicant_degree|normdegree}}</span></div>
 						</div>
 					</div>
@@ -115,7 +115,7 @@
     					<label>Technologies</label>
 							<p><span class="content">
     						{% for t in post.technologies.all %}
-    						{{t}}{% if not forloop.last %}, {% endif %}
+    						<a href="/jobs/filter/?company=ALL&amp;location=ALL&amp;job_title=ALL&amp;job_type=ALL&amp;technology={{t}}">{{t}}</a>{% if not forloop.last %}, {% endif %}
     						{% endfor %}
     						</span></p>    						
     					<label>Details:</label>   

@@ -77,11 +77,13 @@ def get_filters(site):
     """ Return the rows of data that need to be autocompleted on the filter forms"""
     filters = {}
 
-    if site == 'gethired' or site == 'jobs':
+    if site == 'gethired':
         filters['companies']= models.Company.objects.order_by('name')
     elif site == 'marketplace':
         filters['technologies']= models.Technology.objects.order_by('name')
-
+    elif site == 'jobs':
+        filters['technologies']= models.Technology.objects.order_by('name')
+        filters['companies']= models.Company.objects.order_by('name')
     return filters
 
 def delete_post(request, post_type, post_id):
@@ -629,6 +631,9 @@ def filter_posts_job(request):
             company = data['company'].replace('-', ' ')
             filters['company__name__iexact']= company
 
+        if 'technology' in data and data['technology'] != 'ALL':
+            filters['technologies__name'] = data['technology']
+            
         all_posts = models.Job.objects.filter(**filters)
         all_posts = sorted(all_posts, key=lambda post: post.date_posted,reverse=True)
 
@@ -655,11 +660,9 @@ def filter_posts_project(request):
         
         filters = {}
 
-        if 'location' in data and data['location'] != 'ALL':
-            filters['location__state'] = data['location']
-
         if 'technology' in data and data['technology'] != 'ALL':
             filters['technologies__name'] = data['technology']
+
         all_posts = []
         all_posts.extend(models.Project.objects.filter(**filters))
         all_posts.sort(key=lambda post: post.date_posted,reverse=True)

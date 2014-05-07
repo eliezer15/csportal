@@ -114,7 +114,7 @@
 							<label>Technologies</label>
 							<p><span class="content">
     						{% for t in post.technologies.all %}
-    						{{t}}{% if not forloop.last %}, {% endif %}
+    						<a href="/marketplace/filter/?technology={{t}}">{{t}}</a>{% if not forloop.last %}, {% endif %}
     						{% endfor %}
     						</span></p>
     					<div class=col-md-12>
