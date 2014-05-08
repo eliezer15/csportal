@@ -85,7 +85,6 @@
 					class="required">* </span>Description: </label>					
 				<div class="col-md-12">{{form.description.errors}}{{form.description}}</div>
 			</div>
-			{% wysiwyg_editor "id_description" %}
 			{% if not user.is_authenticated  %}
 			<br>
 			<div class="top-form-left col-md-12">	
@@ -114,6 +113,7 @@
 			});
 			</script>
 			{% endif %}
+			{% wysiwyg_editor "id_description" %}
 			<div class="form-group col-md-12" style="text-align: center;">
 				<button type="submit" class="btn btn-default form_with_password">Submit</button>
 				<a style="margin: 10px;" href="/marketplace/" class="btn btn-default">Cancel</a>

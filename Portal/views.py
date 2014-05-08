@@ -471,6 +471,7 @@ def create_post_job(request):
             post.location = location
             post.company = company
             post.save()
+            user_form.save_m2m()
             
             redirecturl = '/jobs/post/' + str(post.pk) +'/'
             return HttpResponseRedirect(redirecturl)
@@ -691,6 +692,8 @@ def create_post_project(request):
     if request.method == 'POST':
         data = request.POST
         user_form = Form(request.POST)
+        cleaned_desc = BeautifulSoup(data['description'])
+        user_form.description = cleaned_desc.prettify()
         location = None
         
         valid_form = user_form.is_valid() #calling it here so I can access the clean data below
@@ -715,6 +718,7 @@ def create_post_project(request):
                 post.author = None
             post.location = location
             post.save()
+            user_form.save_m2m()
             
             redirecturl = '/marketplace/post/project/' + str(post.pk) +'/'
             return HttpResponseRedirect(redirecturl)
