@@ -134,7 +134,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'Portal',
     'django.contrib.admin',
-   # 'debug_toolbar',
+    'debug_toolbar',
     'django.contrib.humanize',
     'registration',
     'django_wysiwyg',    
