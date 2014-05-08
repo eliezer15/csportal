@@ -52,7 +52,7 @@
 	<div class="row"><a style="margin: 10px;" href="/gethired/" class="btn pull-left btn-info btn-go-back">Cancel</a><h2>{{header}}Interview</h2></div>
 	<p class="required"><span class="required">* </span>Required Fields</p>
 		<div class="new-interview-form">
-			<form class="form-horizontal" id="post_form" method="post" action="/gethired/post/new/{{post_type}}/{{post_id}}/">	
+			<form class="form-horizontal" autofill="off" id="post_form" method="post" action="/gethired/post/new/{{post_type}}/{{post_id}}/">	
 				{% csrf_token %}
 					<div class="container-fluid">
 						<div class="row">
@@ -195,7 +195,7 @@
 	<div class="row"><a style="margin: 10px;" href="/gethired/" class="btn pull-left btn-info btn-go-back">Cancel</a><h2>{{header}}Offer</h2></div>
 	<p class="required"><span class="required">* </span>Required Fields</p>
 		<div class="new-offer-form">
-			<form class="form-horizontal" id=post_form method="post" action="{% url 'create_post' post_type=post_type post_id=post_id %}" style="margin: 20px;">
+			<form class="form-horizontal" autocomplete="off" id=post_form method="post" action="{% url 'create_post' post_type=post_type post_id=post_id %}" style="margin: 20px;">
 				{% csrf_token %}
 					<div class="container-fluid">
 						<div class="row">

@@ -18,7 +18,7 @@
 		<span class="required">* </span>Required Fields
 	</p>
 	<div class="new-project-form">
-		<form class="form-horizontal" id="project_form" method="post"
+		<form class="form-horizontal" autocomplete="off" id="project_form" method="post"
 			{% if update %}
 			action="{% url 'edit_post_project' post_id=post_id %}"
 			{% else %}
