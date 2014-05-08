@@ -23,3 +23,9 @@ python manage.py runserver
 ```
 
 4) The site should now be running on localhost
+
+Possible additions
+=======
+- Not having to edit password everytime a password protected post is edited
+- Running the database deletion command with the cron manager
+- Migrating to PostgreSQL
