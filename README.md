@@ -1,5 +1,7 @@
-csportal
+# CS Portal
 ========
+
+**Note**: This was the final project of my Software Engineering class at the University of North Carolina.
 
 The CS Portal is a website where Carolina CS students can collaborate in projects, share important job hunting information and look for internships and full time job opportunities.
 
